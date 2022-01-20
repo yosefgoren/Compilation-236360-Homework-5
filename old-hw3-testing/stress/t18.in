@@ -1,0 +1,9 @@
+strfding f() {
+    return "abc";
+}
+
+void main() {
+    return;
+} 
+
+

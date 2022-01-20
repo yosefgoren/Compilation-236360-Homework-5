@@ -1,0 +1,5 @@
+void foo(){
+	int x = 5;
+	bool var = true;
+	x = var;
+}void main(){int x;}

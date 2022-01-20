@@ -1,0 +1,7 @@
+void foo(){
+	int x;
+	if(true){
+		int y = x;
+	}
+}
+void main(){int x;}

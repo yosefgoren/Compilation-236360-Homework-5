@@ -1,0 +1,11 @@
+---end scope---
+h BYTE 2
+j INT 3
+---end scope---
+x INT 0
+y BOOL 1
+m INT 2
+---end scope---
+---end scope---
+---end scope---
+---end scope---

@@ -1,0 +1,4 @@
+void main(){return;}
+void foo(const int x){
+	x = 1;
+}

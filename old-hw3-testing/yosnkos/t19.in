@@ -1,0 +1,5 @@
+void foo(){
+	int x = 9001;
+	foo(x);
+}
+void main(){int x;}

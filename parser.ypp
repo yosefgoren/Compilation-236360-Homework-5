@@ -1,0 +1,315 @@
+%{
+	int yylex();
+	void yyerror(const char* s);
+	#include "stdio.h"
+	#include "Symtab.hpp"
+	#include "AuxTypes.hpp" 
+	#include "hw3_output.hpp"
+	#include <iostream>
+	#include <algorithm>
+	#include <set>
+	extern int yylineno;
+
+	//#define MYDB
+	#ifdef MYDB
+		#define YYERROR_VERBOSE 1
+		#define YYDEBUG 1
+		extern int yydebug;
+#endif
+
+	SimpleSymtab symtab;
+	using namespace std;
+
+	#define check(assertion, error) do{if(!(assertion)){error; exit(1);}}while(false);
+
+	static int loop_depth;
+	
+	bool isNumeralType(ExpType type){
+		return type == INT_EXP || type == BYTE_EXP;
+	}
+	bool canImplicitCast(ExpType source_type, ExpType dst_type){
+		return (source_type == dst_type)
+			|| (source_type == BYTE_EXP && dst_type == INT_EXP);
+	}
+	bool canExplicitCast(ExpType source_type, ExpType dst_type){
+		if(source_type == dst_type)
+			return true;
+		return isNumeralType(source_type) && isNumeralType(dst_type);
+	}
+
+	void checkMismatch(ExpType source_type, ExpType dst_type){
+		check(canImplicitCast(source_type, dst_type), output::errorMismatch(yylineno));
+	}
+	
+	void checkBool(ExpType type) {
+		checkMismatch(type, BOOL_EXP);
+	}
+
+	void checkNumeralType(ExpType type){
+		check(isNumeralType(type), output::errorMismatch(yylineno));
+	}
+
+	ExpType maxNumeralType(ExpType first_operand_type, ExpType second_operand_type){
+		return first_operand_type == INT_EXP ? INT_EXP : second_operand_type;
+	}
+
+	void checkFuncDec(const string& func_id, const vector<Parameter>& parameters){
+		std::set<std::string> tmp_params_set;
+		for(auto it = parameters.rbegin(); it != parameters.rend(); ++it){
+			auto param = *it;
+			//check that the new parameter identifiers don't conflict with the id of the new function:
+			check(func_id != param.id, output::errorDef(param.line_of_origin, param.id));
+			//check that the new parameter identifiers dont confilict with existing ones: 
+			check(symtab.declarableValidId(param.id), output::errorDef(param.line_of_origin, param.id));
+			//check that there are not conflitcts between the new identifiers:
+			check(tmp_params_set.count(param.id) == 0, output::errorDef(param.line_of_origin, param.id));
+			tmp_params_set.insert(param.id);
+		}
+	}
+
+	void checkPrototypeMismatch(const string& func_id, const vector<ExpType>& reverse_exp_types_in_call){
+		vector<ExpType> exp_types_required = symtab.getFunctionType(func_id).getParameterTypes();
+		//TODO: add something to remember the line of each expression so we can add the correct 
+		// 		line of the expression to this error (something like 'line_of_origin').
+		auto required_types_it = exp_types_required.begin();
+		for(auto called_type_it = reverse_exp_types_in_call.rbegin();
+				called_type_it != reverse_exp_types_in_call.rend(); ++called_type_it){
+			ExpType called_type = *called_type_it;
+			if(required_types_it == exp_types_required.end() || !canImplicitCast(called_type, *required_types_it)){
+				output::errorPrototypeMismatch(yylineno, func_id, ExpTypeStringVector(exp_types_required, true));
+				exit(1);
+			}
+			++required_types_it;
+		}
+		if(required_types_it != exp_types_required.end()){
+				output::errorPrototypeMismatch(yylineno, func_id, ExpTypeStringVector(exp_types_required, true));
+				exit(1);			
+		}
+	}
+	void checkMainMissing(){
+		if (symtab.callableValidId("main")) {
+			const FunctionType& func = symtab.getFunctionType("main");
+			if (func.return_type != VOID_EXP || !func.getParameterTypes().empty()){
+				output::errorMainMissing();
+				exit(1);
+			} 
+		}else {
+			output::errorMainMissing();
+			exit(1);
+		}
+	}
+
+	void checkByteTooLarge(int b) {
+		if (b > 255 || b < 0) {
+			output::errorByteTooLarge(yylineno, to_string(b));
+			exit(1);
+		}
+	}
+%}
+
+%union{
+	//lexer proivided fields:
+	string* id;
+	string* string_literal;
+	int number_literal;
+	
+	//parser metadata fields:
+	ExpType exp_type;
+	vector<ExpType>* exp_type_list;
+	vector<Parameter>* formals_list;
+	Parameter* formal;
+	int line_number;
+	bool is_const;
+	DecInfo dec_info;
+};
+
+%nonassoc INT VOID BYTE B BOOL CONST
+%token TRUE FALSE
+%token RETURN WHILE BREAK CONTINUE SC
+
+%token STRING
+%token COMMA
+%token <id> ID
+%token <number_literal> NUM
+
+%right ASSIGN
+%left OR
+%left AND
+%left RELOP
+%left BINOP
+%right NOT
+
+%left LPAREN RPAREN LBRACE RBRACE
+%right IF
+%token ELSE
+
+%type <exp_type> Exp RetType Type Call
+%type <exp_type_list> ExpList
+%type <formals_list> Formals FormalsList
+%type <line_number> LineCapture
+%type <is_const> TypeAnnotation
+%type <dec_info> VarDecStart
+%%
+
+Program:			Funcs//1 //maybe openscope and closescope is redundent
+					;
+OpenScope:			{symtab.pushScope();};
+CloseScope:			{symtab.popScope();};
+OpenLoop:			{++loop_depth;};
+CloseLoop:			{--loop_depth;};
+Block:				LBRACE OpenScope Statements RBRACE CloseScope;
+
+Funcs:				FuncDecl Funcs //3
+					| //2
+					;
+FuncDecl:			RetType ID {check(symtab.declarableValidId(*$2), output::errorDef(yylineno, *$2));}
+					LPAREN Formals {	
+						checkFuncDec(*$2, *$5);
+						symtab.declareFunc(*$2, $1, $5);
+					} RPAREN LBRACE Statements RBRACE {symtab.finishFunc();} //4
+					;
+RetType:			Type {$$ = $1;}//5
+					|VOID {$$ = VOID_EXP;}//6
+					;
+Formals:			{$$ = new vector<Parameter>();}//7
+					|FormalsList {$$ = $1;}//8 
+
+FormalsList:		TypeAnnotation Type ID {$$ = new vector<Parameter>(); $$->push_back(Parameter(*$3, $2, yylineno, $1)); delete $3;} //9
+					|TypeAnnotation Type ID LineCapture COMMA FormalsList {$$ = $6; $$->push_back(Parameter(*$3, $2, $4, $1)); delete $3;} //10
+					;
+LineCapture:		{$$ = yylineno;};
+
+Statements:			Statement //12
+					|Statements Statement //13
+					;
+Call:				ID LPAREN ExpList RPAREN {
+						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
+						checkPrototypeMismatch(*$1, *$3);
+						$$ = symtab.getReturnType(*$1);
+						delete $1;
+					}//26
+					|ID LPAREN RPAREN {
+						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
+						//there are no arguments used in the call so vector is empty:
+						vector<ExpType> call_arg_types = {};
+						checkPrototypeMismatch(*$1, call_arg_types);
+						$$ = symtab.getReturnType(*$1);
+						delete $1;	
+					}//27
+					;
+ExpList:			Exp {$$ = new vector<ExpType>(); $$->push_back($1);}//28
+					|Exp COMMA ExpList {$$ = $3; $$->push_back($1);}//29
+					;
+Type:				INT {$$ = INT_EXP;} //30
+					|BYTE {$$ = BYTE_EXP;} //31
+					|BOOL {$$ = BOOL_EXP;} //32
+					;
+TypeAnnotation:		CONST {$$ = true;}//34
+					| {$$ = false;}//33
+					;	
+Exp:				LPAREN Exp RPAREN {$$ = $2;}//35
+					| Call {$$ = $1;}//38
+					| ID {
+						check(symtab.rvalValidId(*$1), output::errorUndef(yylineno, *$1));
+						$$ = symtab.getVariableType(*$1);
+						delete $1;
+					}//37
+					| NUM {$$ = INT_EXP;}//39
+					| NUM B {
+						$$ = BYTE_EXP;
+						checkByteTooLarge($1);
+					}//40
+					| STRING {$$ = STRING_EXP;}//41
+					| TRUE {$$ = BOOL_EXP;}//42
+					| FALSE {$$ = BOOL_EXP;}//43
+					| NOT Exp {checkMismatch($2, BOOL_EXP); $$ = BOOL_EXP;}//44
+					| Exp BINOP Exp {checkNumeralType($1); checkNumeralType($3); $$ = maxNumeralType($1, $3);}//36
+					| Exp AND Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}//45
+					| Exp OR Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}//46
+					| Exp RELOP Exp {check(isNumeralType($1) && isNumeralType($3), output::errorMismatch(yylineno)); $$ = BOOL_EXP;}//47
+					| LPAREN Type RPAREN Exp {
+						check(canExplicitCast($4, $2), output::errorMismatch(yylineno));
+						$$ = $2;
+					}
+					;
+
+Statement:			OpenStatment
+					| ClosedStatment;
+					
+OpenStatment:		IfStart OpenScope Statement CloseScope //21
+					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope OpenStatment CloseScope //22
+					| WhileStart OpenLoop OpenScope OpenStatment CloseScope CloseLoop //23
+					;
+
+ClosedStatment:		SimpleStatement
+					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope ClosedStatment CloseScope//22
+					| WhileStart OpenLoop OpenScope ClosedStatment CloseScope CloseLoop //23
+					;
+IfStart:			IF LPAREN Exp {checkBool($3);} RPAREN;
+WhileStart:			WHILE LPAREN Exp {checkBool($3);} RPAREN;
+
+SimpleStatement:	Block //14
+					|VarDecStart SC {
+						check(!$1.is_const, output::errorConstDef(yylineno));
+						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
+						delete $1.id;
+					}//15
+					|VarDecStart ASSIGN Exp SC {
+						checkMismatch($3, $1.raw_type);
+						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
+						delete $1.id;
+					}//16
+					|ID ASSIGN Exp SC {
+						check(symtab.containsVar(*$1), output::errorUndef(yylineno, *$1));
+						check(!symtab.isConst(*$1), output::errorConstMismatch(yylineno));
+						checkMismatch($3, symtab.getVariableType(*$1));
+						delete $1;
+					}//17
+					|Call SC //18
+					|RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC //19
+					|RETURN Exp {
+						checkMismatch($2, symtab.getCurrentlyParsedFuncType().return_type);
+						check($2 != VOID_EXP, output::errorMismatch(yylineno));
+					} SC //20
+					|BREAK SC {check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));}  //24
+					|CONTINUE SC {check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));}  //25
+					;
+VarDecStart:		TypeAnnotation Type ID {
+						check(symtab.declarableValidId(*$3), output::errorDef(yylineno, *$3));
+						$$ = {.is_const = $1, .raw_type = $2, .id = $3};
+					};
+
+%%
+void yyerror(const char* s){
+	output::errorSyn(yylineno);
+	exit(1);
+}
+
+void declareLibraryFuncs(){
+	//FunctionType creates a shared pinter for these allocations:
+	std::vector<Parameter>* print_params = new std::vector<Parameter>();
+	std::vector<Parameter>* printi_params = new std::vector<Parameter>();
+
+	//in print/i line of origin and is_const parameters are irrelevant, but have to be given some value:
+	print_params->push_back(Parameter("str", STRING_EXP, 0, true));
+	printi_params->push_back(Parameter("i", INT_EXP, 0, true));
+	symtab.declareFunc("print", VOID_EXP, print_params);
+	symtab.finishFunc(false);
+	symtab.declareFunc("printi", VOID_EXP, printi_params);
+	symtab.finishFunc(false);
+	
+}
+
+int main(){
+	#ifdef MYDB
+		yydebug = 1;
+	#endif
+	symtab = SimpleSymtab();
+	declareLibraryFuncs();
+	loop_depth = 0;
+	int res = yyparse();
+	checkMainMissing();
+	output::endScope();//this is the global scope.
+	symtab.printFuncDecls();
+	return res;
+}

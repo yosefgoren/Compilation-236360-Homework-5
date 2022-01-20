@@ -1,0 +1,8 @@
+void foo(){
+	if(true){
+		int y = 1;
+	} else {
+		int y = 0;
+	}
+}
+void main(){int x;}

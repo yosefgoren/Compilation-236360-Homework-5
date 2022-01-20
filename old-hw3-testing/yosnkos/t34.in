@@ -1,0 +1,8 @@
+int foo(byte x) {
+    int y;
+    return y;
+}
+void main() {
+    const byte x=256b;
+    foo(x);
+}

@@ -1,0 +1,4 @@
+void foo(){
+	int y = x;
+}
+void main(){int x;}

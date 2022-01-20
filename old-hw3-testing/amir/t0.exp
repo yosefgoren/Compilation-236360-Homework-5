@@ -1,0 +1,19 @@
+---end scope---
+---end scope---
+---end scope---
+---end scope---
+t BYTE 1
+---end scope---
+---end scope---
+---end scope---
+---end scope---
+flag BOOL -1
+num INT -2
+y INT 0
+---end scope---
+y INT 0
+---end scope---
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+addOne (BOOL,INT)->INT 0
+main ()->VOID 0

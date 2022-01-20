@@ -1,0 +1,8 @@
+void foo(){
+	int x;
+}
+
+void goo(){
+	foo(1);
+}
+void main(){int x;}

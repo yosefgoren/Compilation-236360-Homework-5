@@ -1,0 +1,13 @@
+void foo(){
+	int x;
+	bool y;
+	{
+		byte h;
+		int j;
+	}
+	int m;
+}
+
+void main(){
+	return;
+}
