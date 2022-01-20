@@ -61,13 +61,21 @@ struct FunctionType{
 	std::shared_ptr<std::vector<Parameter>> parameters;
 };
 
-struct NumericExp{
+struct Expression{
+	Expression(ExpType type);
+	ExpType type;
+};
+
+struct NumericExp: public Expression{
 	NumericExp(ExpType type);
 
-	ExpType type;
 	std::string reg;
 
 	static const std::string REG_NOT_ASSIGNED;
 	bool isRegisterAssigned() const;
+};
+
+struct BoolExp: public Expression{
+	BoolExp();
 };
 #endif

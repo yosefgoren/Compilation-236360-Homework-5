@@ -24,11 +24,17 @@ std::vector<std::string> ExpTypeStringVector(std::vector<ExpType> types, bool ca
 	return result;
 }
 
+Expression::Expression(ExpType type)
+	:type(type){};
+
 const std::string NumericExp::REG_NOT_ASSIGNED = "";
 
 NumericExp::NumericExp(ExpType type)
-	:type(type), reg(REG_NOT_ASSIGNED){}
+	:Expression(type), reg(REG_NOT_ASSIGNED){}
 
 bool NumericExp::isRegisterAssigned() const{
 	return reg != REG_NOT_ASSIGNED;
 }
+
+BoolExp::BoolExp()
+	:Expression(BOOL_EXP){};
