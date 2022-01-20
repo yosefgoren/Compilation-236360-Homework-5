@@ -64,6 +64,11 @@ struct FunctionType{
 struct Expression{
 	Expression(ExpType type);
 	ExpType type;
+
+	static Expression* generateExpByType(ExpType type);
+	//virtual Expression* cloneCast(ExpType type) = 0;
+
+	class InvalidCastException: public std::exception{};
 };
 
 struct NumericExp: public Expression{
@@ -73,9 +78,18 @@ struct NumericExp: public Expression{
 
 	static const std::string REG_NOT_ASSIGNED;
 	bool isRegisterAssigned() const;
+	
+	//virtual Expression* cloneCast(ExpType type) override;
 };
 
 struct BoolExp: public Expression{
 	BoolExp();
+	//virtual Expression* cloneCast(ExpType type) override;
+};
+
+struct StrExp: public Expression{
+	StrExp();
+
+	//virtual Expression* cloneCast(ExpType type) override;
 };
 #endif

@@ -67,14 +67,15 @@
 		}
 	}
 
-	void checkPrototypeMismatch(const string& func_id, const vector<ExpType>& reverse_exp_types_in_call){
+	void checkPrototypeMismatch(const string& func_id, const vector<Expression*>& reverse_exp_list_in_call){
 		vector<ExpType> exp_types_required = symtab.getFunctionType(func_id).getParameterTypes();
 		//TODO: add something to remember the line of each expression so we can add the correct 
 		// 		line of the expression to this error (something like 'line_of_origin').
 		auto required_types_it = exp_types_required.begin();
-		for(auto called_type_it = reverse_exp_types_in_call.rbegin();
-				called_type_it != reverse_exp_types_in_call.rend(); ++called_type_it){
-			ExpType called_type = *called_type_it;
+		for(auto called_exp_it = reverse_exp_list_in_call.rbegin();
+				called_exp_it != reverse_exp_list_in_call.rend(); ++called_exp_it){
+			
+			ExpType called_type = (*called_exp_it)->type;
 			if(required_types_it == exp_types_required.end() || !canImplicitCast(called_type, *required_types_it)){
 				output::errorPrototypeMismatch(yylineno, func_id, ExpTypeStringVector(exp_types_required, true));
 				exit(1);
@@ -115,8 +116,9 @@
 	
 	//parser metadata fields:
 	NumericExp* numeric_exp;
+	Expression* expression;
 	ExpType exp_type;
-	vector<ExpType>* exp_type_list;
+	vector<Expression*>* exp_list;
 	vector<Parameter>* formals_list;
 	Parameter* formal;
 	int line_number;
@@ -144,8 +146,9 @@
 %right IF
 %token ELSE
 
-%type <exp_type> Exp NumericExp BoolExp RetType Type Call
-%type <exp_type_list> ExpList
+%type <expression> Exp NumericExp BoolExp Call
+%type <exp_type> RetType Type
+%type <exp_list> ExpList
 %type <formals_list> Formals FormalsList
 %type <line_number> LineCapture
 %type <is_const> TypeAnnotation
@@ -186,20 +189,20 @@ Statements:			Statement //12
 Call:				ID LPAREN ExpList RPAREN {
 						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
 						checkPrototypeMismatch(*$1, *$3);
-						$$ = symtab.getReturnType(*$1);
+						$$ = Expression::generateExpByType(symtab.getReturnType(*$1));
 						delete $1;
-					}//26
+					}
 					|ID LPAREN RPAREN {
 						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
 						//there are no arguments used in the call so vector is empty:
-						vector<ExpType> call_arg_types = {};
+						vector<Expression*> call_arg_types = {};
 						checkPrototypeMismatch(*$1, call_arg_types);
-						$$ = symtab.getReturnType(*$1);
+						$$ = Expression::generateExpByType(symtab.getReturnType(*$1));
 						delete $1;	
-					}//27
+					}
 					;
-ExpList:			Exp {$$ = new vector<ExpType>(); $$->push_back($1);}//28
-					|Exp COMMA ExpList {$$ = $3; $$->push_back($1);}//29
+ExpList:			Exp {$$ = new vector<Expression*>(); $$->push_back($1);}
+					|Exp COMMA ExpList {$$ = $3; $$->push_back($1);}
 					;
 Type:				INT {$$ = INT_EXP;}
 					|BYTE {$$ = BYTE_EXP;}
@@ -212,32 +215,51 @@ Exp:				LPAREN Exp RPAREN {$$ = $2;}
 					| Call {$$ = $1;}
 					| ID {
 						check(symtab.rvalValidId(*$1), output::errorUndef(yylineno, *$1));
-						$$ = symtab.getVariableType(*$1);
+						$$ = Expression::generateExpByType(symtab.getVariableType(*$1));
 						delete $1;
 					}
-					| STRING {$$ = STRING_EXP;}
+					| STRING {$$ = new StrExp();}
 					| LPAREN Type RPAREN Exp {
-						check(canExplicitCast($4, $2), output::errorMismatch(yylineno));
-						$$ = $2;
+						check(canExplicitCast($4->type, $2), output::errorMismatch(yylineno));
+						$$ = $4;
+						$$->type = $2;
 					}
 					| NumericExp
 					| BoolExp
 					;
 
-NumericExp:			Exp BINOP Exp {checkNumeralType($1); checkNumeralType($3); $$ = maxNumeralType($1, $3);}
-					| NUM {$$ = INT_EXP;}
+NumericExp:			Exp BINOP Exp {
+						checkNumeralType($1->type);
+						checkNumeralType($3->type);
+						$$ = new NumericExp(maxNumeralType($1->type, $3->type));
+					}
+					| NUM {$$ = new NumericExp(INT_EXP);}
 					| NUM B {
-						$$ = BYTE_EXP;
+						$$ = new NumericExp(BYTE_EXP);
 						checkByteTooLarge($1);
 					}
 					;
 
-BoolExp: 			Exp AND Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}
-					| Exp OR Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}
-					| Exp RELOP Exp {check(isNumeralType($1) && isNumeralType($3), output::errorMismatch(yylineno)); $$ = BOOL_EXP;}
-					| NOT Exp {checkMismatch($2, BOOL_EXP); $$ = BOOL_EXP;}
-					| TRUE {$$ = BOOL_EXP;}
-					| FALSE {$$ = BOOL_EXP;}
+BoolExp: 			Exp AND Exp {
+						checkMismatch($1->type, BOOL_EXP);
+						checkMismatch($3->type, BOOL_EXP);
+						$$ = new BoolExp();
+					}
+					| Exp OR Exp {
+						checkMismatch($1->type, BOOL_EXP);
+						checkMismatch($3->type, BOOL_EXP);
+						$$ = new BoolExp();
+					}
+					| Exp RELOP Exp {
+						check(isNumeralType($1->type) && isNumeralType($3->type), output::errorMismatch(yylineno));
+						$$ = new BoolExp();
+					}
+					| NOT Exp {
+						checkMismatch($2->type, BOOL_EXP);
+						$$ = new BoolExp();
+					}
+					| TRUE {$$ = new BoolExp();}
+					| FALSE {$$ = new BoolExp();}
 					;
 
 Statement:			OpenStatment
@@ -252,8 +274,8 @@ ClosedStatment:		SimpleStatement
 					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope ClosedStatment CloseScope
 					| WhileStart OpenLoop OpenScope ClosedStatment CloseScope CloseLoop
 					;
-IfStart:			IF LPAREN Exp {checkBool($3);} RPAREN;
-WhileStart:			WHILE LPAREN Exp {checkBool($3);} RPAREN;
+IfStart:			IF LPAREN Exp {checkBool($3->type);} RPAREN;	
+WhileStart:			WHILE LPAREN Exp {checkBool($3->type);} RPAREN;
 
 SimpleStatement:	Block
 					|VarDecStart SC {
@@ -262,21 +284,21 @@ SimpleStatement:	Block
 						delete $1.id;
 					}
 					|VarDecStart ASSIGN Exp SC {
-						checkMismatch($3, $1.raw_type);
+						checkMismatch($3->type, $1.raw_type);
 						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
 						delete $1.id;
 					}
 					|ID ASSIGN Exp SC {
 						check(symtab.containsVar(*$1), output::errorUndef(yylineno, *$1));
 						check(!symtab.isConst(*$1), output::errorConstMismatch(yylineno));
-						checkMismatch($3, symtab.getVariableType(*$1));
+						checkMismatch($3->type, symtab.getVariableType(*$1));
 						delete $1;
 					}
 					|Call SC
 					|RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC
 					|RETURN Exp {
-						checkMismatch($2, symtab.getCurrentlyParsedFuncType().return_type);
-						check($2 != VOID_EXP, output::errorMismatch(yylineno));
+						checkMismatch($2->type, symtab.getCurrentlyParsedFuncType().return_type);
+						check($2->type != VOID_EXP, output::errorMismatch(yylineno));
 					} SC
 					|BREAK SC {check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));}
 					|CONTINUE SC {check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));}

@@ -91,7 +91,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 110 "parser.ypp"
+#line 111 "parser.ypp"
 
 	//lexer proivided fields:
 	string* id;
@@ -100,15 +100,16 @@ union YYSTYPE
 	
 	//parser metadata fields:
 	NumericExp* numeric_exp;
+	Expression* expression;
 	ExpType exp_type;
-	vector<ExpType>* exp_type_list;
+	vector<Expression*>* exp_list;
 	vector<Parameter>* formals_list;
 	Parameter* formal;
 	int line_number;
 	bool is_const;
 	DecInfo dec_info;
 
-#line 112 "parser.tab.hpp"
+#line 113 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
