@@ -1,0 +1,7 @@
+void main() {
+const int c1 = 2;
+const int c2 = 2;
+const int c3 = c1 + c2;
+int c4 = c3 + c2;
+c3 = 5; // this is illegal
+}

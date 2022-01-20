@@ -1,0 +1,37 @@
+30: Type -> INT
+5: RetType -> Type
+7: Formals -> epsilon
+39: Exp -> NUM
+20: Statement -> RETURN Exp SC
+12: Statements -> Statement
+4: FuncDecl -> RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE
+30: Type -> INT
+5: RetType -> Type
+7: Formals -> epsilon
+39: Exp -> NUM
+20: Statement -> RETURN Exp SC
+12: Statements -> Statement
+4: FuncDecl -> RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE
+30: Type -> INT
+5: RetType -> Type
+7: Formals -> epsilon
+39: Exp -> NUM
+20: Statement -> RETURN Exp SC
+12: Statements -> Statement
+4: FuncDecl -> RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE
+6: RetType ->  VOID
+7: Formals -> epsilon
+33: TypeAnnotation -> epsilon
+30: Type -> INT
+41: Exp -> STRING
+16: Statement -> TypeAnnotation Type ID ASSIGN Exp SC
+12: Statements -> Statement
+19: Statement -> RETURN SC
+13: Statements -> Statements Statement
+4: FuncDecl -> RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE
+2: Funcs -> epsilon
+3: Funcs -> FuncDecl Funcs
+3: Funcs -> FuncDecl Funcs
+3: Funcs -> FuncDecl Funcs
+3: Funcs -> FuncDecl Funcs
+1: Program -> Funcs

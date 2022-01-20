@@ -18,10 +18,10 @@ define i32 @fact(i32){
 	fact_done:
 		ret i32 1
 	fact_step:
-		%2 = sub i32 %0, 1
-		%3 = call i32 (i32) @fact(i32 %2)
-		%4 = mul i32 %0, %3
-		ret i32 %4
+		%samller = sub i32 %0, 1
+		%returned = call i32 (i32) @fact(i32 %samller)
+		%multiplication = mul i32 %0, %returned
+		ret i32 %multiplication
 }
 
 define i32 @main(){

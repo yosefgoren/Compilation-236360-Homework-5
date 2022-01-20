@@ -1,0 +1,59 @@
+30: Type -> INT
+5: RetType -> Type
+33: TypeAnnotation -> epsilon
+30: Type -> INT
+11: FormalDecl -> Type ID
+9: FormalsList -> FormalDecl
+8: Formals -> FormalsList
+37: Exp -> ID
+39: Exp -> NUM
+36: Exp -> Exp BINOP Exp
+17: Statement -> ID ASSIGN Exp SC
+12: Statements -> Statement
+37: Exp -> ID
+20: Statement -> RETURN Exp SC
+13: Statements -> Statements Statement
+4: FuncDecl -> RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE
+30: Type -> INT
+5: RetType -> Type
+34: TypeAnnotation -> CONST
+30: Type -> INT
+11: FormalDecl -> Type ID
+9: FormalsList -> FormalDecl
+8: Formals -> FormalsList
+33: TypeAnnotation -> epsilon
+30: Type -> INT
+37: Exp -> ID
+28: ExpList -> Exp
+26: Call -> ID LPAREN ExpList RPAREN
+38: Exp -> Call
+16: Statement -> TypeAnnotation Type ID ASSIGN Exp SC
+12: Statements -> Statement
+39: Exp -> NUM
+20: Statement -> RETURN Exp SC
+13: Statements -> Statements Statement
+4: FuncDecl -> RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE
+6: RetType ->  VOID
+7: Formals -> epsilon
+33: TypeAnnotation -> epsilon
+32: Type -> BOOL
+43: Exp -> FALSE
+16: Statement -> TypeAnnotation Type ID ASSIGN Exp SC
+12: Statements -> Statement
+37: Exp -> ID
+44: Exp -> NOT Exp
+33: TypeAnnotation -> epsilon
+30: Type -> INT
+39: Exp -> NUM
+16: Statement -> TypeAnnotation Type ID ASSIGN Exp SC
+12: Statements -> Statement
+37: Exp -> ID
+28: ExpList -> Exp
+26: Call -> ID LPAREN ExpList RPAREN
+38: Exp -> Call
+28: ExpList -> Exp
+26: Call -> ID LPAREN ExpList RPAREN
+18: Statement -> Call SC
+13: Statements -> Statements Statement
+14: Statement -> LBRACE Statements RBRACE
+line 18: syntax error

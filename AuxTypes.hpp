@@ -60,4 +60,14 @@ struct FunctionType{
 	ExpType return_type;
 	std::shared_ptr<std::vector<Parameter>> parameters;
 };
+
+struct NumericExp{
+	NumericExp(ExpType type);
+
+	ExpType type;
+	std::string reg;
+
+	static const std::string REG_NOT_ASSIGNED;
+	bool isRegisterAssigned() const;
+};
 #endif

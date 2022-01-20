@@ -114,6 +114,7 @@
 	int number_literal;
 	
 	//parser metadata fields:
+	NumericExp* numeric_exp;
 	ExpType exp_type;
 	vector<ExpType>* exp_type_list;
 	vector<Parameter>* formals_list;
@@ -143,7 +144,7 @@
 %right IF
 %token ELSE
 
-%type <exp_type> Exp RetType Type Call
+%type <exp_type> Exp BoolExp RetType Type Call
 %type <exp_type_list> ExpList
 %type <formals_list> Formals FormalsList
 %type <line_number> LineCapture
@@ -220,17 +221,21 @@ Exp:				LPAREN Exp RPAREN {$$ = $2;}//35
 						checkByteTooLarge($1);
 					}//40
 					| STRING {$$ = STRING_EXP;}//41
-					| TRUE {$$ = BOOL_EXP;}//42
-					| FALSE {$$ = BOOL_EXP;}//43
-					| NOT Exp {checkMismatch($2, BOOL_EXP); $$ = BOOL_EXP;}//44
 					| Exp BINOP Exp {checkNumeralType($1); checkNumeralType($3); $$ = maxNumeralType($1, $3);}//36
-					| Exp AND Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}//45
-					| Exp OR Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}//46
-					| Exp RELOP Exp {check(isNumeralType($1) && isNumeralType($3), output::errorMismatch(yylineno)); $$ = BOOL_EXP;}//47
 					| LPAREN Type RPAREN Exp {
 						check(canExplicitCast($4, $2), output::errorMismatch(yylineno));
 						$$ = $2;
 					}
+					| BoolExp
+					;
+
+
+BoolExp: 			Exp AND Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}
+					| Exp OR Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}
+					| Exp RELOP Exp {check(isNumeralType($1) && isNumeralType($3), output::errorMismatch(yylineno)); $$ = BOOL_EXP;}//47s
+					| NOT Exp {checkMismatch($2, BOOL_EXP); $$ = BOOL_EXP;}
+					| TRUE {$$ = BOOL_EXP;}
+					| FALSE {$$ = BOOL_EXP;}
 					;
 
 Statement:			OpenStatment

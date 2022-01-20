@@ -99,6 +99,7 @@ union YYSTYPE
 	int number_literal;
 	
 	//parser metadata fields:
+	NumericExp* numeric_exp;
 	ExpType exp_type;
 	vector<ExpType>* exp_type_list;
 	vector<Parameter>* formals_list;
@@ -107,7 +108,7 @@ union YYSTYPE
 	bool is_const;
 	DecInfo dec_info;
 
-#line 111 "parser.tab.hpp"
+#line 112 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
