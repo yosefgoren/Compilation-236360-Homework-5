@@ -1,4 +1,6 @@
 #include "bp.hpp"
+#include "AuxTypes.hpp"
+#include "assert.h"
 #include <vector>
 #include <iostream>
 #include <sstream>
@@ -86,3 +88,67 @@ bool replace(string& str, const string& from, const string& to, const BranchLabe
     return true;
 }
 
+void CodeBuffer::emitLibFuncs(){
+	emitGlobal("declare i32 @printf(i8*, ...)");
+	emitGlobal("declare void @exit(i32)");
+	emitGlobal("@.int_specifier = constant [4 x i8] c\"%d\\0A\\00\"");
+	emitGlobal("@.str_specifier = constant [4 x i8] c\"%s\\0A\\00\"");
+	emitGlobal("define void @printi(i32) {");
+	emitGlobal("    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0");
+	emitGlobal("    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)");
+	emitGlobal("    ret void");
+	emitGlobal("}");
+	emitGlobal("define void @print(i8*) {");
+	emitGlobal("    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0");
+	emitGlobal("    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)");
+	emitGlobal("    ret void");
+	emitGlobal("}");	
+}
+
+void CodeBuffer::emitRegDecl(const string& lvalue_id, const string& rvalue_exp){
+	emit(lvalue_id + " = " + rvalue_exp);
+}
+
+string CodeBuffer::getFreshReg(){
+	return "%"+to_string(reg_count++);
+}
+
+string CodeBuffer::IrType(ExpType type){
+	switch(type){
+	case INT_EXP:
+		return "i32";
+	case BOOL_EXP:
+		return "i1";
+	case BYTE_EXP:
+		return "i8";
+	case STRING_EXP:
+		return "i8*";
+	case VOID_EXP:
+		return "void";
+	}
+}
+
+string CodeBuffer::literalRvalFormat(int value, ExpType type){
+	assert(type == INT_EXP || type == BYTE_EXP);
+	return "add "+IrType(type)+" 0, "+to_string(value);
+}
+
+string CodeBuffer::binopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Binop binop){
+	assert(type == INT_EXP || type == BYTE_EXP);
+
+	string ir_binop;
+	switch(binop){
+	case PLUS:
+		ir_binop = "add";
+		break;
+	case MINUS:
+		ir_binop = "sub";
+		break;
+	case MULT:
+		ir_binop = "mul";
+		break;
+	case DIV:
+		ir_binop = (type == BYTE_EXP ? "udiv" : "idiv");
+	}
+	return ir_binop+" "+IrType(type)+" "+first_reg+", "+second_reg;
+}	

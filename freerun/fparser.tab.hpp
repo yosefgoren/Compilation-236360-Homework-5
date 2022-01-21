@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PARSER_TAB_HPP_INCLUDED
-# define YY_YY_PARSER_TAB_HPP_INCLUDED
+#ifndef YY_YY_FPARSER_TAB_HPP_INCLUDED
+# define YY_YY_FPARSER_TAB_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -44,6 +44,13 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 25 "fparser.ypp"
+
+	#include <string>
+	struct CondInfo;
+
+#line 54 "fparser.tab.hpp"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -54,35 +61,15 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    INT = 258,                     /* INT  */
-    VOID = 259,                    /* VOID  */
-    BYTE = 260,                    /* BYTE  */
-    B = 261,                       /* B  */
-    BOOL = 262,                    /* BOOL  */
-    CONST = 263,                   /* CONST  */
-    TRUE = 264,                    /* TRUE  */
-    FALSE = 265,                   /* FALSE  */
-    RETURN = 266,                  /* RETURN  */
-    WHILE = 267,                   /* WHILE  */
-    BREAK = 268,                   /* BREAK  */
-    CONTINUE = 269,                /* CONTINUE  */
-    SC = 270,                      /* SC  */
-    STRING = 271,                  /* STRING  */
-    COMMA = 272,                   /* COMMA  */
-    ID = 273,                      /* ID  */
-    NUM = 274,                     /* NUM  */
-    ASSIGN = 275,                  /* ASSIGN  */
-    OR = 276,                      /* OR  */
-    AND = 277,                     /* AND  */
-    RELOP = 278,                   /* RELOP  */
-    BINOP = 279,                   /* BINOP  */
-    NOT = 280,                     /* NOT  */
-    LPAREN = 281,                  /* LPAREN  */
-    RPAREN = 282,                  /* RPAREN  */
-    LBRACE = 283,                  /* LBRACE  */
-    RBRACE = 284,                  /* RBRACE  */
-    IF = 285,                      /* IF  */
-    ELSE = 286                     /* ELSE  */
+    NUMBER = 258,                  /* NUMBER  */
+    LPAREN = 259,                  /* LPAREN  */
+    RPAREN = 260,                  /* RPAREN  */
+    TRUE = 261,                    /* TRUE  */
+    FALSE = 262,                   /* FALSE  */
+    ADDITION = 263,                /* ADDITION  */
+    OR = 264,                      /* OR  */
+    AND = 265,                     /* AND  */
+    NOT = 266                      /* NOT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -91,26 +78,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 115 "parser.ypp"
+#line 30 "fparser.ypp"
 
-	//lexer proivided fields:
-	string* id;
-	string* string_literal;
-	int number_literal;
-	
-	//parser metadata fields:
-	NumericExp* numeric_exp;
-	Expression* expression;
-	ExpType exp_type;
-	vector<Expression*>* exp_list;
-	vector<Parameter>* formals_list;
-	Parameter* formal;
-	int line_number;
-	bool is_const;
-	DecInfo dec_info;
-	Binop binop;
+	std::string* num;
+	std::string* reg_name;
+	std::string* label;
+	CondInfo* cond;
 
-#line 114 "parser.tab.hpp"
+#line 89 "fparser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -123,4 +98,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_PARSER_TAB_HPP_INCLUDED  */
+#endif /* !YY_YY_FPARSER_TAB_HPP_INCLUDED  */

@@ -5,7 +5,9 @@
 using namespace std;
 
 void output::endScope(){
+	#ifdef OLDT
     cout << "---end scope---" << endl;
+	#endif
 }
 
 void output::printID(const string& id, int offset, const string& type) {

@@ -1,4 +1,7 @@
 #include "AuxTypes.hpp"
+#include "bp.hpp"
+
+static CodeBuffer& cb = CodeBuffer::instance();
 
 std::string ExpTypeString(ExpType type, bool capital_letters){
 	switch (type)
@@ -24,37 +27,43 @@ std::vector<std::string> ExpTypeStringVector(std::vector<ExpType> types, bool ca
 	return result;
 }
 
-Expression::Expression(ExpType type)
-	:type(type){};
-
-const std::string NumericExp::REG_NOT_ASSIGNED = "";
-
 Expression* Expression::generateExpByType(ExpType type){
-	switch (type)
-	{
+	switch (type){
 	case BOOL_EXP:
 		return new BoolExp();
-	case INT_EXP:
-	case BYTE_EXP:
-		return new NumericExp(type);
 	case STRING_EXP:
 		return new StrExp();
+	case VOID_EXP:
+		return new VoidExp();
+	case INT_EXP:
+	case BYTE_EXP:
+		#ifndef OLDT
+		throw NotImplementedError();
+		#endif
+		return new NumericExp(type, "NOT IMPLEMENTED");
 	}
 }
 
-NumericExp::NumericExp(ExpType type)
-	:Expression(type), reg(REG_NOT_ASSIGNED){}
+Expression::Expression(ExpType type)
+	:type(type){};
 
-bool NumericExp::isRegisterAssigned() const{
-	return reg != REG_NOT_ASSIGNED;
+
+RegStoredExp::RegStoredExp(ExpType type, const string& rvalue_exp)
+	:Expression(type), reg(cb.getFreshReg()){
+	cb.emitRegDecl(reg, rvalue_exp);
 }
+
+NumericExp::NumericExp(ExpType type, const string& rvalue_exp)
+	:RegStoredExp(type, rvalue_exp){}
 
 // Expression* cloneCast(ExpType type){
 	
 // }
 
 BoolExp::BoolExp()
-	:Expression(BOOL_EXP){};
+	:Expression(BOOL_EXP){
+		
+	};
 
 // Expression* BoolExp::cloneCast(ExpType type){
 // 	if(type != BOOL_EXP){
@@ -72,3 +81,6 @@ StrExp::StrExp()
 // 	}
 // 	return new StrExp();
 // }
+
+VoidExp::VoidExp()
+	:Expression(VOID_EXP){};

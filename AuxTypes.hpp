@@ -5,18 +5,27 @@
 #include <string>
 #include <memory>
 #include <algorithm>
+#include <map>
 
 enum ExpType{
 	INT_EXP,
 	BOOL_EXP,
 	BYTE_EXP,
-
 	STRING_EXP,
 	VOID_EXP
 };
 
+enum Binop{
+	PLUS,
+	MINUS,
+	MULT,
+	DIV
+};
+
 std::string ExpTypeString(ExpType type, bool capital_letters = false);
 std::vector<std::string> ExpTypeStringVector(std::vector<ExpType> types, bool capital_letters = false);
+
+class NotImplementedError: public std::exception{};
 
 struct Parameter{
 	Parameter(const std::string& id, ExpType type, int line_of_origin, bool is_const)
@@ -63,6 +72,7 @@ struct FunctionType{
 
 struct Expression{
 	Expression(ExpType type);
+	virtual ~Expression() = default;
 	ExpType type;
 
 	static Expression* generateExpByType(ExpType type);
@@ -71,19 +81,16 @@ struct Expression{
 	class InvalidCastException: public std::exception{};
 };
 
-struct NumericExp: public Expression{
-	NumericExp(ExpType type);
-
+struct RegStoredExp: public Expression{
+	RegStoredExp(ExpType type, const std::string& rvalue_exp);
 	std::string reg;
 
 	static const std::string REG_NOT_ASSIGNED;
-	bool isRegisterAssigned() const;
-	
-	//virtual Expression* cloneCast(ExpType type) override;
 };
 
-struct BoolExp: public Expression{
-	BoolExp();
+struct NumericExp: public RegStoredExp{
+	NumericExp(ExpType type, const std::string& rvalue_exp);
+
 	//virtual Expression* cloneCast(ExpType type) override;
 };
 
@@ -92,4 +99,17 @@ struct StrExp: public Expression{
 
 	//virtual Expression* cloneCast(ExpType type) override;
 };
+
+struct BoolExp: public Expression{
+	BoolExp();
+	//virtual Expression* cloneCast(ExpType type) override;
+};
+
+struct VoidExp: public Expression{
+	VoidExp();
+
+	//virtual Expression* cloneCast(ExpType type) override;
+};
+
+
 #endif

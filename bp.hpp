@@ -3,12 +3,15 @@
 
 #include <vector>
 #include <string>
+#include "AuxTypes.hpp"
 
 using namespace std;
 
 //this enum is used to distinguish between the two possible missing labels of a conditional branch in LLVM during backpatching.
 //for an unconditional branch (which contains only a single label) use FIRST.
 enum BranchLabelIndex {FIRST, SECOND};
+
+typedef pair<int, BranchLabelIndex> Backpatch;
 
 class CodeBuffer{
 	CodeBuffer();
@@ -58,6 +61,17 @@ public:
 	//print the content of the global buffer to stdout
 	void printGlobalBuffer();
 
+	// ******** Methods to produce LLVM IR ******** //
+	void emitLibFuncs();
+	void emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
+
+	string getFreshReg();
+
+	string IrType(ExpType type);
+	string binopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Binop binop);
+	string literalRvalFormat(int value, ExpType type);
+private:
+	int reg_count = 1;
 };
 
 #endif

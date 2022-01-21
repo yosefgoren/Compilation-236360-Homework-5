@@ -1,0 +1,153 @@
+%{
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include "../bp.hpp"
+
+	int yylex();
+	int yyerror(const char* err){
+		printf("error: %s\n", err);
+		exit(1);
+	}
+
+	extern int yylineno;
+	CodeBuffer& cb = CodeBuffer::instance();
+	string freshVar(){
+		static int varnum = 1;
+		return "%" + std::to_string(varnum++);
+	}
+
+	struct CondInfo{
+		vector<Backpatch> truelist;
+		vector<Backpatch> falselist;
+	};
+%}
+
+%code requires{
+	#include <string>
+	struct CondInfo;
+}
+
+%union{
+	std::string* num;
+	std::string* reg_name;
+	std::string* label;
+	CondInfo* cond;
+}
+
+%type <reg_name> Exp
+%type <cond> Cond
+%type <label> Label
+%token <num> NUMBER
+%token LPAREN RPAREN TRUE FALSE
+%left ADDITION OR AND NOT
+
+%%
+Program:	{
+				cb.emit("define i32 @main(){");
+			}
+			Cond
+			{
+				
+				cb.bpatch($2->truelist, "truelist");
+				cb.bpatch($2->falselist, "falselist");
+				
+				cb.emit("truelist:");
+				cb.emit("\t%true = add i32 0, 1");
+				cb.emit("\tcall void(i32) @printi(i32 %true)");
+				cb.emit("\tbr label %finish");
+				cb.emit("falselist:");
+				cb.emit("\t%false = add i32 0, 0");
+			cb.emit("\tcall void(i32) @printi(i32 %false)");
+				cb.emit("\tbr label %finish");
+				cb.emit("finish:");
+				cb.emit("\tret i32 0");
+				cb.emit("}");
+				delete $2;
+
+				//cb.emit("\tcall void(i32) @printi(i32 "+*$2+")");
+			}
+			;
+
+Cond:		TRUE {
+				int position = cb.emit("\tbr label @");
+				Backpatch bp_details(position, FIRST);
+				$$ = new CondInfo();
+				$$->truelist = CodeBuffer::makelist(bp_details);
+			}
+			| FALSE {
+				int position = cb.emit("\tbr label @");
+				Backpatch bp_details(position, FIRST);
+				$$ = new CondInfo();
+				$$->falselist = CodeBuffer::makelist(bp_details);
+			}
+			| Cond OR Label Cond {
+				cb.bpatch($1->falselist, *$3);
+				delete $3;
+				$$ = new CondInfo();
+				$$->truelist = cb.merge($4->truelist, $1->truelist);
+				$$->falselist = $4->falselist;
+				delete $1;
+				delete $4;
+			}
+			| Cond AND Label Cond {
+				cb.bpatch($1->truelist, *$3);
+				delete $3;
+				$$ = new CondInfo();
+				$$->falselist = cb.merge($4->falselist, $1->falselist);
+				$$->truelist = $4->truelist;
+				delete $1;
+				delete $4;
+			}
+			| NOT Cond {
+				$$ = $2;
+				auto tmp = $$->truelist;
+				$$->truelist = $$->falselist;
+				$$->falselist = tmp;
+			}
+			;
+
+Label:		{$$ = new string(cb.genLabel());}
+			;
+
+Exp:		NUMBER {
+				std::string* reg = new std::string(freshVar());
+				cb.emit("\t"+*reg+" = add i32 0, "+*$1);
+				delete $1;
+				$$ = reg;
+			}
+			| Exp ADDITION Exp {
+				std::string* reg = new std::string(freshVar());
+				cb.emit("\t"+*reg+" = add i32 "+*$1+", "+*$3);
+				delete $1;
+				delete $3;
+				$$ = reg;
+			}
+			| LPAREN Exp RPAREN {$$ = $2;}
+			;
+%%
+
+void emitPrintFucns(){
+	cb.emitGlobal("declare i32 @printf(i8*, ...)");
+	cb.emitGlobal("declare void @exit(i32)");
+	cb.emitGlobal("@.int_specifier = constant [4 x i8] c\"%d\\0A\\00\"");
+	cb.emitGlobal("@.str_specifier = constant [4 x i8] c\"%s\\0A\\00\"");
+	cb.emitGlobal("define void @printi(i32) {");
+	cb.emitGlobal("    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0");
+	cb.emitGlobal("    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)");
+	cb.emitGlobal("    ret void");
+	cb.emitGlobal("}");
+	cb.emitGlobal("define void @print(i8*) {");
+	cb.emitGlobal("    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0");
+	cb.emitGlobal("    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)");
+	cb.emitGlobal("    ret void");
+	cb.emitGlobal("}");	
+}
+
+int main(){
+	emitPrintFucns();
+	yyparse();
+	//printf("parse is not happy! vars from yesterday ?!\n");
+	cb.printGlobalBuffer();
+	cb.printCodeBuffer();
+	return 0;
+}
