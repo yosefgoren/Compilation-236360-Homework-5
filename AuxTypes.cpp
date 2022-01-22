@@ -61,9 +61,10 @@ NumericExp::NumericExp(ExpType type, const string& rvalue_exp)
 // }
 
 BoolExp::BoolExp()
-	:Expression(BOOL_EXP){
-		
-	};
+	:Expression(BOOL_EXP){};
+
+BoolExp::BoolExp(std::vector<Backpatch> truelist, std::vector<Backpatch> falselist)
+	:Expression(BOOL_EXP), truelist(truelist), falselist(falselist){}
 
 // Expression* BoolExp::cloneCast(ExpType type){
 // 	if(type != BOOL_EXP){

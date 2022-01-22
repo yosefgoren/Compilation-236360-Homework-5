@@ -117,6 +117,7 @@ struct StrExp: public Expression{
 
 struct BoolExp: public Expression{
 	BoolExp();
+	BoolExp(std::vector<Backpatch> truelist, std::vector<Backpatch> falselist);
 	//virtual Expression* cloneCast(ExpType type) override;
 	std::vector<Backpatch> truelist;
 	std::vector<Backpatch> falselist;

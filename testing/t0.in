@@ -1,3 +1,4 @@
 void main(){
 	bool b1 = ((1b < 0b) or false);
+	bool b2 = b1;
 }

@@ -1507,7 +1507,7 @@ yyreduce:
 #line 229 "parser.ypp"
                                              {
 						check(symtab.rvalValidId(*(yyvsp[0].id)), output::errorUndef(yylineno, *(yyvsp[0].id)));
-						(yyval.expression) = Expression::generateExpByType(symtab.getVariableType(*(yyvsp[0].id)));//TODO
+						(yyval.expression) = cb.emitLoadVar(*(yyvsp[0].id));
 						delete (yyvsp[0].id);
 					}
 #line 1514 "parser.tab.cpp"

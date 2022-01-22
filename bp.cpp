@@ -115,13 +115,24 @@ void CodeBuffer::emitStoreVar(const string& id, Expression* exp_to_assign){
 	ExpType type = exp_to_assign->type;
 	assert(type != STRING_EXP && type != VOID_EXP);
 
-
 	string res_reg;
 	if(type == BOOL_EXP){
-		res_reg = "...?";
-		throw NotImplementedError();
-		//TODO: complete this s.t. the truelist will jump to 
-		//	something that puts 1 in there, and falselist 0 (both extented to 32 bits)
+		BoolExp* bool_exp = dynamic_cast<BoolExp*>(exp_to_assign);
+		assert(bool_exp);
+
+		string true_label = genLabel();
+		bpatch(bool_exp->truelist, true_label);
+		int true_jump_addr = emit("br label @");
+		
+		string false_label = genLabel();
+		bpatch(bool_exp->falselist, false_label);
+		int false_jump_addr = emit("br label @");
+		
+		string bool_reg_label = genLabel();
+		bpatch(makelist(Backpatch(true_jump_addr, FIRST)), bool_reg_label);
+		bpatch(makelist(Backpatch(false_jump_addr, FIRST)), bool_reg_label);
+		res_reg = getFreshReg();
+		emitRegDecl(res_reg, "phi i32 [1, %"+true_label+"], [0, %"+false_label+"]");
 	} else {
 		NumericExp* numeric_exp = dynamic_cast<NumericExp*>(exp_to_assign);
 		res_reg = type == INT_EXP
@@ -130,13 +141,48 @@ void CodeBuffer::emitStoreVar(const string& id, Expression* exp_to_assign){
 	}
 	emitStoreVarBasic(id, res_reg);
 }
+
 void CodeBuffer::emitStoreVar(const string& id, int immidiate){
 	emitStoreVarBasic(id, to_string(immidiate));
 }
 
-string CodeBuffer::emitLoadVar(const string& id){
+Expression* CodeBuffer::emitLoadVar(const string& id){
+	assert(symtab.rvalValidId(id));
+	int offset = symtab.getVariableOffset(id);
+	string raw_value_reg = getFreshReg();
+	emit(raw_value_reg+" load i32, [50 x i32]* %sp, i32 0, i32 "+to_string(offset));
 
+	ExpType type = symtab.getVariableType(id);
+	//these declerations only matter in the case of a boolean, but must be initialized outside of switch.
+	string truncated_value_reg, bool_value_reg, true_jump_label, false_jump_label;
+	int initial_branch_adderess, truelist_jump_address, falselist_jump_address;
+	switch(type){
+	case INT_EXP:
+		return new NumericExp(INT_EXP, raw_value_reg);
+	case BYTE_EXP:
+		truncated_value_reg = getFreshReg();
+		emitRegDecl(truncated_value_reg, "trunc i32 "+raw_value_reg+" to i8");
+		return new NumericExp(BYTE_EXP, truncated_value_reg);
+	case BOOL_EXP:
+		bool_value_reg = getFreshReg();
+		emitRegDecl(bool_value_reg, "trunc i32 "+raw_value_reg+" to i1");
+		initial_branch_adderess = emit("br i1 "+bool_value_reg+", label @, label @");
+		
+		true_jump_label = genLabel();
+		bpatch(makelist(Backpatch(initial_branch_adderess, FIRST)), true_jump_label);
+		truelist_jump_address = emit("br label @");
+
+		false_jump_label = genLabel();
+		bpatch(makelist(Backpatch(initial_branch_adderess, SECOND)), false_jump_label);
+		falselist_jump_address = emit("br label @");
+		
+		return new BoolExp(makelist(Backpatch(truelist_jump_address, FIRST)),
+			makelist(Backpatch(falselist_jump_address, FIRST)));
+	}
+	assert(false);
+	return nullptr;
 }
+
 void CodeBuffer::emitStoreVarBasic(const string& id, const string& immidiate_or_reg){
 	int offset = symtab.getVariableOffset(id);
 	string ptr = createPtrToStackVar(offset);

@@ -228,7 +228,7 @@ Exp:				LPAREN Exp RPAREN {$$ = $2;}
 					| Call {$$ = $1;}
 					| ID {
 						check(symtab.rvalValidId(*$1), output::errorUndef(yylineno, *$1));
-						$$ = Expression::generateExpByType(symtab.getVariableType(*$1));//TODO
+						$$ = cb.emitLoadVar(*$1);
 						delete $1;
 					}
 					| STRING {$$ = new StrExp();}
