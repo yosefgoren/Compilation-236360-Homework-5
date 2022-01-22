@@ -102,15 +102,17 @@ union YYSTYPE
 	NumericExp* numeric_exp;
 	Expression* expression;
 	ExpType exp_type;
-	vector<Expression*>* exp_list;
-	vector<Parameter>* formals_list;
-	Parameter* formal;
+	std::vector<Expression*>* exp_list;
+	std::vector<Parameter>* formals_list;
+	std::string* label;
 	int line_number;
 	bool is_const;
+	Parameter* formal;
 	DecInfo dec_info;
 	Binop binop;
+	Relop relop;
 
-#line 114 "parser.tab.hpp"
+#line 116 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -1,10 +1,12 @@
 #include "bp.hpp"
 #include "AuxTypes.hpp"
+#include "Symtab.hpp"
 #include "assert.h"
 #include <vector>
 #include <iostream>
 #include <sstream>
 using namespace std;
+extern SimpleSymtab symtab;
 
 bool replace(string& str, const string& from, const string& to, const BranchLabelIndex index);
 
@@ -45,16 +47,15 @@ void CodeBuffer::printCodeBuffer(){
     }
 }
 
-vector<pair<int,BranchLabelIndex>> CodeBuffer::makelist(pair<int,BranchLabelIndex> item)
+vector<Backpatch> CodeBuffer::makelist(Backpatch item)
 {
-	vector<pair<int,BranchLabelIndex>> newList;
+	vector<Backpatch> newList;
 	newList.push_back(item);
 	return newList;
 }
 
-vector<pair<int,BranchLabelIndex>> CodeBuffer::merge(const vector<pair<int,BranchLabelIndex>> &l1,const vector<pair<int,BranchLabelIndex>> &l2)
-{
-	vector<pair<int,BranchLabelIndex>> newList(l1.begin(),l1.end());
+vector<Backpatch> CodeBuffer::merge(const vector<Backpatch> &l1,const vector<Backpatch> &l2){
+	vector<Backpatch> newList(l1.begin(),l1.end());
 	newList.insert(newList.end(),l2.begin(),l2.end());
 	return newList;
 }
@@ -105,8 +106,47 @@ void CodeBuffer::emitLibFuncs(){
 	emitGlobal("}");	
 }
 
-void CodeBuffer::emitRegDecl(const string& lvalue_id, const string& rvalue_exp){
+string CodeBuffer::emitRegDecl(const string& lvalue_id, const string& rvalue_exp){
 	emit(lvalue_id + " = " + rvalue_exp);
+	return lvalue_id;
+}
+
+void CodeBuffer::emitStoreVar(const string& id, Expression* exp_to_assign){
+	ExpType type = exp_to_assign->type;
+	assert(type != STRING_EXP && type != VOID_EXP);
+
+
+	string res_reg;
+	if(type == BOOL_EXP){
+		res_reg = "...?";
+		throw NotImplementedError();
+		//TODO: complete this s.t. the truelist will jump to 
+		//	something that puts 1 in there, and falselist 0 (both extented to 32 bits)
+	} else {
+		NumericExp* numeric_exp = dynamic_cast<NumericExp*>(exp_to_assign);
+		res_reg = type == INT_EXP
+			? numeric_exp->reg
+			: emitRegDecl(getFreshReg(), "zext i8 "+numeric_exp->reg + " to i32");	
+	}
+	emitStoreVarBasic(id, res_reg);
+}
+void CodeBuffer::emitStoreVar(const string& id, int immidiate){
+	emitStoreVarBasic(id, to_string(immidiate));
+}
+
+string CodeBuffer::emitLoadVar(const string& id){
+
+}
+void CodeBuffer::emitStoreVarBasic(const string& id, const string& immidiate_or_reg){
+	int offset = symtab.getVariableOffset(id);
+	string ptr = createPtrToStackVar(offset);
+	emit("store i32 "+immidiate_or_reg+", i32* "+ptr);
+}
+
+string CodeBuffer::createPtrToStackVar(int offset){
+	std::string ptr_reg = getFreshReg();
+	emitRegDecl(ptr_reg, "getelementptr i32, [50 x i32]* %sp, i32 0, i32 "+std::to_string(offset));
+	return ptr_reg;
 }
 
 string CodeBuffer::getFreshReg(){
@@ -152,3 +192,27 @@ string CodeBuffer::binopRvalFormat(const string& first_reg, const string& second
 	}
 	return ir_binop+" "+IrType(type)+" "+first_reg+", "+second_reg;
 }	
+
+std::string CodeBuffer::IrRelopType(Relop relop, ExpType type){
+	assert(type == INT_EXP || type == BYTE_EXP);
+	std::string prefix = type == INT_EXP ? "s" : "u";
+	switch(relop){
+	case EQUAL:
+		return "eq";
+	case NOT_EQUAL:
+		return "ne";
+	case LESS:
+		return prefix + "lt";
+	case GREATER:
+		return prefix + "gt";
+	case LESS_EQUAL:
+		return prefix + "le";
+	case GREATER_EQUAL:
+		return prefix + "ge";
+	}
+}
+
+std::string CodeBuffer::relopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Relop relop){
+	string op = IrRelopType(relop, type);
+	return "icmp " + op + " " + IrType(type) + " " + first_reg + ", " + second_reg;
+}

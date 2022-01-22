@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 25 "fparser.ypp"
+#line 26 "fparser.ypp"
 
 	#include <string>
 	struct CondInfo;
@@ -69,7 +69,8 @@ extern int yydebug;
     ADDITION = 263,                /* ADDITION  */
     OR = 264,                      /* OR  */
     AND = 265,                     /* AND  */
-    NOT = 266                      /* NOT  */
+    NOT = 266,                     /* NOT  */
+    LESS_THEN = 267                /* LESS_THEN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -78,14 +79,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 30 "fparser.ypp"
+#line 31 "fparser.ypp"
 
 	std::string* num;
 	std::string* reg_name;
 	std::string* label;
 	CondInfo* cond;
 
-#line 89 "fparser.tab.hpp"
+#line 90 "fparser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

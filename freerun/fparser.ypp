@@ -2,6 +2,7 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include "../bp.hpp"
+	#include "../AuxTypes.hpp"
 
 	int yylex();
 	int yyerror(const char* err){
@@ -39,7 +40,7 @@
 %type <label> Label
 %token <num> NUMBER
 %token LPAREN RPAREN TRUE FALSE
-%left ADDITION OR AND NOT
+%left ADDITION OR AND NOT LESS_THEN
 
 %%
 Program:	{
@@ -57,7 +58,7 @@ Program:	{
 				cb.emit("\tbr label %finish");
 				cb.emit("falselist:");
 				cb.emit("\t%false = add i32 0, 0");
-			cb.emit("\tcall void(i32) @printi(i32 %false)");
+				cb.emit("\tcall void(i32) @printi(i32 %false)");
 				cb.emit("\tbr label %finish");
 				cb.emit("finish:");
 				cb.emit("\tret i32 0");
@@ -103,6 +104,21 @@ Cond:		TRUE {
 				auto tmp = $$->truelist;
 				$$->truelist = $$->falselist;
 				$$->falselist = tmp;
+			}
+			| LPAREN Cond RPAREN {
+				$$ = $2;
+			}
+			| Exp LESS_THEN Exp {
+				std::string bool_reg = freshVar();
+				cb.emit(bool_reg+" = icmp slt i32 "+*$1+", "+*$3);
+				int br_address = cb.emit("br i1 "+bool_reg+", label @, label @");
+				Backpatch bp_true(br_address, FIRST);
+				Backpatch bp_false(br_address, SECOND);
+				$$ = new CondInfo();
+				$$->truelist = cb.makelist(bp_true);
+				$$->falselist = cb.makelist(bp_false);
+				delete $1;
+				delete $3;
 			}
 			;
 

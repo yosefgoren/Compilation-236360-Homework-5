@@ -7,12 +7,6 @@
 
 using namespace std;
 
-//this enum is used to distinguish between the two possible missing labels of a conditional branch in LLVM during backpatching.
-//for an unconditional branch (which contains only a single label) use FIRST.
-enum BranchLabelIndex {FIRST, SECOND};
-
-typedef pair<int, BranchLabelIndex> Backpatch;
-
 class CodeBuffer{
 	CodeBuffer();
 	CodeBuffer(CodeBuffer const&);
@@ -31,10 +25,10 @@ public:
 	int emit(const std::string &command);
 
 	//gets a pair<int,BranchLabelIndex> item of the form {buffer_location, branch_label_index} and creates a list for it
-	static vector<pair<int,BranchLabelIndex>> makelist(pair<int,BranchLabelIndex> item);
+	static vector<Backpatch> makelist(pair<int,BranchLabelIndex> item);
 
 	//merges two lists of {buffer_location, branch_label_index} items
-	static vector<pair<int,BranchLabelIndex>> merge(const vector<pair<int,BranchLabelIndex>> &l1,const vector<pair<int,BranchLabelIndex>> &l2);
+	static vector<Backpatch> merge(const vector<Backpatch> &l1,const vector<Backpatch> &l2);
 
 	/* accepts a list of {buffer_location, branch_label_index} items and a label.
 	For each {buffer_location, branch_label_index} item in address_list, backpatches the branch command 
@@ -50,7 +44,7 @@ public:
 	bpatch(makelist({loc2,SECOND}),"my_false_label"); - location loc2 in the buffer will now contain the command "br i1 %cond, label @, label %my_false_label"
 	bpatch(makelist({loc2,FIRST}),"my_true_label"); - location loc2 in the buffer will now contain the command "br i1 %cond, label @my_true_label, label %my_false_label"
 	*/
-	void bpatch(const vector<pair<int,BranchLabelIndex>>& address_list, const std::string &label);
+	void bpatch(const vector<Backpatch>& address_list, const std::string &label);
 	
 	//prints the content of the code buffer to stdout
 	void printCodeBuffer();
@@ -63,15 +57,21 @@ public:
 
 	// ******** Methods to produce LLVM IR ******** //
 	void emitLibFuncs();
-	void emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
-
+	string emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
+	void emitStoreVar(const string& id, Expression* exp_to_assign);
+	void emitStoreVar(const string& id, int immidiate);
+	string emitLoadVar(const string& id);
+	
+	string createPtrToStackVar(int offset);
 	string getFreshReg();
-
 	string IrType(ExpType type);
+	string IrRelopType(Relop rel_type, ExpType type);
+	string relopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Relop relop);
 	string binopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Binop binop);
 	string literalRvalFormat(int value, ExpType type);
 private:
 	int reg_count = 1;
+	void emitStoreVarBasic(const string& id, const string& immidiate_or_reg);
 };
 
 #endif

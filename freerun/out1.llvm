@@ -14,12 +14,12 @@ define void @print(i8*) {
     ret void
 }
 define i32 @main(){
-	br label %label_2
+	br label %truelist
 label_2:
 	br label %truelist
 truelist:
 	%true = add i32 0, 1
-	call void(i32) @printi(i32 %true)
+	call void(i32) @printi(%i32 %true)
 	br label %finish
 falselist:
 	%false = add i32 0, 0

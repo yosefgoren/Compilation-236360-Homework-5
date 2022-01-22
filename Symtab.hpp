@@ -23,6 +23,7 @@ public:
 	bool callableValidId(const std::string& id) const;
 	bool isConst(const std::string& id) const;
 	ExpType getVariableType(const std::string& id) const;
+	int getVariableOffset(const std::string& id) const;
 	ExpType getReturnType(const std::string& id) const;
 	/**
 	 * @param id - the identifier assigned to to the function; the function we want the type of.

@@ -7,7 +7,6 @@
 %option noyywrap
 %option yylineno
 
-real_operation		(==)|(!=)|(<)|(>)|(<=)|(>=)
 number				(0|[1-9][0-9]*)
 string				(\"([^\n\r\"\\]|\\[rnt\"\\])+\")
 comment				(\/\/[^\r\n]*((\r)|(\n)|(\r\n)))
@@ -39,7 +38,32 @@ continue						return CONTINUE;
 \{								return LBRACE;
 \}								return RBRACE;
 =								return ASSIGN;
-{real_operation}				return RELOP;
+
+(==)							{
+									yylval.relop = EQUAL;
+									return RELOP;
+								}
+(!=)							{
+									yylval.relop = NOT_EQUAL;
+									return RELOP;
+								}
+(<)								{
+									yylval.relop = LESS;
+									return RELOP;
+								}
+(>)								{
+									yylval.relop = GREATER;
+									return RELOP;
+								}
+(<=)							{
+									yylval.relop = LESS_EQUAL;
+									return RELOP;
+								}
+(>=)							{
+									yylval.relop = GREATER_EQUAL;
+									return RELOP;
+								}
+
 (\+)							{
 									yylval.binop = PLUS;
 									return BINOP;

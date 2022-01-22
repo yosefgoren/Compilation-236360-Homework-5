@@ -6,6 +6,7 @@
 #include <memory>
 #include <algorithm>
 #include <map>
+#include <utility>
 
 enum ExpType{
 	INT_EXP,
@@ -21,6 +22,20 @@ enum Binop{
 	MULT,
 	DIV
 };
+
+enum Relop{
+	EQUAL,
+	NOT_EQUAL,
+	LESS,
+	GREATER,
+	LESS_EQUAL,
+	GREATER_EQUAL
+};
+
+//this enum is used to distinguish between the two possible missing labels of a conditional branch in LLVM during backpatching.
+//for an unconditional branch (which contains only a single label) use FIRST.
+enum BranchLabelIndex {FIRST, SECOND};
+typedef std::pair<int, BranchLabelIndex> Backpatch;
 
 std::string ExpTypeString(ExpType type, bool capital_letters = false);
 std::vector<std::string> ExpTypeStringVector(std::vector<ExpType> types, bool capital_letters = false);
@@ -103,6 +118,8 @@ struct StrExp: public Expression{
 struct BoolExp: public Expression{
 	BoolExp();
 	//virtual Expression* cloneCast(ExpType type) override;
+	std::vector<Backpatch> truelist;
+	std::vector<Backpatch> falselist;
 };
 
 struct VoidExp: public Expression{

@@ -72,6 +72,7 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include "../bp.hpp"
+	#include "../AuxTypes.hpp"
 
 	int yylex();
 	int yyerror(const char* err){
@@ -91,7 +92,7 @@
 		vector<Backpatch> falselist;
 	};
 
-#line 95 "fparser.tab.cpp"
+#line 96 "fparser.tab.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -131,11 +132,13 @@ enum yysymbol_kind_t
   YYSYMBOL_OR = 9,                         /* OR  */
   YYSYMBOL_AND = 10,                       /* AND  */
   YYSYMBOL_NOT = 11,                       /* NOT  */
-  YYSYMBOL_YYACCEPT = 12,                  /* $accept  */
-  YYSYMBOL_Program = 13,                   /* Program  */
-  YYSYMBOL_14_1 = 14,                      /* $@1  */
-  YYSYMBOL_Cond = 15,                      /* Cond  */
-  YYSYMBOL_Label = 16                      /* Label  */
+  YYSYMBOL_LESS_THEN = 12,                 /* LESS_THEN  */
+  YYSYMBOL_YYACCEPT = 13,                  /* $accept  */
+  YYSYMBOL_Program = 14,                   /* Program  */
+  YYSYMBOL_15_1 = 15,                      /* $@1  */
+  YYSYMBOL_Cond = 16,                      /* Cond  */
+  YYSYMBOL_Label = 17,                     /* Label  */
+  YYSYMBOL_Exp = 18                        /* Exp  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -457,19 +460,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   10
+#define YYLAST   30
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  12
+#define YYNTOKENS  13
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  5
+#define YYNNTS  6
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  9
+#define YYNRULES  14
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  15
+#define YYNSTATES  28
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   266
+#define YYMAXUTOK   267
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -509,14 +512,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       5,     6,     7,     8,     9,    10,    11,    12
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    45,    45,    45,    71,    77,    83,    92,   101,   109
+       0,    46,    46,    46,    72,    78,    84,    93,   102,   108,
+     111,   125,   128,   134,   141
 };
 #endif
 
@@ -533,8 +537,8 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "NUMBER", "LPAREN",
-  "RPAREN", "TRUE", "FALSE", "ADDITION", "OR", "AND", "NOT", "$accept",
-  "Program", "$@1", "Cond", "Label", YY_NULLPTR
+  "RPAREN", "TRUE", "FALSE", "ADDITION", "OR", "AND", "NOT", "LESS_THEN",
+  "$accept", "Program", "$@1", "Cond", "Label", "Exp", YY_NULLPTR
 };
 
 static const char *
@@ -550,11 +554,11 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266
+     265,   266,   267
 };
 #endif
 
-#define YYPACT_NINF (-7)
+#define YYPACT_NINF (-6)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -568,8 +572,9 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -7,     1,    -4,    -7,    -7,    -7,    -4,    -1,    -7,    -7,
-      -7,    -4,    -4,    -7,    -7
+      -6,     2,    17,    -6,    -6,    17,    -6,    -6,    17,     5,
+      14,     0,    -4,    -6,    -6,    -6,    26,    26,    -6,    -6,
+      17,    17,    26,    -6,    -1,    -6,    -6,     8
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -577,20 +582,21 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     0,     1,     4,     5,     0,     3,     8,     9,
-       9,     0,     0,     6,     7
+       2,     0,     0,     1,    12,     0,     4,     5,     0,     3,
+       0,     0,     0,     8,    11,    11,     0,     0,     9,    14,
+       0,     0,     0,    13,    10,     6,     7,     0
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -7,    -7,    -7,    -6,     0
+      -6,    -6,    -6,    -2,    10,    -5
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     2,     7,    11
+       0,     1,     2,     9,    20,    10
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -598,34 +604,41 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       8,     3,     4,     5,     0,    13,    14,     6,     9,    10,
-      12
+      12,    19,     3,    11,    16,    18,    13,    16,    17,    14,
+      15,    23,    24,    19,    14,    15,    16,    27,    25,    26,
+       4,     5,    16,     6,     7,    21,    17,     0,     8,     4,
+      22
 };
 
 static const yytype_int8 yycheck[] =
 {
-       6,     0,     6,     7,    -1,    11,    12,    11,     9,    10,
-      10
+       5,     5,     0,     5,     8,     5,     8,     8,    12,     9,
+      10,    16,    17,     5,     9,    10,     8,    22,    20,    21,
+       3,     4,     8,     6,     7,    15,    12,    -1,    11,     3,
+       4
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    13,    14,     0,     6,     7,    11,    15,    15,     9,
-      10,    16,    16,    15,    15
+       0,    14,    15,     0,     3,     4,     6,     7,    11,    16,
+      18,    16,    18,    16,     9,    10,     8,    12,     5,     5,
+      17,    17,     4,    18,    18,    16,    16,    18
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    12,    14,    13,    15,    15,    15,    15,    15,    16
+       0,    13,    15,    14,    16,    16,    16,    16,    16,    16,
+      16,    17,    18,    18,    18
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     1,     1,     4,     4,     2,     0
+       0,     2,     0,     2,     1,     1,     4,     4,     2,     3,
+       3,     0,     1,     3,     3
 };
 
 
@@ -1093,15 +1106,15 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* $@1: %empty  */
-#line 45 "fparser.ypp"
+#line 46 "fparser.ypp"
                 {
 				cb.emit("define i32 @main(){");
 			}
-#line 1101 "fparser.tab.cpp"
+#line 1114 "fparser.tab.cpp"
     break;
 
   case 3: /* Program: $@1 Cond  */
-#line 49 "fparser.ypp"
+#line 50 "fparser.ypp"
                         {
 				
 				cb.bpatch((yyvsp[0].cond)->truelist, "truelist");
@@ -1113,7 +1126,7 @@ yyreduce:
 				cb.emit("\tbr label %finish");
 				cb.emit("falselist:");
 				cb.emit("\t%false = add i32 0, 0");
-			cb.emit("\tcall void(i32) @printi(i32 %false)");
+				cb.emit("\tcall void(i32) @printi(i32 %false)");
 				cb.emit("\tbr label %finish");
 				cb.emit("finish:");
 				cb.emit("\tret i32 0");
@@ -1122,33 +1135,33 @@ yyreduce:
 
 				//cb.emit("\tcall void(i32) @printi(i32 "+*$2+")");
 			}
-#line 1126 "fparser.tab.cpp"
+#line 1139 "fparser.tab.cpp"
     break;
 
   case 4: /* Cond: TRUE  */
-#line 71 "fparser.ypp"
+#line 72 "fparser.ypp"
                      {
 				int position = cb.emit("\tbr label @");
 				Backpatch bp_details(position, FIRST);
 				(yyval.cond) = new CondInfo();
 				(yyval.cond)->truelist = CodeBuffer::makelist(bp_details);
 			}
-#line 1137 "fparser.tab.cpp"
+#line 1150 "fparser.tab.cpp"
     break;
 
   case 5: /* Cond: FALSE  */
-#line 77 "fparser.ypp"
+#line 78 "fparser.ypp"
                                 {
 				int position = cb.emit("\tbr label @");
 				Backpatch bp_details(position, FIRST);
 				(yyval.cond) = new CondInfo();
 				(yyval.cond)->falselist = CodeBuffer::makelist(bp_details);
 			}
-#line 1148 "fparser.tab.cpp"
+#line 1161 "fparser.tab.cpp"
     break;
 
   case 6: /* Cond: Cond OR Label Cond  */
-#line 83 "fparser.ypp"
+#line 84 "fparser.ypp"
                                              {
 				cb.bpatch((yyvsp[-3].cond)->falselist, *(yyvsp[-1].label));
 				delete (yyvsp[-1].label);
@@ -1158,11 +1171,11 @@ yyreduce:
 				delete (yyvsp[-3].cond);
 				delete (yyvsp[0].cond);
 			}
-#line 1162 "fparser.tab.cpp"
+#line 1175 "fparser.tab.cpp"
     break;
 
   case 7: /* Cond: Cond AND Label Cond  */
-#line 92 "fparser.ypp"
+#line 93 "fparser.ypp"
                                               {
 				cb.bpatch((yyvsp[-3].cond)->truelist, *(yyvsp[-1].label));
 				delete (yyvsp[-1].label);
@@ -1172,28 +1185,82 @@ yyreduce:
 				delete (yyvsp[-3].cond);
 				delete (yyvsp[0].cond);
 			}
-#line 1176 "fparser.tab.cpp"
+#line 1189 "fparser.tab.cpp"
     break;
 
   case 8: /* Cond: NOT Cond  */
-#line 101 "fparser.ypp"
+#line 102 "fparser.ypp"
                                    {
 				(yyval.cond) = (yyvsp[0].cond);
 				auto tmp = (yyval.cond)->truelist;
 				(yyval.cond)->truelist = (yyval.cond)->falselist;
 				(yyval.cond)->falselist = tmp;
 			}
-#line 1187 "fparser.tab.cpp"
+#line 1200 "fparser.tab.cpp"
     break;
 
-  case 9: /* Label: %empty  */
-#line 109 "fparser.ypp"
+  case 9: /* Cond: LPAREN Cond RPAREN  */
+#line 108 "fparser.ypp"
+                                             {
+				(yyval.cond) = (yyvsp[-1].cond);
+			}
+#line 1208 "fparser.tab.cpp"
+    break;
+
+  case 10: /* Cond: Exp LESS_THEN Exp  */
+#line 111 "fparser.ypp"
+                                            {
+				std::string bool_reg = std::string(freshVar());
+				cb.emit(bool_reg+" = icmp slt i32 "+*(yyvsp[-2].reg_name)+", "+*(yyvsp[0].reg_name));
+				int br_address = cb.emit("br i1 "+bool_reg+", label @, label @");
+				Backpatch bp_true(br_address, FIRST);
+				Backpatch bp_false(br_address, SECOND);
+				(yyval.cond) = new CondInfo();
+				(yyval.cond)->truelist = cb.makelist(bp_true);
+				(yyval.cond)->falselist = cb.makelist(bp_false);
+				delete (yyvsp[-2].reg_name);
+				delete (yyvsp[0].reg_name);
+			}
+#line 1225 "fparser.tab.cpp"
+    break;
+
+  case 11: /* Label: %empty  */
+#line 125 "fparser.ypp"
                 {(yyval.label) = new string(cb.genLabel());}
-#line 1193 "fparser.tab.cpp"
+#line 1231 "fparser.tab.cpp"
+    break;
+
+  case 12: /* Exp: NUMBER  */
+#line 128 "fparser.ypp"
+                       {
+				std::string* reg = new std::string(freshVar());
+				cb.emit("\t"+*reg+" = add i32 0, "+*(yyvsp[0].num));
+				delete (yyvsp[0].num);
+				(yyval.reg_name) = reg;
+			}
+#line 1242 "fparser.tab.cpp"
+    break;
+
+  case 13: /* Exp: Exp ADDITION Exp  */
+#line 134 "fparser.ypp"
+                                           {
+				std::string* reg = new std::string(freshVar());
+				cb.emit("\t"+*reg+" = add i32 "+*(yyvsp[-2].reg_name)+", "+*(yyvsp[0].reg_name));
+				delete (yyvsp[-2].reg_name);
+				delete (yyvsp[0].reg_name);
+				(yyval.reg_name) = reg;
+			}
+#line 1254 "fparser.tab.cpp"
+    break;
+
+  case 14: /* Exp: LPAREN Exp RPAREN  */
+#line 141 "fparser.ypp"
+                                            {(yyval.reg_name) = (yyvsp[-1].reg_name);}
+#line 1260 "fparser.tab.cpp"
     break;
 
 
-#line 1197 "fparser.tab.cpp"
+#line 1264 "fparser.tab.cpp"
 
       default: break;
     }
@@ -1387,7 +1454,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 127 "fparser.ypp"
+#line 143 "fparser.ypp"
 
 
 void emitPrintFucns(){

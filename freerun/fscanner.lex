@@ -11,6 +11,7 @@
 						yylval.num = new std::string(yytext);
 						return NUMBER;
 					}
+\<					return LESS_THEN;
 \+					return ADDITION;
 \(					return LPAREN;
 \)					return RPAREN;

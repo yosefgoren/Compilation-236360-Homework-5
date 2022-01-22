@@ -101,11 +101,15 @@ ExpType SimpleSymtab::getVariableType(const string& id) const{
 	assert(variable_decls.count(id) == 1);
 	return variable_decls.at(id).type;
 }
+int SimpleSymtab::getVariableOffset(const std::string& id) const{
+	return variable_decls.at(id).offset;
+}
 
 ExpType SimpleSymtab::getReturnType(const string& id) const{
 	assert(callableValidId(id));
 	return function_decls.at(id).return_type;
 }
+
 FunctionType& SimpleSymtab::getFunctionType(const std::string& id){
 	assert(function_decls.count(id) == 1);
 	return function_decls[id];

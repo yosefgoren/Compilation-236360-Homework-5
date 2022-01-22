@@ -1,0 +1,53 @@
+@str = internal constant [14 x i8] c"hello, world\0A\00"
+
+declare i32 @printf(i8*, ...)
+declare i8* @llvm.stacksave()
+declare void @llvm.stackrestore(i8*)
+
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+
+define void @stackt(){
+	%fpt = alloca [50 x i32]
+	
+	%ptr0 = getelementptr [50 x i32], [50 x i32]* %fpt, i32 0, i32 0
+	store i32 0, i32* %ptr0
+
+	%ptr1 = getelementptr [50 x i32], [50 x i32]* %fpt, i32 0, i32 1
+	store i32 1, i32* %ptr1
+
+	
+	%var0 = load i32, i32* %ptr0
+	call void(i32) @printi(i32 %var0)
+	%var1 = load i32, i32* %ptr1
+	call void(i32) @printi(i32 %var1)
+	ret void
+}
+
+define void @foo(){
+	%sp = alloca i32
+	store i32 0, i32* %sp
+	ret void
+}
+
+define void @bar(){
+	%sp = alloca i32
+	store i32 0, i32* %sp
+	ret void
+}
+
+define i32 @main(){
+	%sp = alloca i32
+	
+	call void() @foo()
+	call void() @bar() 
+	%var = load i32, i32* %sp
+	call void(i32) @printi(i32 %var)
+	ret i32 99
+}

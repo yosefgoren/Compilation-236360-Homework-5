@@ -3,7 +3,7 @@
 all: clean
 	flex fscanner.lex
 	bison -Wcounterexamples -d fparser.ypp
-	g++ -std=c++17 -o free *.c *.cpp ../bp.cpp
+	g++ -std=c++17 -o free *.c *.cpp ../bp.cpp ../AuxTypes.cpp
 clean:
 	rm -f lex.yy.c
 	rm -f fparser.tab.*pp
