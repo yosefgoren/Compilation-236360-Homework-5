@@ -1,0 +1,233 @@
+Starting parse
+Entering state 0
+Stack now 0
+Reading a token
+Next token is token VOID ()
+Shifting token VOID ()
+Entering state 2
+Stack now 0 2
+Reducing stack by rule 13 (line 202):
+   $1 = token VOID ()
+-> $$ = nterm RetType ()
+Entering state 8
+Stack now 0 8
+Reading a token
+Next token is token ID ()
+Shifting token ID ()
+Entering state 12
+Stack now 0 8 12
+Reducing stack by rule 9 (line 190):
+-> $$ = nterm $@1 ()
+Entering state 13
+Stack now 0 8 12 13
+Reading a token
+Next token is token LPAREN ()
+Shifting token LPAREN ()
+Entering state 14
+Stack now 0 8 12 13 14
+Reading a token
+Next token is token RPAREN ()
+Reducing stack by rule 14 (line 204):
+-> $$ = nterm Formals ()
+Entering state 16
+Stack now 0 8 12 13 14 16
+Reducing stack by rule 10 (line 191):
+-> $$ = nterm $@2 ()
+Entering state 19
+Stack now 0 8 12 13 14 16 19
+Next token is token RPAREN ()
+Shifting token RPAREN ()
+Entering state 21
+Stack now 0 8 12 13 14 16 19 21
+Reading a token
+Next token is token LBRACE ()
+Shifting token LBRACE ()
+Entering state 23
+Stack now 0 8 12 13 14 16 19 21 23
+Reading a token
+Next token is token IF ()
+Shifting token IF ()
+Entering state 31
+Stack now 0 8 12 13 14 16 19 21 23 31
+Reading a token
+Next token is token LPAREN ()
+Shifting token LPAREN ()
+Entering state 62
+Stack now 0 8 12 13 14 16 19 21 23 31 62
+Reducing stack by rule 40 (line 276):
+-> $$ = nterm Label ()
+Entering state 88
+Stack now 0 8 12 13 14 16 19 21 23 31 62 88
+Reading a token
+Next token is token TRUE ()
+Shifting token TRUE ()
+Entering state 44
+Stack now 0 8 12 13 14 16 19 21 23 31 62 88 44
+Reducing stack by rule 45 (line 344):
+   $1 = token TRUE ()
+-> $$ = nterm BoolExp ()
+Entering state 54
+Stack now 0 8 12 13 14 16 19 21 23 31 62 88 54
+Reducing stack by rule 36 (line 254):
+   $1 = nterm BoolExp ()
+-> $$ = nterm Exp ()
+Entering state 106
+Stack now 0 8 12 13 14 16 19 21 23 31 62 88 106
+Reading a token
+Next token is token RPAREN ()
+Reducing stack by rule 55 (line 398):
+-> $$ = nterm $@3 ()
+Entering state 117
+Stack now 0 8 12 13 14 16 19 21 23 31 62 88 106 117
+Next token is token RPAREN ()
+Shifting token RPAREN ()
+Entering state 123
+Stack now 0 8 12 13 14 16 19 21 23 31 62 88 106 117 123
+Reducing stack by rule 56 (line 398):
+   $1 = token IF ()
+   $2 = token LPAREN ()
+   $3 = nterm Label ()
+   $4 = nterm Exp ()
+   $5 = nterm $@3 ()
+   $6 = token RPAREN ()
+-> $$ = nterm IfStart ()
+Entering state 39
+Stack now 0 8 12 13 14 16 19 21 23 39
+Reducing stack by rule 2 (line 177):
+-> $$ = nterm OpenScope ()
+Entering state 67
+Stack now 0 8 12 13 14 16 19 21 23 39 67
+Reducing stack by rule 40 (line 276):
+-> $$ = nterm Label ()
+Entering state 91
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91
+Reading a token
+Next token is token LBRACE ()
+Shifting token LBRACE ()
+Entering state 30
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30
+Reducing stack by rule 2 (line 177):
+-> $$ = nterm OpenScope ()
+Entering state 61
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61
+Reading a token
+Next token is token INT ()
+Reducing stack by rule 29 (line 238):
+-> $$ = nterm TypeAnnotation ()
+Entering state 35
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 35
+Next token is token INT ()
+Shifting token INT ()
+Entering state 1
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 35 1
+Reducing stack by rule 25 (line 233):
+   $1 = token INT ()
+-> $$ = nterm Type ()
+Entering state 66
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 35 66
+Reading a token
+Next token is token ID ()
+Shifting token ID ()
+Entering state 90
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 35 66 90
+Reducing stack by rule 70 (line 453):
+   $1 = nterm TypeAnnotation ()
+   $2 = nterm Type ()
+   $3 = token ID ()
+-> $$ = nterm VarDecStart ()
+Entering state 42
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 42
+Reading a token
+Next token is token ASSIGN ()
+Shifting token ASSIGN ()
+Entering state 70
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 42 70
+Reading a token
+Next token is token NUM ()
+Shifting token NUM ()
+Entering state 48
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 42 70 48
+Reading a token
+Next token is token SC ()
+Reducing stack by rule 38 (line 270):
+   $1 = token NUM ()
+-> $$ = nterm NumericExp ()
+Entering state 53
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 42 70 53
+Reducing stack by rule 35 (line 253):
+   $1 = nterm NumericExp ()
+-> $$ = nterm Exp ()
+Entering state 93
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 42 70 93
+Next token is token SC ()
+Shifting token SC ()
+Entering state 110
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 42 70 93 110
+Reducing stack by rule 61 (line 415):
+   $1 = nterm VarDecStart ()
+   $2 = token ASSIGN ()
+   $3 = nterm Exp ()
+   $4 = token SC ()
+-> $$ = nterm SimpleStatement ()
+Entering state 41
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 41
+Reducing stack by rule 52 (line 384):
+   $1 = nterm SimpleStatement ()
+-> $$ = nterm ClosedStatment ()
+Entering state 38
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 38
+Reducing stack by rule 48 (line 361):
+   $1 = nterm ClosedStatment ()
+-> $$ = nterm Statement ()
+Entering state 36
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 36
+Reducing stack by rule 19 (line 212):
+   $1 = nterm Statement ()
+-> $$ = nterm Statements ()
+Entering state 87
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 87
+Reading a token
+Next token is token RBRACE ()
+Shifting token RBRACE ()
+Entering state 105
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 87 105
+Reducing stack by rule 3 (line 178):
+-> $$ = nterm CloseScope ()
+Entering state 116
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 30 61 87 105 116
+Reducing stack by rule 6 (line 182):
+   $1 = token LBRACE ()
+   $2 = nterm OpenScope ()
+   $3 = nterm Statements ()
+   $4 = token RBRACE ()
+   $5 = nterm CloseScope ()
+-> $$ = nterm Block ()
+Entering state 32
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 32
+Reducing stack by rule 59 (line 407):
+   $1 = nterm Block ()
+-> $$ = nterm SimpleStatement ()
+Entering state 41
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 41
+Reducing stack by rule 52 (line 384):
+   $1 = nterm SimpleStatement ()
+-> $$ = nterm ClosedStatment ()
+Entering state 108
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 108
+Reading a token
+Next token is token BOOL ()
+Reducing stack by rule 48 (line 361):
+   $1 = nterm ClosedStatment ()
+-> $$ = nterm Statement ()
+Entering state 107
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 107
+Reducing stack by rule 3 (line 178):
+-> $$ = nterm CloseScope ()
+Entering state 118
+Stack now 0 8 12 13 14 16 19 21 23 39 67 91 107 118
+Reducing stack by rule 49 (line 364):
+   $1 = nterm IfStart ()
+   $2 = nterm OpenScope ()
+   $3 = nterm Label ()
+   $4 = nterm Statement ()
+   $5 = nterm CloseScope ()

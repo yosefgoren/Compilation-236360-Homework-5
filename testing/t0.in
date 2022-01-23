@@ -2,5 +2,5 @@ void main(){
 	if(true){
 		int x = 1;
 	}
-	bool b = 2;
+	bool b1 = false;
 }
