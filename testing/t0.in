@@ -1,5 +1,0 @@
-void main(){
-	if(true){
-		printi(9001);
-	}
-}

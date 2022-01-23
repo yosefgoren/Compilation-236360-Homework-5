@@ -1,0 +1,7 @@
+int A() {return 1;}
+
+void A() {}
+
+void main() {
+	int c1;
+}

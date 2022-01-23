@@ -1,0 +1,8 @@
+void main(){
+	int x = 3;
+	while(x >= 0){
+		printi(x);
+		x = x-1;
+	}
+	printi(9002);
+}

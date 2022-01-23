@@ -153,8 +153,10 @@ Expression* CodeBuffer::emitLoadVar(const string& id){
 	string raw_value_reg;
 	if(offset >= 0){
 		//if this identifier is a local variable:
-		string raw_value_reg = getFreshReg();
-		emit(raw_value_reg+" load i32, [50 x i32]* %sp, i32 0, i32 "+to_string(offset));
+		string param_ptr = getFreshReg("param_ptr");
+		emitRegDecl(param_ptr, "getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 "+to_string(offset));
+		raw_value_reg = getFreshReg("param_raw");
+		emitRegDecl(raw_value_reg, "load i32, i32* "+param_ptr);
 	} else {
 		//if this id is a parameter:
 		raw_value_reg = "%"+to_string(-offset);
@@ -209,7 +211,7 @@ Expression* CodeBuffer::createNonVoidExpFromReg(const string& reg_name, ExpType 
 		return new NumericExp(INT_EXP, reg_name);
 	case BYTE_EXP:
 		if(rvalue_reg_is_raw_data){
-			truncated_value_reg = getFreshReg();
+			truncated_value_reg = getFreshReg("truncated_byte");
 			emitRegDecl(truncated_value_reg, "trunc i32 "+reg_name+" to i8");
 		} else {
 			truncated_value_reg = reg_name;
@@ -278,12 +280,12 @@ void CodeBuffer::emitStoreVarBasic(const string& id, const string& immidiate_or_
 
 string CodeBuffer::createPtrToStackVar(int offset){
 	std::string ptr_reg = getFreshReg();
-	emitRegDecl(ptr_reg, "getelementptr i32, [50 x i32]* %sp, i32 0, i32 "+std::to_string(offset));
+	emitRegDecl(ptr_reg, "getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 "+std::to_string(offset));
 	return ptr_reg;
 }
 
-string CodeBuffer::getFreshReg(){
-	return "%local"+to_string(reg_count++);
+string CodeBuffer::getFreshReg(const string& reg_name){
+	return "%"+reg_name+to_string(reg_count++);
 }
 
 string CodeBuffer::IrType(ExpType type){

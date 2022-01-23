@@ -11,7 +11,9 @@ void output::endScope(){
 }
 
 void output::printID(const string& id, int offset, const string& type) {
+	#ifdef OLDT
     cout << id << " " << type <<  " " << offset <<  endl;
+	#endif
 }
 
 string typeListToString(const std::vector<string>& argTypes) {

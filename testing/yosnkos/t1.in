@@ -1,0 +1,6 @@
+void main(){
+	while(false){
+		int x;
+	}
+	printi(3);
+}

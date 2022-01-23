@@ -66,7 +66,7 @@ public:
 	Expression* createNonVoidExpFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data);
 	
 	string createPtrToStackVar(int offset);
-	string getFreshReg();
+	string getFreshReg(const string& reg_name = "reg");
 	string IrType(ExpType type);
 	string IrRelopType(Relop rel_type, ExpType type);
 	string IrFuncTypeFormat(const string& func_id);
