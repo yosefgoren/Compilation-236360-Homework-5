@@ -80,6 +80,15 @@ struct FunctionType{
 			result.push_back((*it).type);
 		return result;
 	}
+	std::vector<std::string> getParameterIds() const{
+		std::vector<std::string> result;
+		for(auto it = parameters->rbegin(); it != parameters->rend(); ++it)
+			result.push_back((*it).id);
+		return result;
+	}
+	int getNumParameters() const{
+		return parameters->size();
+	}
 
 	ExpType return_type;
 	std::shared_ptr<std::vector<Parameter>> parameters;
@@ -105,7 +114,7 @@ struct RegStoredExp: public Expression{
 
 struct NumericExp: public RegStoredExp{
 	NumericExp(ExpType type, const std::string& rvalue_exp);
-
+	std::string storeAsRawReg();
 	//virtual Expression* cloneCast(ExpType type) override;
 };
 
@@ -118,7 +127,8 @@ struct StrExp: public Expression{
 struct BoolExp: public Expression{
 	BoolExp();
 	BoolExp(std::vector<Backpatch> truelist, std::vector<Backpatch> falselist);
-	BoolExp(const std::string rvalue_exp);
+	BoolExp(const std::string raw_value_reg);
+	std::string storeAsRawReg();
 	//virtual Expression* cloneCast(ExpType type) override;
 	std::vector<Backpatch> truelist;
 	std::vector<Backpatch> falselist;

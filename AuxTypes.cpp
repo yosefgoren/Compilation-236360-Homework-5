@@ -37,7 +37,7 @@ Expression* Expression::generateExpByType(ExpType type){
 			return new BoolExp();
 		case INT_EXP:
 		case BYTE_EXP:
-			return new NumericExp(type, "NOT IMPLEMENTED");
+			return new NumericExp(type, "NO_REGISTER");
 		case VOID_EXP:
 			return new VoidExp();
 		case STRING_EXP:
@@ -57,6 +57,11 @@ RegStoredExp::RegStoredExp(ExpType type, const string& rvalue_exp)
 
 NumericExp::NumericExp(ExpType type, const string& rvalue_exp)
 	:RegStoredExp(type, rvalue_exp){}
+
+string NumericExp::storeAsRawReg(){
+	throw NotImplementedError();
+	return "NOT IMPLEMENTED";
+}
 
 // Expression* cloneCast(ExpType type){
 	
@@ -86,6 +91,11 @@ BoolExp::BoolExp(const std::string raw_value_reg)
 
 BoolExp::BoolExp(std::vector<Backpatch> truelist, std::vector<Backpatch> falselist)
 	:Expression(BOOL_EXP), truelist(truelist), falselist(falselist){}
+
+string BoolExp::storeAsRawReg(){
+	throw NotImplementedError();
+	return "NOT IMPLEMENTED";
+}
 
 // Expression* BoolExp::cloneCast(ExpType type){
 // 	if(type != BOOL_EXP){

@@ -61,6 +61,7 @@ public:
 	string emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
 	void emitStoreVar(const string& id, Expression* exp_to_assign);
 	void emitStoreVar(const string& id, int immidiate);
+	string emitFunctionCall(const string& func_id);
 	Expression* emitLoadVar(const string& id);
 	
 	string createPtrToStackVar(int offset);
