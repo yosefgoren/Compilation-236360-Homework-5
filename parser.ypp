@@ -273,7 +273,11 @@ NumericExp:			Exp BINOP Exp {
 						$$ = new NumericExp(BYTE_EXP, cb.literalRvalFormat($1, BYTE_EXP));
 					}
 					;
-Label: 				{$$ = new string(cb.genLabel());}
+Label: 				{
+						Backpatch bp(cb.emit("br label @"), FIRST);
+						$$ = new string(cb.genLabel("parse_label"));
+						cb.bpatch(cb.makelist(bp), *$$);
+					}
 					;
 
 BoolExp: 			Exp AND Label Exp {

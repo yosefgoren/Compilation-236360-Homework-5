@@ -82,11 +82,11 @@ BoolExp::BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data)
 
 	int initial_branch_adderess = cb.emit("br i1 "+bool_value_reg+", label @, label @");
 
-	string true_jump_label = cb.genLabel();
+	string true_jump_label = cb.genLabel("true_case");
 	cb.bpatch(cb.makelist(Backpatch(initial_branch_adderess, FIRST)), true_jump_label);
 	int truelist_jump_address = cb.emit("br label @");
 
-	string false_jump_label = cb.genLabel();
+	string false_jump_label = cb.genLabel("false_case");
 	cb.bpatch(cb.makelist(Backpatch(initial_branch_adderess, SECOND)), false_jump_label);
 	int falselist_jump_address = cb.emit("br label @");
 	
@@ -98,15 +98,15 @@ BoolExp::BoolExp(std::vector<Backpatch> truelist, std::vector<Backpatch> falseli
 	:Expression(BOOL_EXP), truelist(truelist), falselist(falselist){}
 
 string BoolExp::storeAsRawReg(){
-	string true_label = cb.genLabel();
+	string true_label = cb.genLabel("true_case");
 	cb.bpatch(truelist, true_label);
 	int true_jump_addr = cb.emit("br label @");
 	
-	string false_label = cb.genLabel();
+	string false_label = cb.genLabel("false_case");
 	cb.bpatch(falselist, false_label);
 	int false_jump_addr = cb.emit("br label @");
 	
-	string bool_reg_label = cb.genLabel();
+	string bool_reg_label = cb.genLabel("set_bool_reg");
 	cb.bpatch(cb.makelist(Backpatch(true_jump_addr, FIRST)), bool_reg_label);
 	cb.bpatch(cb.makelist(Backpatch(false_jump_addr, FIRST)), bool_reg_label);
 	string res_reg = cb.getFreshReg();
