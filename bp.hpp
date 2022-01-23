@@ -61,13 +61,15 @@ public:
 	string emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
 	void emitStoreVar(const string& id, Expression* exp_to_assign);
 	void emitStoreVar(const string& id, int immidiate);
-	string emitFunctionCall(const string& func_id);
+	Expression* emitFunctionCall(const string& func_id, const vector<Expression*>& param_expressions);
 	Expression* emitLoadVar(const string& id);
+	Expression* createNonVoidExpFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data);
 	
 	string createPtrToStackVar(int offset);
 	string getFreshReg();
 	string IrType(ExpType type);
 	string IrRelopType(Relop rel_type, ExpType type);
+	string IrFuncTypeFormat(const string& func_id);
 	string relopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Relop relop);
 	string binopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Binop binop);
 	string literalRvalFormat(int value, ExpType type);

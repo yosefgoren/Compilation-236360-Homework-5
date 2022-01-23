@@ -1451,7 +1451,7 @@ yyreduce:
                                                          {
 						check(symtab.callableValidId(*(yyvsp[-3].id)), output::errorUndefFunc(yylineno, *(yyvsp[-3].id)));
 						checkPrototypeMismatch(*(yyvsp[-3].id), *(yyvsp[-1].exp_list));
-						(yyval.expression) = Expression::generateExpByType(symtab.getReturnType(*(yyvsp[-3].id)));//TODO
+						(yyval.expression) = cb.emitFunctionCall(*(yyvsp[-3].id), *(yyvsp[-1].exp_list));
 						delete (yyvsp[-3].id);
 					}
 #line 1458 "parser.tab.cpp"
@@ -1464,7 +1464,7 @@ yyreduce:
 						//there are no arguments used in the call so std::vector is empty:
 						std::vector<Expression*> call_arg_types = {};
 						checkPrototypeMismatch(*(yyvsp[-2].id), call_arg_types);
-						(yyval.expression) = Expression::generateExpByType(symtab.getReturnType(*(yyvsp[-2].id)));
+						(yyval.expression) = cb.emitFunctionCall(*(yyvsp[-2].id), std::vector<Expression*>());
 						delete (yyvsp[-2].id);	
 					}
 #line 1471 "parser.tab.cpp"
@@ -1868,7 +1868,7 @@ yyreduce:
 
   case 67: /* $@6: %empty  */
 #line 436 "parser.ypp"
-                                                    {
+                                                    {//TODO: cause 'RETURN' to actually return the appropriate register, with its real type (not raw data).
 						//TODO: check edge case where this value (of Exp) is boolean...
 						checkMismatch((yyvsp[0].expression)->type, symtab.getCurrentlyParsedFuncType().return_type);
 						check((yyvsp[0].expression)->type != VOID_EXP, output::errorMismatch(yylineno));

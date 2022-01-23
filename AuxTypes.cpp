@@ -59,8 +59,7 @@ NumericExp::NumericExp(ExpType type, const string& rvalue_exp)
 	:RegStoredExp(type, rvalue_exp){}
 
 string NumericExp::storeAsRawReg(){
-	throw NotImplementedError();
-	return "NOT IMPLEMENTED";
+	return type == INT_EXP ? reg : cb.emitRegDecl(cb.getFreshReg(), "zext i8 "+reg+" to i32");
 }
 
 // Expression* cloneCast(ExpType type){
@@ -70,11 +69,17 @@ string NumericExp::storeAsRawReg(){
 BoolExp::BoolExp()
 	:Expression(BOOL_EXP){};
 
-BoolExp::BoolExp(const std::string raw_value_reg)
+BoolExp::BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data)
 	:Expression(BOOL_EXP){
 
 	string bool_value_reg = cb.getFreshReg();
-	cb.emitRegDecl(bool_value_reg, "trunc i32 "+raw_value_reg+" to i1");
+	if(rvalue_reg_is_raw_data){
+		cb.emitRegDecl(bool_value_reg, "trunc i32 "+rvalue_reg+" to i1");
+	} else {
+		cb.emitRegDecl(bool_value_reg, rvalue_reg);
+	}
+	//now 'bool_value_reg' should hold the required value, it should also be of type 'i1'.
+
 	int initial_branch_adderess = cb.emit("br i1 "+bool_value_reg+", label @, label @");
 
 	string true_jump_label = cb.genLabel();
@@ -93,8 +98,20 @@ BoolExp::BoolExp(std::vector<Backpatch> truelist, std::vector<Backpatch> falseli
 	:Expression(BOOL_EXP), truelist(truelist), falselist(falselist){}
 
 string BoolExp::storeAsRawReg(){
-	throw NotImplementedError();
-	return "NOT IMPLEMENTED";
+	string true_label = cb.genLabel();
+	cb.bpatch(truelist, true_label);
+	int true_jump_addr = cb.emit("br label @");
+	
+	string false_label = cb.genLabel();
+	cb.bpatch(falselist, false_label);
+	int false_jump_addr = cb.emit("br label @");
+	
+	string bool_reg_label = cb.genLabel();
+	cb.bpatch(cb.makelist(Backpatch(true_jump_addr, FIRST)), bool_reg_label);
+	cb.bpatch(cb.makelist(Backpatch(false_jump_addr, FIRST)), bool_reg_label);
+	string res_reg = cb.getFreshReg();
+	cb.emitRegDecl(res_reg, "phi i32 [1, %"+true_label+"], [0, %"+false_label+"]");
+	return res_reg;
 }
 
 // Expression* BoolExp::cloneCast(ExpType type){

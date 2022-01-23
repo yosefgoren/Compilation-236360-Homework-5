@@ -215,7 +215,7 @@ Statements:			Statement {$$ = $1;}
 Call:				ID LPAREN ExpList RPAREN {
 						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
 						checkPrototypeMismatch(*$1, *$3);
-						$$ = Expression::generateExpByType(symtab.getReturnType(*$1));//TODO
+						$$ = cb.emitFunctionCall(*$1, *$3);
 						delete $1;
 					}
 					|ID LPAREN RPAREN {
@@ -223,7 +223,7 @@ Call:				ID LPAREN ExpList RPAREN {
 						//there are no arguments used in the call so std::vector is empty:
 						std::vector<Expression*> call_arg_types = {};
 						checkPrototypeMismatch(*$1, call_arg_types);
-						$$ = Expression::generateExpByType(symtab.getReturnType(*$1));
+						$$ = cb.emitFunctionCall(*$1, std::vector<Expression*>());
 						delete $1;	
 					}
 					;
@@ -433,7 +433,7 @@ SimpleStatement:	Block {$$ = $1;}
 					|RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC {
 						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
 					}
-					|RETURN Exp {
+					|RETURN Exp {//TODO: cause 'RETURN' to actually return the appropriate register, with its real type (not raw data).
 						//TODO: check edge case where this value (of Exp) is boolean...
 						checkMismatch($2->type, symtab.getCurrentlyParsedFuncType().return_type);
 						check($2->type != VOID_EXP, output::errorMismatch(yylineno));

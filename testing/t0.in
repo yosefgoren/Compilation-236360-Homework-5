@@ -1,6 +1,5 @@
 void main(){
 	if(true){
-		int x = 1;
+		printi(9001);
 	}
-	bool b1 = false;
 }

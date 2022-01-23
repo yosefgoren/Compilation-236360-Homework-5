@@ -115,34 +115,27 @@ string CodeBuffer::emitRegDecl(const string& lvalue_id, const string& rvalue_exp
 	return lvalue_id;
 }
 
+string storeBoolOrNumericAsRawReg(Expression* exp){
+	ExpType type = exp->type;
+	assert(type == BOOL_EXP || type == INT_EXP || type == BYTE_EXP);
+	string res_reg;
+	if(type == BOOL_EXP){
+		BoolExp* bool_exp = dynamic_cast<BoolExp*>(exp);
+		assert(bool_exp);
+		res_reg = bool_exp->storeAsRawReg();
+	} else {
+		NumericExp* numeric_exp = dynamic_cast<NumericExp*>(exp);
+		assert(numeric_exp);
+		res_reg = numeric_exp->storeAsRawReg();
+	}
+	return res_reg;
+}
+
 void CodeBuffer::emitStoreVar(const string& id, Expression* exp_to_assign){
 	ExpType type = exp_to_assign->type;
 	assert(type != STRING_EXP && type != VOID_EXP);
 
-	string res_reg;
-	if(type == BOOL_EXP){
-		BoolExp* bool_exp = dynamic_cast<BoolExp*>(exp_to_assign);
-		assert(bool_exp);
-
-		string true_label = genLabel();
-		bpatch(bool_exp->truelist, true_label);
-		int true_jump_addr = emit("br label @");
-		
-		string false_label = genLabel();
-		bpatch(bool_exp->falselist, false_label);
-		int false_jump_addr = emit("br label @");
-		
-		string bool_reg_label = genLabel();
-		bpatch(makelist(Backpatch(true_jump_addr, FIRST)), bool_reg_label);
-		bpatch(makelist(Backpatch(false_jump_addr, FIRST)), bool_reg_label);
-		res_reg = getFreshReg();
-		emitRegDecl(res_reg, "phi i32 [1, %"+true_label+"], [0, %"+false_label+"]");
-	} else {
-		NumericExp* numeric_exp = dynamic_cast<NumericExp*>(exp_to_assign);
-		res_reg = type == INT_EXP
-			? numeric_exp->reg
-			: emitRegDecl(getFreshReg(), "zext i8 "+numeric_exp->reg + " to i32");	
-	}
+	string res_reg = storeBoolOrNumericAsRawReg(exp_to_assign);
 	emitStoreVarBasic(id, res_reg);
 }
 
@@ -154,45 +147,126 @@ Expression* CodeBuffer::emitLoadVar(const string& id){
 	assert(symtab.rvalValidId(id));
 	int offset = symtab.getVariableOffset(id);
 	ExpType type = symtab.getVariableType(id);
-	assert(type == BOOL_EXP || type == INT_EXP || type == BYTE_EXP);
+	assert(type != VOID_EXP && type != STRING_EXP);
 
 	string raw_value_reg;
 	if(offset >= 0){
+		//if this identifier is a local variable:
 		string raw_value_reg = getFreshReg();
 		emit(raw_value_reg+" load i32, [50 x i32]* %sp, i32 0, i32 "+to_string(offset));
 	} else {
+		//if this id is a parameter:
+		raw_value_reg = "%"+to_string(-offset);
 		//this is the parameter number as defined in llvm,
 		// for example the first parameter has offset -1, and is stored in register %1.
-		raw_value_reg = "%"+to_string(-offset);
 	}
 
-	//these declerations only matter in the case of a boolean, but must be initialized outside of switch.
-	string truncated_value_reg, bool_value_reg, true_jump_label, false_jump_label;
-	int initial_branch_adderess, truelist_jump_address, falselist_jump_address;
+	return createNonVoidExpFromReg(raw_value_reg, type, true);
+}
+
+vector<string> prefixToEach(const vector<string>& words, const string& prefix){
+	vector<string> res;
+	for(auto word: words){
+		res.push_back(prefix+word);
+	}
+	return res;
+}
+
+/**
+ * the spacing will be added between every two words but not at the edges.
+ **/
+string concatWithSpacing(const vector<string>& words, const string& spacing){
+	string res;
+	for(const string& word: words)
+		res += word + spacing;
+	if(words.size() > 0){
+		for(int i = 0; i < spacing.size(); ++i){
+			res.pop_back();
+		}
+	}
+	return res;
+}
+
+string CodeBuffer::IrFuncTypeFormat(const string& func_id){
+	//this function does not emmit any ir, it only calculates the representation
+	//	 of the function type in ir and returns it as string.
+	FunctionType& func_type = symtab.getFunctionType(func_id);
+	string return_type = IrType(func_type.return_type);
+	vector<string> ir_types;
+	for(ExpType type: func_type.getParameterTypes()){
+		//all types are just the raw data (i32):
+		ir_types.push_back("i32");
+	}
+	return return_type+"("+concatWithSpacing(ir_types, " ")+")";
+}
+
+Expression* CodeBuffer::createNonVoidExpFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data){
+	assert(type != VOID_EXP);
+	string truncated_value_reg;
 	switch(type){
 	case INT_EXP:
-		return new NumericExp(INT_EXP, raw_value_reg);
+		return new NumericExp(INT_EXP, reg_name);
 	case BYTE_EXP:
-		truncated_value_reg = getFreshReg();
-		emitRegDecl(truncated_value_reg, "trunc i32 "+raw_value_reg+" to i8");
+		if(rvalue_reg_is_raw_data){
+			truncated_value_reg = getFreshReg();
+			emitRegDecl(truncated_value_reg, "trunc i32 "+reg_name+" to i8");
+		} else {
+			truncated_value_reg = reg_name;
+		}
 		return new NumericExp(BYTE_EXP, truncated_value_reg);
 	case BOOL_EXP:
-		return new BoolExp(raw_value_reg);
+		return new BoolExp(reg_name, rvalue_reg_is_raw_data);
+	case STRING_EXP:
+		//TODO: implement string case.
+		#ifndef OLDT
+		throw NotImplementedError();
+		#else
+		return new StrExp();
+		#endif
 	}
 	assert(false);
 	return nullptr;
 }
 
-string CodeBuffer::emitFunctionCall(const string& func_id){
+Expression* CodeBuffer::emitFunctionCall(const string& func_id, const vector<Expression*>& param_expressions){
 	assert(symtab.callableValidId(func_id));
-	FunctionType& func_details = symtab.getFunctionType(func_id);
-	vector<string> param_ids = func_details.getParameterIds();
-	vector<string> param_regs;
+	vector<string> param_raw_value_regs;
+	//TODO: check this impl handles the case were the result is VoidExp!
 
-	for(const string& id: param_ids){
-		
+	//this code will convert each parameter to raw data (i32 with the same value) into some new register: 
+	for(Expression* exp: param_expressions){
+		assert(exp->type != VOID_EXP);
+		string new_reg;
+		if(exp->type == STRING_EXP){
+			//TODO: handle string case here:
+			#ifndef OLDT
+			throw NotImplementedError();
+			#else
+			new_reg = "NOT IMPLEMENTED";
+			#endif
+		} else {
+			new_reg = storeBoolOrNumericAsRawReg(exp);
+		}
+		param_raw_value_regs.push_back(new_reg);
 	}
 
+	ExpType return_type = symtab.getReturnType(func_id);
+	
+	string ir_params_list = concatWithSpacing(prefixToEach(param_raw_value_regs, "i32"), ", ");
+	string ir_func_type = IrFuncTypeFormat(func_id);
+	string call_format = "call "+ir_func_type+" @"+func_id+"("+ir_params_list+")";
+	
+	if(return_type == VOID_EXP){
+		emit(call_format);
+		return new VoidExp();
+	} else {
+		//this code will emit a function call with all generated registers:
+		string result_reg = getFreshReg();
+		emitRegDecl(result_reg, call_format);
+		return createNonVoidExpFromReg(result_reg, return_type, false);
+	}
+	assert(false);
+	return nullptr;
 }
 
 void CodeBuffer::emitStoreVarBasic(const string& id, const string& immidiate_or_reg){
