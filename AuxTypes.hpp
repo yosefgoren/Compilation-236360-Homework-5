@@ -129,5 +129,11 @@ struct VoidExp: public Expression{
 	//virtual Expression* cloneCast(ExpType type) override;
 };
 
+struct BranchBlock{
+	BranchBlock(std::string cond_label, Expression* cond_exp);
+	std::string cond_label;
+	std::vector<Backpatch> truelist;
+	std::vector<Backpatch> falselist;
+};
 
 #endif

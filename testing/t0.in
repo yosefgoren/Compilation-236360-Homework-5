@@ -1,4 +1,6 @@
 void main(){
-	bool b1 = ((1b < 0b) or false);
-	bool b2 = b1;
+	if(true){
+		int x = 1;
+	}
+	bool b = 2;
 }

@@ -1,5 +1,6 @@
 #include "AuxTypes.hpp"
 #include "bp.hpp"
+#include "assert.h"
 
 static CodeBuffer& cb = CodeBuffer::instance();
 
@@ -85,3 +86,11 @@ StrExp::StrExp()
 
 VoidExp::VoidExp()
 	:Expression(VOID_EXP){};
+
+BranchBlock::BranchBlock(std::string cond_label, Expression* cond_exp)
+	:cond_label(cond_label){
+	BoolExp* bool_exp = dynamic_cast<BoolExp*>(cond_exp);
+	assert(bool_exp);
+	truelist = bool_exp->truelist;
+	falselist = bool_exp->falselist;
+}	

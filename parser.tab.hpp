@@ -99,20 +99,26 @@ union YYSTYPE
 	int number_literal;
 	
 	//parser metadata fields:
-	NumericExp* numeric_exp;
-	Expression* expression;
-	ExpType exp_type;
-	std::vector<Expression*>* exp_list;
-	std::vector<Parameter>* formals_list;
-	std::string* label;
 	int line_number;
 	bool is_const;
-	Parameter* formal;
-	DecInfo dec_info;
+	
 	Binop binop;
 	Relop relop;
+	ExpType exp_type;
 
-#line 116 "parser.tab.hpp"
+	std::vector<Expression*>* exp_list;
+	std::vector<Parameter>* formals_list;
+	std::vector<Backpatch>* nextlist;
+	std::string* label;
+	
+	Expression* expression;
+	BranchBlock* branch_block;
+	NumericExp* numeric_exp;
+	Parameter* formal;
+
+	DecInfo dec_info;
+
+#line 122 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -54,6 +54,10 @@ vector<Backpatch> CodeBuffer::makelist(Backpatch item)
 	return newList;
 }
 
+vector<Backpatch> CodeBuffer::makeEmptyList(){
+	return vector<Backpatch>();
+}
+
 vector<Backpatch> CodeBuffer::merge(const vector<Backpatch> &l1,const vector<Backpatch> &l2){
 	vector<Backpatch> newList(l1.begin(),l1.end());
 	newList.insert(newList.end(),l2.begin(),l2.end());

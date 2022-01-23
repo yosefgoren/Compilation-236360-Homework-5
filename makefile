@@ -26,7 +26,7 @@ COMP_FLAGS=-std=c++17
 bdn:
 	flex scanner.lex
 	bison -Wcounterexamples -d parser.ypp
-	g++ -std=c++17 -o hw5 *.c *.cpp
+	g++ -std=c++17 -g3 -o hw5 *.c *.cpp
 
 bdo:
 	flex scanner.lex

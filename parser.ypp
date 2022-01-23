@@ -119,18 +119,24 @@
 	int number_literal;
 	
 	//parser metadata fields:
-	NumericExp* numeric_exp;
-	Expression* expression;
-	ExpType exp_type;
-	std::vector<Expression*>* exp_list;
-	std::vector<Parameter>* formals_list;
-	std::string* label;
 	int line_number;
 	bool is_const;
-	Parameter* formal;
-	DecInfo dec_info;
+	
 	Binop binop;
 	Relop relop;
+	ExpType exp_type;
+
+	std::vector<Expression*>* exp_list;
+	std::vector<Parameter>* formals_list;
+	std::vector<Backpatch>* nextlist;
+	std::string* label;
+	
+	Expression* expression;
+	BranchBlock* branch_block;
+	NumericExp* numeric_exp;
+	Parameter* formal;
+
+	DecInfo dec_info;
 };
 
 %nonassoc INT VOID BYTE B BOOL CONST
@@ -161,6 +167,9 @@
 %type <is_const> TypeAnnotation
 %type <dec_info> VarDecStart
 %type <label> Label
+%type <nextlist> Statements Statement OpenStatment ClosedStatment SimpleStatement Block
+%type <branch_block> IfStart WhileStart
+
 %%
 
 Program:			Funcs
@@ -169,7 +178,11 @@ OpenScope:			{symtab.pushScope();};
 CloseScope:			{symtab.popScope();};
 OpenLoop:			{++loop_depth;};
 CloseLoop:			{--loop_depth;};
-Block:				LBRACE OpenScope Statements RBRACE CloseScope;
+
+Block:				LBRACE OpenScope Statements RBRACE CloseScope {
+						$$ = $3;
+					}
+					;
 
 Funcs:				FuncDecl Funcs
 					|
@@ -196,8 +209,8 @@ FormalsList:		TypeAnnotation Type ID {$$ = new std::vector<Parameter>(); $$->pus
 					;
 LineCapture:		{$$ = yylineno;};
 
-Statements:			Statement 
-					|Statements Statement
+Statements:			Statement {$$ = $1;}
+					|Statements Label Statement {cb.bpatch(*$1, *$2); $$ = $3;}
 					;
 Call:				ID LPAREN ExpList RPAREN {
 						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
@@ -344,38 +357,67 @@ BoolExp: 			Exp AND Label Exp {
 					}
 					;
 
-Statement:			OpenStatment
-					| ClosedStatment;
+Statement:			OpenStatment {$$ = $1;}
+					| ClosedStatment {$$ = $1;}
+					;
 					
-OpenStatment:		IfStart OpenScope Statement CloseScope
-					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope OpenStatment CloseScope
-					| WhileStart OpenLoop OpenScope OpenStatment CloseScope CloseLoop
+OpenStatment:		IfStart OpenScope Label Statement CloseScope {
+						cb.bpatch($1->truelist, *$3);
+						*$$ = cb.merge($1->falselist, *$4);
+						delete $1; delete $3; delete $4;
+					}
+					| IfStart OpenScope Label ClosedStatment CloseScope ELSE OpenScope Label OpenStatment CloseScope {
+						cb.bpatch($1->truelist, *$3);
+						cb.bpatch($1->falselist, *$8);
+						*$$ = cb.merge(*$4, *$9);
+						delete $1; delete $3; delete $4; delete $8; delete $9;
+					}
+					| WhileStart OpenLoop OpenScope Label OpenStatment CloseScope CloseLoop {
+						cb.bpatch($1->truelist, *$4);
+						cb.bpatch(*$5, $1->cond_label);
+						*$$ = $1->falselist;
+						delete $1; delete $4; delete $5;
+					}
 					;
 
 ClosedStatment:		SimpleStatement
-					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope ClosedStatment CloseScope
-					| WhileStart OpenLoop OpenScope ClosedStatment CloseScope CloseLoop
+					| IfStart OpenScope Label ClosedStatment CloseScope ELSE OpenScope Label ClosedStatment CloseScope {
+						cb.bpatch($1->truelist, *$3);
+						cb.bpatch($1->falselist, *$8);
+						*$$ = cb.merge(*$4, *$9);
+						delete $1; delete $3; delete $4; delete $8; delete $9;
+					}
+					| WhileStart OpenLoop OpenScope Label ClosedStatment CloseScope CloseLoop {
+						cb.bpatch($1->truelist, *$4);
+						cb.bpatch(*$5, $1->cond_label);
+						*$$ = $1->falselist;
+						delete $1; delete $4; delete $5;
+					}
 					;
-IfStart:			IF LPAREN Exp {
-						checkBool($3->type);
+IfStart:			IF LPAREN Label Exp {checkBool($4->type);} RPAREN {
+						$$ = new BranchBlock(*$3, $4);
 						delete $3;
-					} RPAREN;	
-WhileStart:			WHILE LPAREN Exp {
-						checkBool($3->type);
+						delete $4;
+					};	
+WhileStart:			WHILE LPAREN Label Exp {checkBool($4->type);} RPAREN {
+						$$ = new BranchBlock(*$3, $4);
 						delete $3;
-					} RPAREN;
+						delete $4;
+					};
 
-SimpleStatement:	Block
+SimpleStatement:	Block {$$ = $1;}
 					|VarDecStart SC {
 						check(!$1.is_const, output::errorConstDef(yylineno));
 						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
 						cb.emitStoreVar(*$1.id, 0);
+						*$$ = cb.makeEmptyList();
 						delete $1.id;
 					}
 					|VarDecStart ASSIGN Exp SC {
 						checkMismatch($3->type, $1.raw_type);
 						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
 						cb.emitStoreVar(*$1.id, $3);	
+						*$$ = cb.makeEmptyList();
 						delete $1.id;
 						delete $3;
 					}
@@ -384,18 +426,32 @@ SimpleStatement:	Block
 						check(!symtab.isConst(*$1), output::errorConstMismatch(yylineno));
 						checkMismatch($3->type, symtab.getVariableType(*$1));
 						cb.emitStoreVar(*$1, $3);
+						*$$ = cb.makeEmptyList();
 						delete $1;
 						delete $3;
 					}
-					|Call SC
-					|RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC
+					|Call SC {
+						*$$ = cb.makeEmptyList();
+					}
+					|RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC {
+						*$$ = cb.makeEmptyList();
+					}
 					|RETURN Exp {
+						//TODO: check edge case where this value (of Exp) is boolean...
 						checkMismatch($2->type, symtab.getCurrentlyParsedFuncType().return_type);
 						check($2->type != VOID_EXP, output::errorMismatch(yylineno));
+					} SC {
+						*$$ = cb.makeEmptyList();
 						delete $2;
-					} SC
-					|BREAK SC {check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));}
-					|CONTINUE SC {check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));}
+					}
+					|BREAK SC {
+						check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));
+						*$$ = cb.makeEmptyList();
+					}
+					|CONTINUE SC {
+						check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));
+						*$$ = cb.makeEmptyList();
+					}
 					;
 VarDecStart:		TypeAnnotation Type ID {
 						check(symtab.declarableValidId(*$3), output::errorDef(yylineno, *$3));
