@@ -13,7 +13,7 @@ define void @printi(i32) {
     ret void
 }
 
-define void @stackt(){
+define void @printparam(){
 	%fpt = alloca [50 x i32]
 	
 	%ptr0 = getelementptr [50 x i32], [50 x i32]* %fpt, i32 0, i32 0
@@ -27,18 +27,6 @@ define void @stackt(){
 	call void(i32) @printi(i32 %var0)
 	%var1 = load i32, i32* %ptr1
 	call void(i32) @printi(i32 %var1)
-	ret void
-}
-
-define void @foo(){
-	%sp = alloca i32
-	store i32 0, i32* %sp
-	ret void
-}
-
-define void @bar(){
-	%sp = alloca i32
-	store i32 0, i32* %sp
 	ret void
 }
 

@@ -153,38 +153,37 @@ void CodeBuffer::emitStoreVar(const string& id, int immidiate){
 Expression* CodeBuffer::emitLoadVar(const string& id){
 	assert(symtab.rvalValidId(id));
 	int offset = symtab.getVariableOffset(id);
-	string raw_value_reg = getFreshReg();
-	emit(raw_value_reg+" load i32, [50 x i32]* %sp, i32 0, i32 "+to_string(offset));
-
 	ExpType type = symtab.getVariableType(id);
-	//these declerations only matter in the case of a boolean, but must be initialized outside of switch.
-	string truncated_value_reg, bool_value_reg, true_jump_label, false_jump_label;
-	int initial_branch_adderess, truelist_jump_address, falselist_jump_address;
-	switch(type){
-	case INT_EXP:
-		return new NumericExp(INT_EXP, raw_value_reg);
-	case BYTE_EXP:
-		truncated_value_reg = getFreshReg();
-		emitRegDecl(truncated_value_reg, "trunc i32 "+raw_value_reg+" to i8");
-		return new NumericExp(BYTE_EXP, truncated_value_reg);
-	case BOOL_EXP:
-		bool_value_reg = getFreshReg();
-		emitRegDecl(bool_value_reg, "trunc i32 "+raw_value_reg+" to i1");
-		initial_branch_adderess = emit("br i1 "+bool_value_reg+", label @, label @");
-		
-		true_jump_label = genLabel();
-		bpatch(makelist(Backpatch(initial_branch_adderess, FIRST)), true_jump_label);
-		truelist_jump_address = emit("br label @");
+	
+	if(offset >= 0){
+		//this is the case of a local variable:
+		string raw_value_reg = getFreshReg();
+		emit(raw_value_reg+" load i32, [50 x i32]* %sp, i32 0, i32 "+to_string(offset));
 
-		false_jump_label = genLabel();
-		bpatch(makelist(Backpatch(initial_branch_adderess, SECOND)), false_jump_label);
-		falselist_jump_address = emit("br label @");
-		
-		return new BoolExp(makelist(Backpatch(truelist_jump_address, FIRST)),
-			makelist(Backpatch(falselist_jump_address, FIRST)));
+		//these declerations only matter in the case of a boolean, but must be initialized outside of switch.
+		string truncated_value_reg, bool_value_reg, true_jump_label, false_jump_label;
+		int initial_branch_adderess, truelist_jump_address, falselist_jump_address;
+		switch(type){
+		case INT_EXP:
+			return new NumericExp(INT_EXP, raw_value_reg);
+		case BYTE_EXP:
+			truncated_value_reg = getFreshReg();
+			emitRegDecl(truncated_value_reg, "trunc i32 "+raw_value_reg+" to i8");
+			return new NumericExp(BYTE_EXP, truncated_value_reg);
+		case BOOL_EXP:
+			return new BoolExp(raw_value_reg);
+		}
+		assert(false);
+		return nullptr;
+	} else{
+		//this is the case of a function parameter:
+		#ifndef OLDT
+		throw NotImplementedError();
+		return nullptr;
+		#else
+		return Expression::generateExpByType(type);
+		#endif
 	}
-	assert(false);
-	return nullptr;
 }
 
 void CodeBuffer::emitStoreVarBasic(const string& id, const string& immidiate_or_reg){

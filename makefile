@@ -31,7 +31,7 @@ bdn:
 bdo:
 	flex scanner.lex
 	bison -Wcounterexamples -d parser.ypp
-	g++ -std=c++17 -DOLDT -o hw5 *.c *.cpp
+	g++ -std=c++17 -g3  -DOLDT -o hw5 *.c *.cpp
 
 all: clean
 	flex scanner.lex
