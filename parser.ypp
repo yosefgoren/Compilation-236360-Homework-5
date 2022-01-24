@@ -109,6 +109,7 @@
 		}
 	}
 
+	int cur_parsed_func_start_label_offset;
 	CodeBuffer& cb = CodeBuffer::instance();
 %}
 
@@ -128,13 +129,14 @@
 
 	std::vector<Expression*>* exp_list;
 	std::vector<Parameter>* formals_list;
-	std::vector<Backpatch>* nextlist;
 	std::string* label;
 	
 	Expression* expression;
 	BranchBlock* branch_block;
+	RunBlock* run_block;
 	NumericExp* numeric_exp;
 	Parameter* formal;
+	FuncDecl* func_decl;
 
 	DecInfo dec_info;
 };
@@ -166,8 +168,8 @@
 %type <line_number> LineCapture
 %type <is_const> TypeAnnotation
 %type <dec_info> VarDecStart
-%type <label> Label
-%type <nextlist> Statements Statement OpenStatment ClosedStatment SimpleStatement Block
+%type <label> Label CondLabel StatementLabel
+%type <run_block> Statements Statement OpenStatment ClosedStatment SimpleStatement Block
 %type <branch_block> IfStart WhileStart
 
 %%
@@ -187,15 +189,27 @@ Block:				LBRACE OpenScope Statements RBRACE CloseScope {
 Funcs:				FuncDecl Funcs
 					|
 					;
+
 FuncDecl:			RetType ID {check(symtab.declarableValidId(*$2), output::errorDef(yylineno, *$2));}
 					LPAREN Formals {	
 						checkFuncDec(*$2, *$5);
 						symtab.declareFunc(*$2, $1, $5);
+
 						//TODO: emit decleration of this function.
+						cb.emit("define i32 @main(){");
 						cb.emit("%sp = alloca [50 x i32]");
+						cur_parsed_func_start_label_offset = cb.emit("br label @");
+						//std::vector<Backpatch> bpv = cb.makelist(Backpatch(cb.emit("br label @"), FIRST));
 					} RPAREN LBRACE Statements RBRACE {
 						symtab.finishFunc();
+						cb.bpatch(cb.makelist(Backpatch(cur_parsed_func_start_label_offset, FIRST)), $9->start_label);
+						//TODO: if the user did not end his function with 'return', we need to do it for him.
 						//TODO: emit end of func (rbrace)
+						
+						std::string func_end_label = cb.genLabel("func_end");
+						cb.bpatch($9->nextlist, func_end_label);
+						cb.emit("ret i32 0");
+						cb.emit("}");
 					}
 					;
 RetType:			Type {$$ = $1;}
@@ -210,7 +224,12 @@ FormalsList:		TypeAnnotation Type ID {$$ = new std::vector<Parameter>(); $$->pus
 LineCapture:		{$$ = yylineno;};
 
 Statements:			Statement {$$ = $1;}
-					|Statements Label Statement {cb.bpatch(*$1, *$2); $$ = $3;}
+					|Statements Statement {
+						cb.bpatch($1->nextlist, $2->start_label);
+						$$ = new RunBlock($1->start_label);
+						$$->nextlist = $2->nextlist;
+						delete $2;
+					}
 					;
 Call:				ID LPAREN ExpList RPAREN {
 						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
@@ -254,7 +273,7 @@ Exp:				LPAREN Exp RPAREN {$$ = $2;}
 					| BoolExp
 					;
 
-NumericExp:			Exp BINOP Exp {
+NumericExp:			Exp BINOP Exp {//TODO: add support for overflow and div by 0 protection.
 						checkNumeralType($1->type);
 						auto numeric_e1 = dynamic_cast<NumericExp*>($1);
 						assert(numeric_e1);
@@ -273,12 +292,9 @@ NumericExp:			Exp BINOP Exp {
 						$$ = new NumericExp(BYTE_EXP, cb.literalRvalFormat($1, BYTE_EXP));
 					}
 					;
-Label: 				{
-						Backpatch bp(cb.emit("br label @"), FIRST);
-						$$ = new string(cb.genLabel("parse_label"));
-						cb.bpatch(cb.makelist(bp), *$$);
-					}
-					;
+Label: 				{$$ = new string(cb.genLabel("parse_label"));};
+CondLabel:			{$$ = new string(cb.genLabel("cond"));};
+StatementLabel:		{$$ = new string(cb.genLabel("statement"));};
 
 BoolExp: 			Exp AND Label Exp {
 						checkMismatch($1->type, BOOL_EXP);
@@ -364,94 +380,101 @@ BoolExp: 			Exp AND Label Exp {
 Statement:			OpenStatment {$$ = $1;}
 					| ClosedStatment {$$ = $1;}
 					;
-					
-OpenStatment:		IfStart OpenScope Label Statement CloseScope {
-						cb.bpatch($1->truelist, *$3);
 
-						$$ = new std::vector<Backpatch>(cb.merge($1->falselist, *$4));
-						delete $1; delete $3; delete $4;
+
+OpenStatment:		IfStart OpenScope Statement CloseScope {
+						cb.bpatch($1->truelist, $3->start_label);
+						$$ = new RunBlock($1->cond_label);
+						$$->nextlist = cb.merge($1->falselist, $3->nextlist);
+						delete $1; delete $3;
 					}
-					| IfStart OpenScope Label ClosedStatment CloseScope ELSE OpenScope Label OpenStatment CloseScope {
-						cb.bpatch($1->truelist, *$3);
-						cb.bpatch($1->falselist, *$8);
-						$$ = new std::vector<Backpatch>(cb.merge(*$4, *$9));
-						delete $1; delete $3; delete $4; delete $8; delete $9;
+					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope OpenStatment CloseScope {
+						cb.bpatch($1->truelist, $3->start_label);
+						cb.bpatch($1->falselist, $7->start_label);
+						$$ = new RunBlock($1->cond_label);
+						$$->nextlist = cb.merge($3->nextlist, $7->nextlist);
+						delete $1; delete $3; delete $7;
 					}
-					| WhileStart OpenLoop OpenScope Label OpenStatment CloseScope CloseLoop {
-						cb.bpatch($1->truelist, *$4);
-						cb.bpatch(*$5, $1->cond_label);
-						$$ = new std::vector<Backpatch>($1->falselist);
-						delete $1; delete $4; delete $5;
+					| WhileStart OpenLoop OpenScope OpenStatment CloseScope CloseLoop {
+						cb.bpatch($1->truelist, $4->start_label);
+						cb.bpatch($4->nextlist, $1->cond_label);
+						$$ = new RunBlock($1->cond_label);
+						$$->nextlist = $1->falselist;
+						delete $1; delete $4;
 					}
 					;
 
 ClosedStatment:		SimpleStatement {$$ = $1;}
-					| IfStart OpenScope Label ClosedStatment CloseScope ELSE OpenScope Label ClosedStatment CloseScope {
-						cb.bpatch($1->truelist, *$3);
-						cb.bpatch($1->falselist, *$8);
-						$$ = new std::vector<Backpatch>(cb.merge(*$4, *$9));
-						delete $1; delete $3; delete $4; delete $8; delete $9;
+					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope ClosedStatment CloseScope {
+						cb.bpatch($1->truelist, $3->start_label);
+						cb.bpatch($1->falselist, $7->start_label);
+						$$ = new RunBlock($1->cond_label);
+						$$->nextlist = cb.merge($3->nextlist, $7->nextlist);
+						delete $1; delete $3; delete $7;
 					}
-					| WhileStart OpenLoop OpenScope Label ClosedStatment CloseScope CloseLoop {
-						cb.bpatch($1->truelist, *$4);
-						cb.bpatch(*$5, $1->cond_label);
-						$$ = new std::vector<Backpatch>($1->falselist);
-						delete $1; delete $4; delete $5;
+					| WhileStart OpenLoop OpenScope ClosedStatment CloseScope CloseLoop {
+						cb.bpatch($1->truelist, $4->start_label);
+						cb.bpatch($4->nextlist, $1->cond_label);
+						$$ = new RunBlock($1->cond_label);
+						$$->nextlist = $1->falselist;
+						delete $1; delete $4;
 					}
 					;
 IfStart:			IF LPAREN Label Exp {checkBool($4->type);} RPAREN {
 						$$ = new BranchBlock(*$3, $4);
 						delete $3; delete $4;
 					};	
-WhileStart:			WHILE LPAREN Label Exp {checkBool($4->type);} RPAREN {
+
+WhileStart:			WHILE LPAREN CondLabel Exp {checkBool($4->type);} RPAREN {
 						$$ = new BranchBlock(*$3, $4);
 						delete $3; delete $4;
 					};
 
+
 SimpleStatement:	Block {$$ = $1;}
-					|VarDecStart SC {
-						check(!$1.is_const, output::errorConstDef(yylineno));
-						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
-						cb.emitStoreVar(*$1.id, 0);
-						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
-						delete $1.id;
+					| StatementLabel VarDecStart SC {
+						check(!$2.is_const, output::errorConstDef(yylineno));
+						symtab.declareVar(*$2.id, $2.raw_type, $2.is_const);
+						cb.emitStoreVar(*$2.id, 0);
+						$$ = RunBlock::newBlockEndingHere(*$1);
+						delete $2.id;
 					}
-					|VarDecStart ASSIGN Exp SC {
-						checkMismatch($3->type, $1.raw_type);
-						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
-						cb.emitStoreVar(*$1.id, $3);	
-						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
-						delete $1.id; delete $3;
+					| StatementLabel VarDecStart ASSIGN Exp SC {
+						checkMismatch($4->type, $2.raw_type);
+						symtab.declareVar(*$2.id, $2.raw_type, $2.is_const);
+						cb.emitStoreVar(*$2.id, $4);	
+						$$ = RunBlock::newBlockEndingHere(*$1);
+						delete $2.id; delete $4;
 					}
-					|ID ASSIGN Exp SC {
-						check(symtab.containsVar(*$1), output::errorUndef(yylineno, *$1));
-						check(!symtab.isConst(*$1), output::errorConstMismatch(yylineno));
-						checkMismatch($3->type, symtab.getVariableType(*$1));
-						cb.emitStoreVar(*$1, $3);
-						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
-						delete $1; delete $3;
+					| StatementLabel ID ASSIGN Exp SC {
+						check(symtab.containsVar(*$2), output::errorUndef(yylineno, *$2));
+						check(!symtab.isConst(*$2), output::errorConstMismatch(yylineno));
+						checkMismatch($4->type, symtab.getVariableType(*$2));
+						cb.emitStoreVar(*$2, $4);
+						$$ = RunBlock::newBlockEndingHere(*$1);
+						delete $2; delete $4;
 					}
-					|Call SC {
-						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
+					| StatementLabel Call SC {
+						$$ = RunBlock::newBlockEndingHere(*$1);
 					}
-					|RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC {
-						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
+					| StatementLabel RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC {
+						$$ = RunBlock::newSinkBlockEndingHere(*$1);
 					}
-					|RETURN Exp {//TODO: cause 'RETURN' to actually return the appropriate register, with its real type (not raw data).
+					| StatementLabel RETURN Exp {//TODO: cause 'RETURN' to actually return the appropriate register, with its real type (not raw data).
 						//TODO: check edge case where this value (of Exp) is boolean...
-						checkMismatch($2->type, symtab.getCurrentlyParsedFuncType().return_type);
-						check($2->type != VOID_EXP, output::errorMismatch(yylineno));
+						checkMismatch($3->type, symtab.getCurrentlyParsedFuncType().return_type);
+						check($3->type != VOID_EXP, output::errorMismatch(yylineno));
 					} SC {
-						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
-						delete $2;
+						$$ = RunBlock::newSinkBlockEndingHere(*$1);
+						delete $3;
 					}
-					|BREAK SC {
+					| StatementLabel BREAK SC {//TODO: add support for break.
 						check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));
-						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
+						$$ = RunBlock::newBlockEndingHere(*$1);
 					}
-					|CONTINUE SC {
+					| StatementLabel CONTINUE SC {//TODO: add support for break.
 						check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));
-						$$ = new std::vector<Backpatch>(cb.makeEmptyList());
+						$$ = RunBlock::newBlockEndingHere(*$1);
 					}
 					;
 VarDecStart:		TypeAnnotation Type ID {
@@ -480,24 +503,14 @@ void declareLibraryFuncs(){
 	
 }
 
-void emitTmpMainStart(){
-	cb.emit("define i32 @main(){");
-}
-void emitTmpMainEnd(){
-	cb.emit("ret i32 0");
-	cb.emit("}");
-}
-
 int main(){
 	#ifdef MYDB
 		yydebug = 1;
 	#endif
 	symtab = SimpleSymtab();
 	declareLibraryFuncs();
-	#ifdef OLDT
-	#else
+	#ifndef OLDT
 	cb.emitLibFuncs();
-	emitTmpMainStart();
 	#endif
 
 	loop_depth = 0;
@@ -509,7 +522,6 @@ int main(){
 	symtab.printFuncDecls();
 	#else
 	cb.printGlobalBuffer();
-	emitTmpMainEnd();
 	cb.printCodeBuffer();
 	#endif
 

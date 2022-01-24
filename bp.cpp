@@ -330,7 +330,7 @@ string CodeBuffer::binopRvalFormat(const string& first_reg, const string& second
 		ir_binop = "mul";
 		break;
 	case DIV:
-		ir_binop = (type == BYTE_EXP ? "udiv" : "idiv");
+		ir_binop = (type == BYTE_EXP ? "udiv" : "sdiv");
 	}
 	return ir_binop+" "+IrType(type)+" "+first_reg+", "+second_reg;
 }	

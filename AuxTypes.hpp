@@ -147,4 +147,17 @@ struct BranchBlock{
 	std::vector<Backpatch> falselist;
 };
 
+struct RunBlock{
+	RunBlock(const std::string& start_label);
+	static RunBlock* newBlockEndingHere(const std::string& block_start_label);
+	static RunBlock* newSinkBlockEndingHere(const std::string& block_start_label);
+
+	std::string start_label;
+	std::vector<Backpatch> nextlist;
+};
+
+struct FuncDecl{
+	int start_label_offset;
+};
+
 #endif

@@ -14,16 +14,17 @@ define void @print(i8*) {
 }
 define i32 @main(){
 %sp = alloca [50 x i32]
-br label %parse_label_3
-parse_label_3:
-br label %parse_label_10
-br label %parse_label_6
-parse_label_6:
+br label %cond_3
+cond_3:
+br label %statement_9
+statement_5:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 0, i32* %reg1
-br label %parse_label_10
-parse_label_10:
+br label %cond_3
+statement_9:
 %reg2 = add i32 0, 3
 call void(i32) @printi(i32%reg2)
+br label %func_end_13
+func_end_13:
 ret i32 0
 }

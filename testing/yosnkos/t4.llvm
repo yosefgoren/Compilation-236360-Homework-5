@@ -1,0 +1,44 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+define i32 @main(){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%reg1 = add i32 0, 99
+%reg2 = add i32 0, 10
+%reg3 = mul i32 %reg1, %reg2
+%reg4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg3, i32* %reg4
+br label %statement_10
+statement_10:
+%param_ptr5 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw6 = load i32, i32* %param_ptr5
+%reg7 = add i32 0, %param_raw6
+%reg8 = add i32 0, 1
+%reg9 = add i32 %reg7, %reg8
+%reg10 = add i32 0, 2
+%reg11 = mul i32 %reg9, %reg10
+%reg12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg11, i32* %reg12
+br label %statement_21
+statement_21:
+%param_ptr13 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw14 = load i32, i32* %param_ptr13
+%reg15 = add i32 0, %param_raw14
+call void(i32) @printi(i32%reg15)
+br label %func_end_27
+func_end_27:
+ret i32 0
+}

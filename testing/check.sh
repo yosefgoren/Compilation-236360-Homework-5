@@ -1,6 +1,6 @@
 # defaults:
 DEFAULT_MIN_TEST='1'
-DEFAULT_MAX_TEST='3'
+DEFAULT_MAX_TEST='10'
 EXIT_ON_FIRST_FAIL='1'
 DEFAULT_TESTS_DIR='yosnkos'
 EXE='../hw5'
@@ -27,6 +27,7 @@ function check_test () {
 	else
 		$EXE < $TEST.in > $TEST.llvm
 		lli $TEST.llvm > $TEST.res
+		LLI_RES=$?
 		diff $TEST.exp $TEST.res
 		if [ $? -eq 0 ]; then
 			printf "$TEST: ${GREEN} SUCCESS ${NC}\n"
@@ -35,7 +36,7 @@ function check_test () {
 			printf "\t${BLUE}< expected but not found${NC}\n"
 			printf "\t${BLUE}> found but not expected${NC}\n"
 			
-			printf "\n${YELLOW}output llvm output? [<enter> | cat | vsc | cfg]${NC}\n"
+			printf "\n${YELLOW}what to do? [nothing <enter> | cat | vsc | gdb]${NC}\n"
 			read SHOULD_CAT_OUTPUT
 			if [ -z $SHOULD_CAT_OUTPUT ]; then
 				exit 1
@@ -43,9 +44,12 @@ function check_test () {
 				cat $TEST.llvm
 			elif [ $SHOULD_CAT_OUTPUT == 'vsc' ]; then
 				code $TEST.llvm
-			elif [ $SHOULD_CAT_OUTPUT == 'cgg' ]; then
-				code $TEST.llvm
-				opt --dot-cfg 1.ll; dot cfg.funcname.dot -Tpng > 1.png
+			elif [ $SHOULD_CAT_OUTPUT == 'gdb' ]; then
+				export TEST="$TEST.in"
+				gdb $EXE
+			# elif [ $SHOULD_CAT_OUTPUT == 'cgf' ]; then
+			# 	code $TEST.llvm
+			# 	opt --dot-cfg 1.ll; dot cfg.funcname.dot -Tpng > 1.png
 			fi
 			exit 1
 		fi

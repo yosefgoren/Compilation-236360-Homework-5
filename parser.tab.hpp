@@ -91,7 +91,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 115 "parser.ypp"
+#line 116 "parser.ypp"
 
 	//lexer proivided fields:
 	string* id;
@@ -108,17 +108,18 @@ union YYSTYPE
 
 	std::vector<Expression*>* exp_list;
 	std::vector<Parameter>* formals_list;
-	std::vector<Backpatch>* nextlist;
 	std::string* label;
 	
 	Expression* expression;
 	BranchBlock* branch_block;
+	RunBlock* run_block;
 	NumericExp* numeric_exp;
 	Parameter* formal;
+	FuncDecl* func_decl;
 
 	DecInfo dec_info;
 
-#line 122 "parser.tab.hpp"
+#line 123 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

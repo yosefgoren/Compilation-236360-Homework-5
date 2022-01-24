@@ -149,3 +149,27 @@ BranchBlock::BranchBlock(std::string cond_label, Expression* cond_exp)
 	truelist = bool_exp->truelist;
 	falselist = bool_exp->falselist;
 }	
+
+
+RunBlock::RunBlock(const std::string& start_label)
+	:start_label(start_label){}
+
+RunBlock* RunBlock::newSinkBlockEndingHere(const std::string& block_start_label){
+	RunBlock* res = new RunBlock(block_start_label); 
+	res->nextlist = std::vector<Backpatch>();
+	return res;
+}
+
+RunBlock* RunBlock::newBlockEndingHere(const std::string& block_start_label){
+	RunBlock* res = new RunBlock(block_start_label); 
+	res->nextlist = cb.makelist(Backpatch(cb.emit("br label @"), FIRST));
+	return res;
+}
+
+// RunBlock* RunBlock::newBlockHere(){
+// 	return new RunBlock(cb.genLabel("statment_start"));
+// }
+
+// void RunBlock::endBlock(){
+// 	nextlist = std::vector<Backpatch>(cb.makelist(Backpatch(cb.emit("br label @"), FIRST)));
+// }

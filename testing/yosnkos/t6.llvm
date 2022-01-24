@@ -1,0 +1,117 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+define i32 @main(){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+br label %true_case_5
+true_case_5:
+br label %set_bool_reg_9
+false_case_7:
+br label %set_bool_reg_9
+set_bool_reg_9:
+%reg1 = phi i32 [1, %true_case_5], [0, %false_case_7]
+%reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg1, i32* %reg2
+br label %statement_14
+statement_14:
+br label %parse_label_16
+parse_label_16:
+br label %parse_label_18
+parse_label_18:
+br label %parse_label_20
+parse_label_20:
+br label %false_case_24
+true_case_22:
+br label %set_bool_reg_26
+false_case_24:
+br label %set_bool_reg_26
+set_bool_reg_26:
+%reg3 = phi i32 [1, %true_case_22], [0, %false_case_24]
+%reg4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg3, i32* %reg4
+br label %parse_label_31
+parse_label_31:
+%param_ptr5 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw6 = load i32, i32* %param_ptr5
+%reg7 = trunc i32 %param_raw6 to i1
+br i1 %reg7, label %true_case_36, label %false_case_38
+true_case_36:
+br label %parse_label_40
+false_case_38:
+br label %cond_66
+parse_label_40:
+%param_ptr8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw9 = load i32, i32* %param_ptr8
+%reg10 = trunc i32 %param_raw9 to i1
+br i1 %reg10, label %true_case_45, label %false_case_47
+true_case_45:
+br label %statement_49
+false_case_47:
+br label %cond_66
+statement_49:
+%reg11 = add i32 0, 8080
+call void(i32) @printi(i32%reg11)
+br label %parse_label_53
+parse_label_53:
+%param_ptr12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw13 = load i32, i32* %param_ptr12
+%reg14 = trunc i32 %param_raw13 to i1
+br i1 %reg14, label %true_case_58, label %false_case_60
+true_case_58:
+br label %statement_62
+false_case_60:
+br label %func_end_100
+statement_62:
+%reg15 = add i32 0, 999
+call void(i32) @printi(i32%reg15)
+br label %func_end_100
+cond_66:
+%param_ptr16 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw17 = load i32, i32* %param_ptr16
+%reg18 = trunc i32 %param_raw17 to i1
+br i1 %reg18, label %true_case_71, label %false_case_73
+true_case_71:
+br label %statement_75
+false_case_73:
+br label %statement_90
+statement_75:
+br label %false_case_79
+true_case_77:
+br label %set_bool_reg_81
+false_case_79:
+br label %set_bool_reg_81
+set_bool_reg_81:
+%reg19 = phi i32 [1, %true_case_77], [0, %false_case_79]
+%reg20 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg19, i32* %reg20
+br label %statement_86
+statement_86:
+%reg21 = add i32 0, 11111
+call void(i32) @printi(i32%reg21)
+br label %cond_66
+statement_90:
+%reg22 = add i32 0, 0
+%reg23 = add i32 0, 0
+%reg24 = add i32 %reg22, %reg23
+%reg25 = add i32 0, 0
+%reg26 = mul i32 %reg24, %reg25
+%reg27 = add i32 0, 1
+%reg28 = sdiv i32 %reg26, %reg27
+call void(i32) @printi(i32%reg28)
+br label %func_end_100
+func_end_100:
+ret i32 0
+}
