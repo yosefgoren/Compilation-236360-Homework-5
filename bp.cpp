@@ -285,6 +285,37 @@ void CodeBuffer::emitStoreVarBasic(const string& id, const string& immidiate_or_
 	emit("store i32 "+immidiate_or_reg+", i32* "+ptr);
 }
 
+void CodeBuffer::emitFuncDecl(const string& id){
+	assert(symtab.callableValidId(id));
+	FunctionType& func_type = symtab.getFunctionType(id);
+	string ir_ret_type = IrType(func_type.return_type);
+	
+	vector<string> ir_types;
+	for(ExpType type: func_type.getParameterTypes()){
+		//all types are just the raw data (i32):
+		ir_types.push_back("i32");
+	}
+	string param_types = concatWithSpacing(ir_types, " ");
+
+	emit("define "+ir_ret_type+"@"+id+"("+param_types+"){");
+}
+
+string CodeBuffer::IrDefaultTypedValue(ExpType type){
+	assert(type != STRING_EXP);
+	switch(type){
+		case INT_EXP:
+			return "i32 0";
+		case BYTE_EXP:
+			return "i8 0";
+		case BOOL_EXP:
+			return "i1 0";
+		case VOID_EXP:
+			return "void";
+	}
+	assert(false);
+	return "IML ERROR";
+}
+
 string CodeBuffer::createPtrToStackVar(int offset){
 	std::string ptr_reg = getFreshReg();
 	emit(ptr_reg+" = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 "+std::to_string(offset));

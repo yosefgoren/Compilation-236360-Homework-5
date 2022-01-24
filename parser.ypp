@@ -194,22 +194,20 @@ FuncDecl:			RetType ID {check(symtab.declarableValidId(*$2), output::errorDef(yy
 					LPAREN Formals {	
 						checkFuncDec(*$2, *$5);
 						symtab.declareFunc(*$2, $1, $5);
-
-						//TODO: emit decleration of this function.
-						cb.emit("define i32 @main(){");
+						cb.emitFuncDecl(*$2);
 						cb.emit("%sp = alloca [50 x i32]");
 						cur_parsed_func_start_label_offset = cb.emit("br label @");
 						//std::vector<Backpatch> bpv = cb.makelist(Backpatch(cb.emit("br label @"), FIRST));
 					} RPAREN LBRACE Statements RBRACE {
 						symtab.finishFunc();
 						cb.bpatch(cb.makelist(Backpatch(cur_parsed_func_start_label_offset, FIRST)), $9->start_label);
-						//TODO: if the user did not end his function with 'return', we need to do it for him.
-						//TODO: emit end of func (rbrace)
+						//TODO: add support for user not having to put 'return' at the end of his functions.
 						
-						std::string func_end_label = cb.genLabel("func_end");
-						cb.bpatch($9->nextlist, func_end_label);
-						cb.emit("ret i32 0");
+						//std::string func_end_label = cb.genLabel("func_end");
+						//cb.bpatch($9->nextlist, func_end_label);
+						
 						cb.emit("}");
+						delete $9;
 					}
 					;
 RetType:			Type {$$ = $1;}
@@ -459,13 +457,36 @@ SimpleStatement:	Block {$$ = $1;}
 					}
 					| StatementLabel RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC {
 						$$ = RunBlock::newSinkBlockEndingHere(*$1);
+						ExpType ret_type = symtab.getCurrentlyParsedFuncType().return_type;
+						cb.emit("ret "+cb.IrDefaultTypedValue(ret_type)); 
 					}
 					| StatementLabel RETURN Exp {//TODO: cause 'RETURN' to actually return the appropriate register, with its real type (not raw data).
 						//TODO: check edge case where this value (of Exp) is boolean...
 						checkMismatch($3->type, symtab.getCurrentlyParsedFuncType().return_type);
 						check($3->type != VOID_EXP, output::errorMismatch(yylineno));
+						check($3->type != STRING_EXP, output::errorMismatch(yylineno));
 					} SC {
 						$$ = RunBlock::newSinkBlockEndingHere(*$1);
+						ExpType ret_type = symtab.getCurrentlyParsedFuncType().return_type;
+						//TODO: check if we need to cast given expression to actual return type!
+						switch($3->type){
+						case INT_EXP:
+						case BYTE_EXP:{
+							NumericExp* numeric_exp = dynamic_cast<NumericExp*>($3);
+							assert(numeric_exp);
+							cb.emit("ret "+cb.IrType(numeric_exp->type)+numeric_exp->reg);
+						}
+							break;
+						case BOOL_EXP:{
+							BoolExp* bool_exp = dynamic_cast<BoolExp*>($3);
+							assert(bool_exp);
+							string res_reg = bool_exp->storeAsReg();
+							cb.emit("ret i1 "+res_reg);
+							break;
+						}
+						default:
+							assert(false);
+						}
 						delete $3;
 					}
 					| StatementLabel BREAK SC {//TODO: add support for break.
@@ -477,7 +498,7 @@ SimpleStatement:	Block {$$ = $1;}
 						$$ = RunBlock::newBlockEndingHere(*$1);
 					}
 					;
-VarDecStart:		TypeAnnotation Type ID {
+VarDecStart:		TypeAnnotation Type ID {//TODO: initialize to default value!
 						check(symtab.declarableValidId(*$3), output::errorDef(yylineno, *$3));
 						$$ = {.is_const = $1, .raw_type = $2, .id = $3};
 					};
@@ -500,7 +521,6 @@ void declareLibraryFuncs(){
 	symtab.finishFunc(false);
 	symtab.declareFunc("printi", VOID_EXP, printi_params);
 	symtab.finishFunc(false);
-	
 }
 
 int main(){

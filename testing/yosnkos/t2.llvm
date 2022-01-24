@@ -12,7 +12,7 @@ define void @print(i8*) {
     call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
     ret void
 }
-define i32 @main(){
+define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
@@ -45,7 +45,7 @@ br label %cond_8
 statement_30:
 %reg17 = add i32 0, 9002
 call void(i32) @printi(i32%reg17)
-br label %func_end_34
-func_end_34:
-ret i32 0
+br label %statement_34
+statement_34:
+ret void
 }

@@ -105,7 +105,8 @@ BoolExp::BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data)
 BoolExp::BoolExp(std::vector<Backpatch> truelist, std::vector<Backpatch> falselist)
 	:Expression(BOOL_EXP), truelist(truelist), falselist(falselist){}
 
-string BoolExp::storeAsRawReg(){
+
+string BoolExp::storeAsRegPrototype(bool as_raw_reg){
 	string true_label = cb.genLabel("true_case");
 	cb.bpatch(truelist, true_label);
 	int true_jump_addr = cb.emit("br label @");
@@ -118,8 +119,16 @@ string BoolExp::storeAsRawReg(){
 	cb.bpatch(cb.makelist(Backpatch(true_jump_addr, FIRST)), bool_reg_label);
 	cb.bpatch(cb.makelist(Backpatch(false_jump_addr, FIRST)), bool_reg_label);
 	string res_reg = cb.getFreshReg();
-	cb.emit(res_reg+" = phi i32 [1, %"+true_label+"], [0, %"+false_label+"]");
+	string resulting_ir_type = as_raw_reg ? "i32" : "i1";
+	cb.emit(res_reg+" = phi "+resulting_ir_type+" [1, %"+true_label+"], [0, %"+false_label+"]");
 	return res_reg;
+}
+
+string BoolExp::storeAsReg(){
+	return storeAsRegPrototype(false);
+}
+string BoolExp::storeAsRawReg(){
+	return storeAsRegPrototype(true);
 }
 
 // Expression* BoolExp::cloneCast(ExpType type){

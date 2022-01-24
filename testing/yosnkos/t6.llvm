@@ -12,7 +12,7 @@ define void @print(i8*) {
     call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
     ret void
 }
-define i32 @main(){
+define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
@@ -73,11 +73,11 @@ br i1 %reg14, label %true_case_58, label %false_case_60
 true_case_58:
 br label %statement_62
 false_case_60:
-br label %func_end_100
+br label %statement_100
 statement_62:
 %reg15 = add i32 0, 999
 call void(i32) @printi(i32%reg15)
-br label %func_end_100
+br label %statement_100
 cond_66:
 %param_ptr16 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw17 = load i32, i32* %param_ptr16
@@ -111,7 +111,7 @@ statement_90:
 %reg27 = add i32 0, 1
 %reg28 = sdiv i32 %reg26, %reg27
 call void(i32) @printi(i32%reg28)
-br label %func_end_100
-func_end_100:
-ret i32 0
+br label %statement_100
+statement_100:
+ret void
 }
