@@ -52,14 +52,21 @@ Expression::Expression(ExpType type)
 
 RegStoredExp::RegStoredExp(ExpType type, const string& rvalue_exp)
 	:Expression(type), reg(cb.getFreshReg()){
-	cb.emitRegDecl(reg, rvalue_exp);
+	cb.emit(reg+" = "+rvalue_exp);
 }
 
 NumericExp::NumericExp(ExpType type, const string& rvalue_exp)
 	:RegStoredExp(type, rvalue_exp){}
 
 string NumericExp::storeAsRawReg(){
-	return type == INT_EXP ? reg : cb.emitRegDecl(cb.getFreshReg(), "zext i8 "+reg+" to i32");
+	string res;
+	if(type == INT_EXP){
+		res = reg;
+	} else {
+		res = cb.getFreshReg("raw_reg");
+		cb.emit(res+" = zext i8 "+reg+" to i32");
+	}
+	return res;
 }
 
 // Expression* cloneCast(ExpType type){
@@ -72,11 +79,12 @@ BoolExp::BoolExp()
 BoolExp::BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data)
 	:Expression(BOOL_EXP){
 
-	string bool_value_reg = cb.getFreshReg();
+	string bool_value_reg;
 	if(rvalue_reg_is_raw_data){
-		cb.emitRegDecl(bool_value_reg, "trunc i32 "+rvalue_reg+" to i1");
+		bool_value_reg = cb.getFreshReg();
+		cb.emit(bool_value_reg+" = trunc i32 "+rvalue_reg+" to i1");
 	} else {
-		cb.emitRegDecl(bool_value_reg, rvalue_reg);
+		bool_value_reg = rvalue_reg;
 	}
 	//now 'bool_value_reg' should hold the required value, it should also be of type 'i1'.
 
@@ -110,7 +118,7 @@ string BoolExp::storeAsRawReg(){
 	cb.bpatch(cb.makelist(Backpatch(true_jump_addr, FIRST)), bool_reg_label);
 	cb.bpatch(cb.makelist(Backpatch(false_jump_addr, FIRST)), bool_reg_label);
 	string res_reg = cb.getFreshReg();
-	cb.emitRegDecl(res_reg, "phi i32 [1, %"+true_label+"], [0, %"+false_label+"]");
+	cb.emit(res_reg+" = phi i32 [1, %"+true_label+"], [0, %"+false_label+"]");
 	return res_reg;
 }
 

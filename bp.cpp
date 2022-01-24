@@ -111,10 +111,17 @@ void CodeBuffer::emitLibFuncs(){
 	emitGlobal("}");	
 }
 
-string CodeBuffer::emitRegDecl(const string& lvalue_id, const string& rvalue_exp){
-	emit(lvalue_id + " = " + rvalue_exp);
-	return lvalue_id;
+string CodeBuffer::emitCopyReg(const string& src_reg_or_imm, ExpType src_reg_type, const string& new_reg_prefix){
+	string new_reg = getFreshReg(new_reg_prefix);
+	string ir_type = IrType(src_reg_type);
+	emit(new_reg+" = add "+ir_type+" 0, "+src_reg_or_imm);
+	return new_reg;
 }
+
+// string CodeBuffer::emitRegDecl(const string& lvalue_id, const string& rvalue_exp){
+// 	emit(lvalue_id + " = " + rvalue_exp);
+// 	return lvalue_id;
+// }
 
 string storeBoolOrNumericAsRawReg(Expression* exp){
 	ExpType type = exp->type;
@@ -154,9 +161,9 @@ Expression* CodeBuffer::emitLoadVar(const string& id){
 	if(offset >= 0){
 		//if this identifier is a local variable:
 		string param_ptr = getFreshReg("param_ptr");
-		emitRegDecl(param_ptr, "getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 "+to_string(offset));
+		emit(param_ptr+" = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 "+to_string(offset));
 		raw_value_reg = getFreshReg("param_raw");
-		emitRegDecl(raw_value_reg, "load i32, i32* "+param_ptr);
+		emit(raw_value_reg+" = load i32, i32* "+param_ptr);
 	} else {
 		//if this id is a parameter:
 		raw_value_reg = "%"+to_string(-offset);
@@ -208,15 +215,15 @@ Expression* CodeBuffer::createNonVoidExpFromReg(const string& reg_name, ExpType 
 	string truncated_value_reg;
 	switch(type){
 	case INT_EXP:
-		return new NumericExp(INT_EXP, reg_name);
+		return new NumericExp(INT_EXP, "add i32 0, "+reg_name);
 	case BYTE_EXP:
 		if(rvalue_reg_is_raw_data){
 			truncated_value_reg = getFreshReg("truncated_byte");
-			emitRegDecl(truncated_value_reg, "trunc i32 "+reg_name+" to i8");
+			emit(truncated_value_reg+" = trunc i32 "+reg_name+" to i8");
 		} else {
 			truncated_value_reg = reg_name;
 		}
-		return new NumericExp(BYTE_EXP, truncated_value_reg);
+		return new NumericExp(BYTE_EXP, "add i8 0, "+truncated_value_reg);
 	case BOOL_EXP:
 		return new BoolExp(reg_name, rvalue_reg_is_raw_data);
 	case STRING_EXP:
@@ -265,7 +272,7 @@ Expression* CodeBuffer::emitFunctionCall(const string& func_id, const vector<Exp
 	} else {
 		//this code will emit a function call with all generated registers:
 		string result_reg = getFreshReg();
-		emitRegDecl(result_reg, call_format);
+		emit(result_reg+" = "+call_format);
 		return createNonVoidExpFromReg(result_reg, return_type, false);
 	}
 	assert(false);
@@ -280,7 +287,7 @@ void CodeBuffer::emitStoreVarBasic(const string& id, const string& immidiate_or_
 
 string CodeBuffer::createPtrToStackVar(int offset){
 	std::string ptr_reg = getFreshReg();
-	emitRegDecl(ptr_reg, "getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 "+std::to_string(offset));
+	emit(ptr_reg+" = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 "+std::to_string(offset));
 	return ptr_reg;
 }
 

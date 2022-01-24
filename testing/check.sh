@@ -35,13 +35,17 @@ function check_test () {
 			printf "\t${BLUE}< expected but not found${NC}\n"
 			printf "\t${BLUE}> found but not expected${NC}\n"
 			
-			printf "\n${YELLOW}cat llvm output? [y/n]${NC}\n"
+			printf "\n${YELLOW}output llvm output? [<enter> | cat | vsc | cfg]${NC}\n"
 			read SHOULD_CAT_OUTPUT
 			if [ -z $SHOULD_CAT_OUTPUT ]; then
 				exit 1
-			fi
-			if [ $SHOULD_CAT_OUTPUT == 'y' ]; then
+			elif [ $SHOULD_CAT_OUTPUT == 'cat' ]; then
 				cat $TEST.llvm
+			elif [ $SHOULD_CAT_OUTPUT == 'vsc' ]; then
+				code $TEST.llvm
+			elif [ $SHOULD_CAT_OUTPUT == 'cgg' ]; then
+				code $TEST.llvm
+				opt --dot-cfg 1.ll; dot cfg.funcname.dot -Tpng > 1.png
 			fi
 			exit 1
 		fi

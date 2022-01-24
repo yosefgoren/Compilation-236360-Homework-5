@@ -1650,7 +1650,7 @@ yyreduce:
 						ExpType operand_type = maxNumeralType(exp1->type, exp2->type);
 						std::string cond_rval = cb.relopRvalFormat(exp1->reg, exp2->reg, operand_type, (yyvsp[-1].relop));
 						std::string cond_reg = cb.getFreshReg();
-						cb.emitRegDecl(cond_reg, cond_rval);
+						cb.emit(cond_reg+" = "+cond_rval);
 						int br_address = cb.emit("br i1 "+cond_reg+", label @, label @");
 						
 						BoolExp* res_exp = new BoolExp();

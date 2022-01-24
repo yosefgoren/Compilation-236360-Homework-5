@@ -58,7 +58,15 @@ public:
 
 	// ******** Methods to produce LLVM IR ******** //
 	void emitLibFuncs();
-	string emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
+	
+	/**
+	 * @brief creates a new register and assigns it the value of 'src_reg_type'.
+	 * @param src_reg_type - either a name of a register in the form of '%reg' or an immidiate value like '3'.
+	 * @param new_reg_prefix - the prefix to the name of the newly created register.
+	 * @return the name of the newly created register.
+	 **/
+	string emitCopyReg(const string& src_reg_or_imm, ExpType src_reg_type, const string& new_reg_prefix = "copy");
+	//string emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
 	void emitStoreVar(const string& id, Expression* exp_to_assign);
 	void emitStoreVar(const string& id, int immidiate);
 	Expression* emitFunctionCall(const string& func_id, const vector<Expression*>& param_expressions);

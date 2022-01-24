@@ -1,0 +1,5 @@
+digraph "CFG for 'printi' function" {
+	label="CFG for 'printi' function";
+
+	Node0x209ea00 [shape=record,label="{%1:\l  %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0\l  %2 = call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)\l  ret void\l}"];
+}
