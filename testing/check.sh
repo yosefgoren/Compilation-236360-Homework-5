@@ -38,7 +38,7 @@ function check_test () {
 			printf "\t${BLUE}< expected but not found${NC}\n"
 			printf "\t${BLUE}> found but not expected${NC}\n"
 			
-			printf "\n${YELLOW}what to do? [nothing <enter> | cat | vsc | gdb]${NC}\n"
+			printf "\n${YELLOW}what to do? [nothing <enter> | cat | vsc | gdb | src]${NC}\n"
 			read SHOULD_CAT_OUTPUT
 			if [ -z $SHOULD_CAT_OUTPUT ]; then
 				exit 1
@@ -46,6 +46,8 @@ function check_test () {
 				cat $TEST.llvm
 			elif [ $SHOULD_CAT_OUTPUT == 'vsc' ]; then
 				code $TEST.llvm
+			elif [ $SHOULD_CAT_OUTPUT == 'src' ]; then
+				code $TEST.in
 			elif [ $SHOULD_CAT_OUTPUT == 'gdb' ]; then
 				export TEST="$TEST.in"
 				gdb $EXE

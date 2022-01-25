@@ -282,8 +282,14 @@ Exp:				LPAREN Exp RPAREN {$$ = $2;}
 					| STRING {$$ = new StrExp();}
 					| LPAREN Type RPAREN Exp {
 						check(canExplicitCast($4->type, $2), output::errorMismatch(yylineno));
-						$$ = $4;
-						$$->type = $2;//TODO - this is not a real cast & should be handled better.
+						NumericExp* num_exp = dynamic_cast<NumericExp*>($4);
+						assert(num_exp);
+						
+						if($2 == BYTE_EXP)
+							num_exp->convertToByte();
+						else if($2 == INT_EXP)
+							num_exp->convertToInt();
+						$$ = num_exp;
 					}
 					| NumericExp
 					| BoolExp

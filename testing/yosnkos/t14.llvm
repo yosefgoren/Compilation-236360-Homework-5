@@ -75,8 +75,8 @@ parse_label_59:
 %reg12 = call i8() @zoo()
 %reg13 = add i8 0, %reg12
 %reg14 = add i32 0, 0
-%byte2int_converted_reg15 = zext i8 %reg13 to i32
-%reg16 = icmp eq i32 %byte2int_converted_reg15, %reg14
+%b2int_conv_reg15 = zext i8 %reg13 to i32
+%reg16 = icmp eq i32 %b2int_conv_reg15, %reg14
 br i1 %reg16, label %statement_66, label %statement_70
 statement_66:
 %reg17 = add i32 0, 7070

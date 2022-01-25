@@ -42,11 +42,20 @@ NumericExp::NumericExp(ExpType type, const string& rvalue_exp)
 
 void NumericExp::convertToInt(){
 	if(type == BYTE_EXP){
-		string new_reg = cb.getFreshReg("byte2int_converted_reg");
+		string new_reg = cb.getFreshReg("b2int_conv_reg");
 		cb.emit(new_reg+" = zext i8 "+reg+" to i32");
 		reg = new_reg;
 	}
 	type = INT_EXP;
+}
+
+void NumericExp::convertToByte(){
+	if(type == INT_EXP){
+		string new_reg = cb.getFreshReg("int2byte_conv_reg");
+		cb.emit(new_reg+" = trunc i32 "+reg+" to i8");
+		reg = new_reg;
+	}
+	type = BYTE_EXP;
 }
 
 string NumericExp::storeAsRawReg(){
