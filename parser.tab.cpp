@@ -665,10 +665,10 @@ static const yytype_int16 yyrline[] =
      193,   194,   193,   216,   217,   219,   220,   222,   223,   225,
      227,   228,   235,   241,   250,   251,   253,   254,   255,   257,
      258,   260,   261,   262,   267,   268,   273,   274,   277,   290,
-     291,   296,   297,   298,   300,   317,   335,   356,   365,   372,
-     381,   382,   386,   392,   399,   408,   409,   416,   424,   424,
-     429,   429,   435,   436,   443,   450,   458,   461,   461,   466,
-     466,   495,   499,   504
+     291,   296,   297,   298,   300,   313,   326,   344,   353,   358,
+     365,   366,   370,   376,   383,   392,   393,   400,   408,   408,
+     413,   413,   419,   420,   427,   434,   442,   445,   445,   450,
+     450,   479,   483,   488
 };
 #endif
 
@@ -1392,7 +1392,7 @@ yyreduce:
                                                                           {
 						symtab.finishFunc();
 						cb.bpatch(cb.makelist(Backpatch(cur_parsed_func_start_label_offset, FIRST)), (yyvsp[-1].run_block)->start_label);
-						//TODO: add support for user not having to put 'return' at the end of his functions.
+						//TODO: add support for users not having to put 'return' at the end of his functions.
 						
 						Backpatch func_end_bp(cb.emit("br label @"), FIRST);
 						std::string func_end_label = cb.genLabel("func_end");
@@ -1629,21 +1629,17 @@ yyreduce:
 						assert(exp1);
 						BoolExp* exp2 = dynamic_cast<BoolExp*>((yyvsp[0].expression));
 						assert(exp2);
-						BoolExp* res_exp = new BoolExp();
-
+						
 						cb.bpatch(exp1->truelist, *(yyvsp[-1].label));
-						res_exp->falselist = cb.merge(exp1->falselist, exp2->falselist);
-						res_exp->truelist = exp2->truelist;
-						(yyval.expression) = res_exp;
-						delete (yyvsp[-3].expression);
-						delete (yyvsp[-1].label);
-						delete (yyvsp[0].expression);
+						(yyval.expression) = new BoolExp(exp2->truelist, cb.merge(exp1->falselist, exp2->falselist));
+					
+						delete (yyvsp[-3].expression); delete (yyvsp[-1].label); delete (yyvsp[0].expression);
 					}
-#line 1643 "parser.tab.cpp"
+#line 1639 "parser.tab.cpp"
     break;
 
   case 45: /* BoolExp: Exp OR Label Exp  */
-#line 317 "parser.ypp"
+#line 313 "parser.ypp"
                                                           {
 						checkMismatch((yyvsp[-3].expression)->type, BOOL_EXP);
 						checkMismatch((yyvsp[0].expression)->type, BOOL_EXP);
@@ -1651,22 +1647,17 @@ yyreduce:
 						assert(exp1);
 						BoolExp* exp2 = dynamic_cast<BoolExp*>((yyvsp[0].expression));
 						assert(exp2);
-						BoolExp* res_exp = new BoolExp();
 
 						cb.bpatch(exp1->falselist, *(yyvsp[-1].label));
-						res_exp->truelist = cb.merge(exp1->truelist, exp2->truelist);
-						res_exp->falselist = exp2->falselist;
-						
-						(yyval.expression) = res_exp;
-						delete (yyvsp[-3].expression);
-						delete (yyvsp[-1].label);
-						delete (yyvsp[0].expression);
+						(yyval.expression) = new BoolExp(cb.merge(exp1->truelist, exp2->truelist), exp2->falselist);
+
+						delete (yyvsp[-3].expression); delete (yyvsp[-1].label); delete (yyvsp[0].expression);
 					}
-#line 1666 "parser.tab.cpp"
+#line 1657 "parser.tab.cpp"
     break;
 
   case 46: /* BoolExp: Exp RELOP Exp  */
-#line 335 "parser.ypp"
+#line 326 "parser.ypp"
                                                         {
 						check(isNumeralType((yyvsp[-2].expression)->type) && isNumeralType((yyvsp[0].expression)->type), output::errorMismatch(yylineno));
 						NumericExp* exp1 = dynamic_cast<NumericExp*>((yyvsp[-2].expression));
@@ -1680,19 +1671,16 @@ yyreduce:
 						cb.emit(cond_reg+" = "+cond_rval);
 						int br_address = cb.emit("br i1 "+cond_reg+", label @, label @");
 						
-						BoolExp* res_exp = new BoolExp();
-						res_exp->truelist = cb.makelist(Backpatch(br_address, FIRST));
-						res_exp->falselist = cb.makelist(Backpatch(br_address, SECOND));
+						(yyval.expression) = new BoolExp(cb.makelist(Backpatch(br_address, FIRST))
+							, cb.makelist(Backpatch(br_address, SECOND)));
 						
-						(yyval.expression) = res_exp;
-						delete (yyvsp[-2].expression);
-						delete (yyvsp[0].expression);
+						delete (yyvsp[-2].expression); delete (yyvsp[0].expression);
 					}
-#line 1692 "parser.tab.cpp"
+#line 1680 "parser.tab.cpp"
     break;
 
   case 47: /* BoolExp: NOT Exp  */
-#line 356 "parser.ypp"
+#line 344 "parser.ypp"
                                                   {
 						checkMismatch((yyvsp[0].expression)->type, BOOL_EXP);
 						BoolExp* exp = dynamic_cast<BoolExp*>((yyvsp[0].expression));
@@ -1702,58 +1690,54 @@ yyreduce:
 						exp->falselist = tmp;
 						(yyval.expression) = exp;
 					}
-#line 1706 "parser.tab.cpp"
+#line 1694 "parser.tab.cpp"
     break;
 
   case 48: /* BoolExp: TRUE  */
-#line 365 "parser.ypp"
+#line 353 "parser.ypp"
                                                {
 						int position = cb.emit("br label @");
 						Backpatch bp_details(position, FIRST);
-						BoolExp* exp = new BoolExp();
-						exp->truelist = CodeBuffer::makelist(bp_details);
-						(yyval.expression) = exp;
+						(yyval.expression) = new BoolExp(CodeBuffer::makelist(bp_details), cb.makeEmptyList());
 					}
-#line 1718 "parser.tab.cpp"
+#line 1704 "parser.tab.cpp"
     break;
 
   case 49: /* BoolExp: FALSE  */
-#line 372 "parser.ypp"
+#line 358 "parser.ypp"
                                                 {
 						int position = cb.emit("br label @");
 						Backpatch bp_details(position, FIRST);
-						BoolExp* exp = new BoolExp();
-						exp->falselist = CodeBuffer::makelist(bp_details);
-						(yyval.expression) = exp;
+						(yyval.expression) = new BoolExp(cb.makeEmptyList(), CodeBuffer::makelist(bp_details));
 					}
-#line 1730 "parser.tab.cpp"
+#line 1714 "parser.tab.cpp"
     break;
 
   case 50: /* Statement: OpenStatment  */
-#line 381 "parser.ypp"
+#line 365 "parser.ypp"
                                              {(yyval.run_block) = (yyvsp[0].run_block);}
-#line 1736 "parser.tab.cpp"
+#line 1720 "parser.tab.cpp"
     break;
 
   case 51: /* Statement: ClosedStatment  */
-#line 382 "parser.ypp"
+#line 366 "parser.ypp"
                                                          {(yyval.run_block) = (yyvsp[0].run_block);}
-#line 1742 "parser.tab.cpp"
+#line 1726 "parser.tab.cpp"
     break;
 
   case 52: /* OpenStatment: IfStart OpenScope Statement CloseScope  */
-#line 386 "parser.ypp"
+#line 370 "parser.ypp"
                                                                {
 						cb.bpatch((yyvsp[-3].branch_block)->truelist, (yyvsp[-1].run_block)->start_label);
 						(yyval.run_block) = new RunBlock((yyvsp[-3].branch_block)->cond_label);
 						(yyval.run_block)->nextlist = cb.merge((yyvsp[-3].branch_block)->falselist, (yyvsp[-1].run_block)->nextlist);
 						delete (yyvsp[-3].branch_block); delete (yyvsp[-1].run_block);
 					}
-#line 1753 "parser.tab.cpp"
+#line 1737 "parser.tab.cpp"
     break;
 
   case 53: /* OpenStatment: IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope OpenStatment CloseScope  */
-#line 392 "parser.ypp"
+#line 376 "parser.ypp"
                                                                                                                              {
 						cb.bpatch((yyvsp[-7].branch_block)->truelist, (yyvsp[-5].run_block)->start_label);
 						cb.bpatch((yyvsp[-7].branch_block)->falselist, (yyvsp[-1].run_block)->start_label);
@@ -1761,11 +1745,11 @@ yyreduce:
 						(yyval.run_block)->nextlist = cb.merge((yyvsp[-5].run_block)->nextlist, (yyvsp[-1].run_block)->nextlist);
 						delete (yyvsp[-7].branch_block); delete (yyvsp[-5].run_block); delete (yyvsp[-1].run_block);
 					}
-#line 1765 "parser.tab.cpp"
+#line 1749 "parser.tab.cpp"
     break;
 
   case 54: /* OpenStatment: WhileStart OpenLoop OpenScope OpenStatment CloseScope CloseLoop  */
-#line 399 "parser.ypp"
+#line 383 "parser.ypp"
                                                                                                           {
 						cb.bpatch((yyvsp[-5].branch_block)->truelist, (yyvsp[-2].run_block)->start_label);
 						cb.bpatch((yyvsp[-2].run_block)->nextlist, (yyvsp[-5].branch_block)->cond_label);
@@ -1773,17 +1757,17 @@ yyreduce:
 						(yyval.run_block)->nextlist = (yyvsp[-5].branch_block)->falselist;
 						delete (yyvsp[-5].branch_block); delete (yyvsp[-2].run_block);
 					}
-#line 1777 "parser.tab.cpp"
+#line 1761 "parser.tab.cpp"
     break;
 
   case 55: /* ClosedStatment: SimpleStatement  */
-#line 408 "parser.ypp"
+#line 392 "parser.ypp"
                                         {(yyval.run_block) = (yyvsp[0].run_block);}
-#line 1783 "parser.tab.cpp"
+#line 1767 "parser.tab.cpp"
     break;
 
   case 56: /* ClosedStatment: IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope ClosedStatment CloseScope  */
-#line 409 "parser.ypp"
+#line 393 "parser.ypp"
                                                                                                                                {
 						cb.bpatch((yyvsp[-7].branch_block)->truelist, (yyvsp[-5].run_block)->start_label);
 						cb.bpatch((yyvsp[-7].branch_block)->falselist, (yyvsp[-1].run_block)->start_label);
@@ -1791,11 +1775,11 @@ yyreduce:
 						(yyval.run_block)->nextlist = cb.merge((yyvsp[-5].run_block)->nextlist, (yyvsp[-1].run_block)->nextlist);
 						delete (yyvsp[-7].branch_block); delete (yyvsp[-5].run_block); delete (yyvsp[-1].run_block);
 					}
-#line 1795 "parser.tab.cpp"
+#line 1779 "parser.tab.cpp"
     break;
 
   case 57: /* ClosedStatment: WhileStart OpenLoop OpenScope ClosedStatment CloseScope CloseLoop  */
-#line 416 "parser.ypp"
+#line 400 "parser.ypp"
                                                                                                             {
 						cb.bpatch((yyvsp[-5].branch_block)->truelist, (yyvsp[-2].run_block)->start_label);
 						cb.bpatch((yyvsp[-2].run_block)->nextlist, (yyvsp[-5].branch_block)->cond_label);
@@ -1803,47 +1787,47 @@ yyreduce:
 						(yyval.run_block)->nextlist = (yyvsp[-5].branch_block)->falselist;
 						delete (yyvsp[-5].branch_block); delete (yyvsp[-2].run_block);
 					}
-#line 1807 "parser.tab.cpp"
+#line 1791 "parser.tab.cpp"
     break;
 
   case 58: /* $@3: %empty  */
-#line 424 "parser.ypp"
+#line 408 "parser.ypp"
                                                     {checkBool((yyvsp[0].expression)->type);}
-#line 1813 "parser.tab.cpp"
+#line 1797 "parser.tab.cpp"
     break;
 
   case 59: /* IfStart: IF LPAREN Label Exp $@3 RPAREN  */
-#line 424 "parser.ypp"
+#line 408 "parser.ypp"
                                                                                   {
 						(yyval.branch_block) = new BranchBlock(*(yyvsp[-3].label), (yyvsp[-2].expression));
 						delete (yyvsp[-3].label); delete (yyvsp[-2].expression);
 					}
-#line 1822 "parser.tab.cpp"
+#line 1806 "parser.tab.cpp"
     break;
 
   case 60: /* $@4: %empty  */
-#line 429 "parser.ypp"
+#line 413 "parser.ypp"
                                                            {checkBool((yyvsp[0].expression)->type);}
-#line 1828 "parser.tab.cpp"
+#line 1812 "parser.tab.cpp"
     break;
 
   case 61: /* WhileStart: WHILE LPAREN CondLabel Exp $@4 RPAREN  */
-#line 429 "parser.ypp"
+#line 413 "parser.ypp"
                                                                                          {
 						(yyval.branch_block) = new BranchBlock(*(yyvsp[-3].label), (yyvsp[-2].expression));
 						delete (yyvsp[-3].label); delete (yyvsp[-2].expression);
 					}
-#line 1837 "parser.tab.cpp"
+#line 1821 "parser.tab.cpp"
     break;
 
   case 62: /* SimpleStatement: Block  */
-#line 435 "parser.ypp"
+#line 419 "parser.ypp"
                               {(yyval.run_block) = (yyvsp[0].run_block);}
-#line 1843 "parser.tab.cpp"
+#line 1827 "parser.tab.cpp"
     break;
 
   case 63: /* SimpleStatement: StatementLabel VarDecStart SC  */
-#line 436 "parser.ypp"
+#line 420 "parser.ypp"
                                                                         {
 						check(!(yyvsp[-1].dec_info).is_const, output::errorConstDef(yylineno));
 						symtab.declareVar(*(yyvsp[-1].dec_info).id, (yyvsp[-1].dec_info).raw_type, (yyvsp[-1].dec_info).is_const);
@@ -1851,11 +1835,11 @@ yyreduce:
 						(yyval.run_block) = RunBlock::newBlockEndingHere(*(yyvsp[-2].label));
 						delete (yyvsp[-1].dec_info).id;
 					}
-#line 1855 "parser.tab.cpp"
+#line 1839 "parser.tab.cpp"
     break;
 
   case 64: /* SimpleStatement: StatementLabel VarDecStart ASSIGN Exp SC  */
-#line 443 "parser.ypp"
+#line 427 "parser.ypp"
                                                                                    {
 						checkMismatch((yyvsp[-1].expression)->type, (yyvsp[-3].dec_info).raw_type);
 						symtab.declareVar(*(yyvsp[-3].dec_info).id, (yyvsp[-3].dec_info).raw_type, (yyvsp[-3].dec_info).is_const);
@@ -1863,11 +1847,11 @@ yyreduce:
 						(yyval.run_block) = RunBlock::newBlockEndingHere(*(yyvsp[-4].label));
 						delete (yyvsp[-3].dec_info).id; delete (yyvsp[-1].expression);
 					}
-#line 1867 "parser.tab.cpp"
+#line 1851 "parser.tab.cpp"
     break;
 
   case 65: /* SimpleStatement: StatementLabel ID ASSIGN Exp SC  */
-#line 450 "parser.ypp"
+#line 434 "parser.ypp"
                                                                           {
 						check(symtab.containsVar(*(yyvsp[-3].id)), output::errorUndef(yylineno, *(yyvsp[-3].id)));
 						check(!symtab.isConst(*(yyvsp[-3].id)), output::errorConstMismatch(yylineno));
@@ -1876,46 +1860,46 @@ yyreduce:
 						(yyval.run_block) = RunBlock::newBlockEndingHere(*(yyvsp[-4].label));
 						delete (yyvsp[-3].id); delete (yyvsp[-1].expression);
 					}
-#line 1880 "parser.tab.cpp"
+#line 1864 "parser.tab.cpp"
     break;
 
   case 66: /* SimpleStatement: StatementLabel Call SC  */
-#line 458 "parser.ypp"
+#line 442 "parser.ypp"
                                                                  {
 						(yyval.run_block) = RunBlock::newBlockEndingHere(*(yyvsp[-2].label));
 					}
-#line 1888 "parser.tab.cpp"
+#line 1872 "parser.tab.cpp"
     break;
 
   case 67: /* $@5: %empty  */
-#line 461 "parser.ypp"
+#line 445 "parser.ypp"
                                                                 {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);}
-#line 1894 "parser.tab.cpp"
+#line 1878 "parser.tab.cpp"
     break;
 
   case 68: /* SimpleStatement: StatementLabel RETURN $@5 SC  */
-#line 461 "parser.ypp"
+#line 445 "parser.ypp"
                                                                                                                                                {
 						(yyval.run_block) = RunBlock::newSinkBlockEndingHere(*(yyvsp[-3].label));
 						ExpType ret_type = symtab.getCurrentlyParsedFuncType().return_type;
 						cb.emit("ret "+cb.IrDefaultTypedValue(ret_type)); 
 					}
-#line 1904 "parser.tab.cpp"
+#line 1888 "parser.tab.cpp"
     break;
 
   case 69: /* $@6: %empty  */
-#line 466 "parser.ypp"
+#line 450 "parser.ypp"
                                                                     {//TODO: cause 'RETURN' to actually return the appropriate register, with its real type (not raw data).
 						//TODO: check edge case where this value (of Exp) is boolean...
 						checkMismatch((yyvsp[0].expression)->type, symtab.getCurrentlyParsedFuncType().return_type);
 						check((yyvsp[0].expression)->type != VOID_EXP, output::errorMismatch(yylineno));
 						check((yyvsp[0].expression)->type != STRING_EXP, output::errorMismatch(yylineno));
 					}
-#line 1915 "parser.tab.cpp"
+#line 1899 "parser.tab.cpp"
     break;
 
   case 70: /* SimpleStatement: StatementLabel RETURN Exp $@6 SC  */
-#line 471 "parser.ypp"
+#line 455 "parser.ypp"
                                              {
 						(yyval.run_block) = RunBlock::newSinkBlockEndingHere(*(yyvsp[-4].label));
 						ExpType ret_type = symtab.getCurrentlyParsedFuncType().return_type;
@@ -1940,38 +1924,38 @@ yyreduce:
 						}
 						delete (yyvsp[-2].expression);
 					}
-#line 1944 "parser.tab.cpp"
+#line 1928 "parser.tab.cpp"
     break;
 
   case 71: /* SimpleStatement: StatementLabel BREAK SC  */
-#line 495 "parser.ypp"
+#line 479 "parser.ypp"
                                                                   {//TODO: add support for break.
 						check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));
 						(yyval.run_block) = RunBlock::newBlockEndingHere(*(yyvsp[-2].label));
 					}
-#line 1953 "parser.tab.cpp"
+#line 1937 "parser.tab.cpp"
     break;
 
   case 72: /* SimpleStatement: StatementLabel CONTINUE SC  */
-#line 499 "parser.ypp"
+#line 483 "parser.ypp"
                                                                      {//TODO: add support for break.
 						check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));
 						(yyval.run_block) = RunBlock::newBlockEndingHere(*(yyvsp[-2].label));
 					}
-#line 1962 "parser.tab.cpp"
+#line 1946 "parser.tab.cpp"
     break;
 
   case 73: /* VarDecStart: TypeAnnotation Type ID  */
-#line 504 "parser.ypp"
+#line 488 "parser.ypp"
                                                {//TODO: initialize to default value!
 						check(symtab.declarableValidId(*(yyvsp[0].id)), output::errorDef(yylineno, *(yyvsp[0].id)));
 						(yyval.dec_info) = {.is_const = (yyvsp[-2].is_const), .raw_type = (yyvsp[-1].exp_type), .id = (yyvsp[0].id)};
 					}
-#line 1971 "parser.tab.cpp"
+#line 1955 "parser.tab.cpp"
     break;
 
 
-#line 1975 "parser.tab.cpp"
+#line 1959 "parser.tab.cpp"
 
       default: break;
     }
@@ -2165,7 +2149,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 509 "parser.ypp"
+#line 493 "parser.ypp"
 
 void yyerror(const char* s){
 	output::errorSyn(yylineno);

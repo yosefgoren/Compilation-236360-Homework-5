@@ -28,24 +28,6 @@ std::vector<std::string> ExpTypeStringVector(std::vector<ExpType> types, bool ca
 	return result;
 }
 
-Expression* Expression::generateExpByType(ExpType type){
-	#ifndef OLDT
-	throw NotImplementedError();
-	#else
-	switch(type){
-		case BOOL_EXP:
-			return new BoolExp();
-		case INT_EXP:
-		case BYTE_EXP:
-			return new NumericExp(type, "NO_REGISTER");
-		case VOID_EXP:
-			return new VoidExp();
-		case STRING_EXP:
-			return new StrExp();
-		}
-	#endif
-}
-
 Expression::Expression(ExpType type)
 	:type(type){};
 
@@ -73,9 +55,6 @@ string NumericExp::storeAsRawReg(){
 	
 // }
 
-BoolExp::BoolExp()
-	:Expression(BOOL_EXP){};
-
 BoolExp::BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data)
 	:Expression(BOOL_EXP){
 
@@ -98,6 +77,7 @@ BoolExp::BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data)
 	cb.bpatch(cb.makelist(Backpatch(initial_branch_adderess, SECOND)), false_jump_label);
 	int falselist_jump_address = cb.emit("br label @");
 	
+	//end_label = cb.genLabel("bool_ending");
 	truelist = cb.makelist(Backpatch(truelist_jump_address, FIRST));
 	falselist = cb.makelist(Backpatch(falselist_jump_address, FIRST));
 }
@@ -132,10 +112,6 @@ string BoolExp::storeAsRawReg(){
 }
 
 // Expression* BoolExp::cloneCast(ExpType type){
-// 	if(type != BOOL_EXP){
-// 		throw InvalidCastException();
-// 	}
-// 	return new BoolExp();
 // }
 
 StrExp::StrExp()

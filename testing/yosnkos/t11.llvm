@@ -140,35 +140,30 @@ define i32@foo(){
 %sp = alloca [50 x i32]
 br label %parse_label_127
 parse_label_127:
-
 %reg15 = call i1() @TRUE()
 br i1 %reg15, label %true_case_130, label %false_case_132
 true_case_130:
 br label %true_case_146
 false_case_132:
 br label %false_case_148
-
-true_case_146:
-br label %set_bool_reg_150
-false_case_148:
-br label %set_bool_reg_150
-set_bool_reg_150:
-%reg18 = phi i32 [1, %true_case_146], [0, %false_case_148]
-
 %reg16 = call i1() @FALSE()
 br i1 %reg16, label %true_case_136, label %false_case_138
 true_case_136:
 br label %true_case_140
 false_case_138:
 br label %false_case_142
-
 true_case_140:
 br label %set_bool_reg_144
 false_case_142:
 br label %set_bool_reg_144
 set_bool_reg_144:
 %reg17 = phi i32 [1, %true_case_140], [0, %false_case_142]
-
+true_case_146:
+br label %set_bool_reg_150
+false_case_148:
+br label %set_bool_reg_150
+set_bool_reg_150:
+%reg18 = phi i32 [1, %true_case_146], [0, %false_case_148]
 %reg19 = call i1(i32 i32) @OR(i32%reg17, i32%reg18)
 br i1 %reg19, label %true_case_154, label %false_case_156
 true_case_154:

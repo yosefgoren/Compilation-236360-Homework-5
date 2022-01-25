@@ -201,8 +201,7 @@ FuncDecl:			RetType ID {check(symtab.declarableValidId(*$2), output::errorDef(yy
 					} RPAREN LBRACE Statements RBRACE {
 						symtab.finishFunc();
 						cb.bpatch(cb.makelist(Backpatch(cur_parsed_func_start_label_offset, FIRST)), $9->start_label);
-						//TODO: add support for user 
-						snot having to put 'return' at the end of his functions.
+						//TODO: add support for users not having to put 'return' at the end of his functions.
 						
 						Backpatch func_end_bp(cb.emit("br label @"), FIRST);
 						std::string func_end_label = cb.genLabel("func_end");
@@ -305,15 +304,11 @@ BoolExp: 			Exp AND Label Exp {
 						assert(exp1);
 						BoolExp* exp2 = dynamic_cast<BoolExp*>($4);
 						assert(exp2);
-						BoolExp* res_exp = new BoolExp();
-
+						
 						cb.bpatch(exp1->truelist, *$3);
-						res_exp->falselist = cb.merge(exp1->falselist, exp2->falselist);
-						res_exp->truelist = exp2->truelist;
-						$$ = res_exp;
-						delete $1;
-						delete $3;
-						delete $4;
+						$$ = new BoolExp(exp2->truelist, cb.merge(exp1->falselist, exp2->falselist));
+					
+						delete $1; delete $3; delete $4;
 					}
 		 			|Exp OR Label Exp {
 						checkMismatch($1->type, BOOL_EXP);
@@ -322,16 +317,11 @@ BoolExp: 			Exp AND Label Exp {
 						assert(exp1);
 						BoolExp* exp2 = dynamic_cast<BoolExp*>($4);
 						assert(exp2);
-						BoolExp* res_exp = new BoolExp();
 
 						cb.bpatch(exp1->falselist, *$3);
-						res_exp->truelist = cb.merge(exp1->truelist, exp2->truelist);
-						res_exp->falselist = exp2->falselist;
-						
-						$$ = res_exp;
-						delete $1;
-						delete $3;
-						delete $4;
+						$$ = new BoolExp(cb.merge(exp1->truelist, exp2->truelist), exp2->falselist);
+
+						delete $1; delete $3; delete $4;
 					}
 					| Exp RELOP Exp {
 						check(isNumeralType($1->type) && isNumeralType($3->type), output::errorMismatch(yylineno));
@@ -346,13 +336,10 @@ BoolExp: 			Exp AND Label Exp {
 						cb.emit(cond_reg+" = "+cond_rval);
 						int br_address = cb.emit("br i1 "+cond_reg+", label @, label @");
 						
-						BoolExp* res_exp = new BoolExp();
-						res_exp->truelist = cb.makelist(Backpatch(br_address, FIRST));
-						res_exp->falselist = cb.makelist(Backpatch(br_address, SECOND));
+						$$ = new BoolExp(cb.makelist(Backpatch(br_address, FIRST))
+							, cb.makelist(Backpatch(br_address, SECOND)));
 						
-						$$ = res_exp;
-						delete $1;
-						delete $3;
+						delete $1; delete $3;
 					}
 					| NOT Exp {
 						checkMismatch($2->type, BOOL_EXP);
@@ -366,16 +353,12 @@ BoolExp: 			Exp AND Label Exp {
 					| TRUE {
 						int position = cb.emit("br label @");
 						Backpatch bp_details(position, FIRST);
-						BoolExp* exp = new BoolExp();
-						exp->truelist = CodeBuffer::makelist(bp_details);
-						$$ = exp;
+						$$ = new BoolExp(CodeBuffer::makelist(bp_details), cb.makeEmptyList());
 					}
 					| FALSE {
 						int position = cb.emit("br label @");
 						Backpatch bp_details(position, FIRST);
-						BoolExp* exp = new BoolExp();
-						exp->falselist = CodeBuffer::makelist(bp_details);
-						$$ = exp;
+						$$ = new BoolExp(cb.makeEmptyList(), CodeBuffer::makelist(bp_details));
 					}
 					;
 
