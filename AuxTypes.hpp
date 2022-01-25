@@ -106,14 +106,14 @@ struct Expression{
 };
 
 struct RegStoredExp: public Expression{
-	RegStoredExp(ExpType type, const std::string& rvalue_exp);
+	RegStoredExp(ExpType type, const std::string& rvalue_exp, bool store_to_new_reg = true);
 	std::string reg;
 
 	static const std::string REG_NOT_ASSIGNED;
 };
 
 struct NumericExp: public RegStoredExp{
-	NumericExp(ExpType type, const std::string& rvalue_exp);
+	NumericExp(ExpType type, const std::string& rvalue_exp, bool store_to_new_reg = true);
 	void convertToInt();
 	void convertToByte();
 	std::string storeAsRawReg();

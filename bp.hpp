@@ -68,7 +68,7 @@ public:
 	string emitCopyReg(const string& src_reg_or_imm, ExpType src_reg_type, const string& new_reg_prefix = "copy");
 	//string emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
 	void emitStoreVar(const string& id, Expression* exp_to_assign);
-	void emitStoreVar(const string& id, int immidiate);
+	void emitStoreVar(const string& id, const string& reg_or_immidiate);
 	void emitFuncDecl(const string& id);
 	Expression* emitFunctionCall(const string& func_id, const vector<Expression*>& param_expressions);
 	Expression* emitLoadVar(const string& id);

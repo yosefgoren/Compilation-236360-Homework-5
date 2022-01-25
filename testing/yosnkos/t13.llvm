@@ -31,11 +31,9 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_18
 statement_18:
-%reg3 = add i32 0, 9
-%reg4 = add i32 0, 11
-call void(i32, i32) @foo(i32 %reg3, i32 %reg4)
-br label %func_end_24
-br label %func_end_24
-func_end_24:
+call void(i32, i32) @foo(i32  9, i32  11)
+br label %func_end_22
+br label %func_end_22
+func_end_22:
 ret void
 }

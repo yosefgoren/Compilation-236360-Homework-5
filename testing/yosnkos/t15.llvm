@@ -16,70 +16,62 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-%reg1 = add i32 0, 5
-%int2byte_conv_reg2 = trunc i32 %reg1 to i8
-%raw_reg3 = zext i8 %int2byte_conv_reg2 to i32
-%reg4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32 %raw_reg3, i32* %reg4
-br label %parse_label_10
-parse_label_10:
-%param_ptr5 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw6 = load i32, i32* %param_ptr5
-%truncated_byte7 = trunc i32 %param_raw6 to i8
-%reg8 = add i8 0, %truncated_byte7
-%reg9 = add i8 0, 3
-%reg10 = add i8 %reg8, %reg9
-%reg11 = add i32 0, 8
-%b2int_conv_reg12 = zext i8 %reg10 to i32
-%reg13 = icmp eq i32 %b2int_conv_reg12, %reg11
-br i1 %reg13, label %statement_21, label %statement_25
+%int2byte_conv_reg1 = trunc i32  5 to i8
+%raw_reg2 = zext i8 %int2byte_conv_reg1 to i32
+%reg3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %raw_reg2, i32* %reg3
+br label %parse_label_9
+parse_label_9:
+%param_ptr4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw5 = load i32, i32* %param_ptr4
+%truncated_byte6 = trunc i32 %param_raw5 to i8
+%reg7 = add i8 0, %truncated_byte6
+%reg8 = add i8 %reg7,  3
+%b2int_conv_reg9 = zext i8 %reg8 to i32
+%reg10 = icmp eq i32 %b2int_conv_reg9,  8
+br i1 %reg10, label %statement_18, label %statement_21
+statement_18:
+call void(i32) @printi(i32  420)
+br label %statement_24
 statement_21:
-%reg14 = add i32 0, 420
-call void(i32) @printi(i32 %reg14)
-br label %statement_29
-statement_25:
-%reg15 = add i32 0, 4201
-call void(i32) @printi(i32 %reg15)
-br label %statement_29
-statement_29:
-%param_ptr16 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw17 = load i32, i32* %param_ptr16
-%truncated_byte18 = trunc i32 %param_raw17 to i8
-%reg19 = add i8 0, %truncated_byte18
-%b2int_conv_reg20 = zext i8 %reg19 to i32
-%reg21 = add i32 0, 2
-%reg22 = add i32 %b2int_conv_reg20, %reg21
-%reg23 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32 %reg22, i32* %reg23
+call void(i32) @printi(i32  4201)
+br label %statement_24
+statement_24:
+%param_ptr11 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw12 = load i32, i32* %param_ptr11
+%truncated_byte13 = trunc i32 %param_raw12 to i8
+%reg14 = add i8 0, %truncated_byte13
+%b2int_conv_reg15 = zext i8 %reg14 to i32
+%reg16 = add i32 %b2int_conv_reg15,  2
+%reg17 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg16, i32* %reg17
+br label %statement_34
+statement_34:
+%param_ptr18 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw19 = load i32, i32* %param_ptr18
+%reg20 = add i32 0, %param_raw19
+call void(i32) @printi(i32 %reg20)
 br label %statement_40
 statement_40:
-%param_ptr24 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-%param_raw25 = load i32, i32* %param_ptr24
-%reg26 = add i32 0, %param_raw25
-call void(i32) @printi(i32 %reg26)
-br label %statement_46
-statement_46:
-%param_ptr27 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-%param_raw28 = load i32, i32* %param_ptr27
-%reg29 = add i32 0, %param_raw28
-%int2byte_conv_reg30 = trunc i32 %reg29 to i8
-%reg31 = add i8 0, 3
-%reg32 = add i8 %int2byte_conv_reg30, %reg31
-%reg33 = add i8 0, 10
-%reg34 = mul i8 %reg32, %reg33
-%raw_reg35 = zext i8 %reg34 to i32
-%reg36 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
-store i32 %raw_reg35, i32* %reg36
-br label %statement_59
-statement_59:
-%param_ptr37 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
-%param_raw38 = load i32, i32* %param_ptr37
-%truncated_byte39 = trunc i32 %param_raw38 to i8
-%reg40 = add i8 0, %truncated_byte39
-%raw_reg41 = zext i8 %reg40 to i32
-call void(i32) @printi(i32 %raw_reg41)
-br label %func_end_68
-br label %func_end_68
-func_end_68:
+%param_ptr21 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw22 = load i32, i32* %param_ptr21
+%reg23 = add i32 0, %param_raw22
+%int2byte_conv_reg24 = trunc i32 %reg23 to i8
+%reg25 = add i8 %int2byte_conv_reg24,  3
+%reg26 = mul i8 %reg25,  10
+%raw_reg27 = zext i8 %reg26 to i32
+%reg28 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %raw_reg27, i32* %reg28
+br label %statement_51
+statement_51:
+%param_ptr29 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw30 = load i32, i32* %param_ptr29
+%truncated_byte31 = trunc i32 %param_raw30 to i8
+%reg32 = add i8 0, %truncated_byte31
+%raw_reg33 = zext i8 %reg32 to i32
+call void(i32) @printi(i32 %raw_reg33)
+br label %func_end_60
+br label %func_end_60
+func_end_60:
 ret void
 }

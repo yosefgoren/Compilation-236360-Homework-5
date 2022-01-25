@@ -109,6 +109,18 @@
 		}
 	}
 
+	bool isDigit(char c){
+		return '0' <= c && c <= '9';
+	}
+
+	bool constValueIsNumLiteral(const string& literal){
+		for(char c: literal){
+			if(!isDigit(c))
+				return false;
+		}
+		return true;
+	}
+
 	int cur_parsed_func_start_label_offset;
 	CodeBuffer& cb = CodeBuffer::instance();
 %}
@@ -275,8 +287,15 @@ TypeAnnotation:		CONST {$$ = true;}
 Exp:				LPAREN Exp RPAREN {$$ = $2;}
 					| Call {$$ = $1;}
 					| ID {
-						check(symtab.rvalValidId(*$1), output::errorUndef(yylineno, *$1));
-						$$ = cb.emitLoadVar(*$1);
+						const string& id = *$1;
+						check(symtab.rvalValidId(id), output::errorUndef(yylineno, id));
+						if(symtab.isConst(id) && constValueIsNumLiteral(symtab.getConstValue(id))){
+							//get the constant value from the symtable and set it to the value of the expression:
+							$$ = new NumericExp(symtab.getVariableType(id), symtab.getConstValue(id), false);
+						} else {
+							//load value from stack:
+							$$ = cb.emitLoadVar(id);
+						}
 						delete $1;
 					}
 					| STRING {$$ = new StrExp();}
@@ -297,21 +316,27 @@ Exp:				LPAREN Exp RPAREN {$$ = $2;}
 
 NumericExp:			Exp BINOP Exp {//TODO: add support for overflow and div by 0 protection.
 						checkNumeralType($1->type);
-						auto numeric_e1 = dynamic_cast<NumericExp*>($1);
+						NumericExp* numeric_e1 = dynamic_cast<NumericExp*>($1);
 						assert(numeric_e1);
 						checkNumeralType($3->type);
-						auto numeric_e2 = dynamic_cast<NumericExp*>($3);
+						NumericExp* numeric_e2 = dynamic_cast<NumericExp*>($3);
 						assert(numeric_e2);
+						
+						ExpType max_type = maxNumeralType(numeric_e1->type, numeric_e2->type);
+						if(max_type == INT_EXP){
+							numeric_e1->convertToInt();
+							numeric_e2->convertToInt();
+						}
 
-						string rvalue_exp = cb.binopRvalFormat(numeric_e1->reg, numeric_e2->reg, $1->type, $2);
-						$$ = new NumericExp(maxNumeralType($1->type, $3->type), rvalue_exp);
+						string rvalue_exp = cb.binopRvalFormat(numeric_e1->reg, numeric_e2->reg, max_type, $2);
+						$$ = new NumericExp(max_type, rvalue_exp);
 						delete $1;
 						delete $3;
 					}
-					| NUM {$$ = new NumericExp(INT_EXP, cb.literalRvalFormat($1, INT_EXP));}
+					| NUM {$$ = new NumericExp(INT_EXP, " "+std::to_string($1), false);}
 					| NUM B {
 						checkByteTooLarge($1);
-						$$ = new NumericExp(BYTE_EXP, cb.literalRvalFormat($1, BYTE_EXP));
+						$$ = new NumericExp(BYTE_EXP, " "+std::to_string($1), false);
 					}
 					;
 Label: 				{$$ = new string(cb.genLabel("parse_label"));};
@@ -444,18 +469,30 @@ WhileStart:			WHILE LPAREN CondLabel Exp {checkBool($4->type);} RPAREN {
 SimpleStatement:	Block {$$ = $1;}
 					| StatementLabel VarDecStart SC {
 						check(!$2.is_const, output::errorConstDef(yylineno));
-						symtab.declareVar(*$2.id, $2.raw_type, $2.is_const);
-						cb.emitStoreVar(*$2.id, 0);
+						symtab.declareVar(*$2.id, $2.raw_type);
+						cb.emitStoreVar(*$2.id, "0");
 						$$ = RunBlock::newBlockEndingHere(*$1);
 						delete $2.id;
 					}
 					| StatementLabel VarDecStart ASSIGN Exp SC {
 						ExpType id_type = $2.raw_type;
 						checkMismatch($4->type, $2.raw_type);
-						symtab.declareVar(*$2.id, id_type, $2.is_const);
 						if(id_type == INT_EXP)
 							dynamic_cast<NumericExp*>($4)->convertToInt();
-						cb.emitStoreVar(*$2.id, $4);	
+						
+						if($2.is_const){
+							//TODO: what if Exp is not a nuemrical expresion ?
+							std::string reg_or_literal = dynamic_cast<NumericExp*>($4)->reg;
+							symtab.declareConstVar(*$2.id, id_type, reg_or_literal);
+							if(!constValueIsNumLiteral(reg_or_literal)){
+								//store the variable on the stack:
+								cb.emitStoreVar(*$2.id, reg_or_literal);		
+							}
+						} else {
+							symtab.declareVar(*$2.id, id_type);
+							cb.emitStoreVar(*$2.id, $4);	
+						}
+						
 						$$ = RunBlock::newBlockEndingHere(*$1);
 						delete $2.id; delete $4;
 					}

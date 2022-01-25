@@ -32,9 +32,18 @@ void SimpleSymtab::popScope(bool print_end_scope){
 	assert(curr_offset >= 0);
 }
 
-void SimpleSymtab::declareVar(const string& id, ExpType type, bool is_const){
+void SimpleSymtab::declareConstVar(const string& id, ExpType type, const string& reg_value){
 	assert(declarableValidId(id));
-		variable_decls[id] = {.type = type, .is_const = is_const, .offset = curr_offset};
+	assert(type == INT_EXP || type == BYTE_EXP);
+	variable_decls[id] = {.type = type, .is_const = true
+		, .offset = curr_offset, .const_value = reg_value};
+	scope_ids_stack.back().push_back(id);
+	++curr_offset;
+}
+
+void SimpleSymtab::declareVar(const string& id, ExpType type){
+	assert(declarableValidId(id));
+	variable_decls[id] = {.type = type, .is_const = false, .offset = curr_offset};
 	scope_ids_stack.back().push_back(id);
 	++curr_offset;
 }
@@ -95,6 +104,11 @@ bool SimpleSymtab::callableValidId(const std::string& id) const{
 bool SimpleSymtab::isConst(const std::string& id) const {
 	assert(containsVar(id));
 	return variable_decls.at(id).is_const;
+}
+
+std::string SimpleSymtab::getConstValue(const std::string& id) const{
+	assert(isConst(id));
+	return variable_decls.at(id).const_value;
 }
 
 ExpType SimpleSymtab::getVariableType(const string& id) const{

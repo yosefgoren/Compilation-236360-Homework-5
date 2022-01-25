@@ -16,17 +16,16 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-%reg1 = add i32 0, 1
-%reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32 %reg1, i32* %reg2
-br label %statement_8
-statement_8:
-%param_ptr3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw4 = load i32, i32* %param_ptr3
-%reg5 = add i32 0, %param_raw4
-call void(i32) @printi(i32 %reg5)
-br label %func_end_15
-br label %func_end_15
-func_end_15:
+%reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  1, i32* %reg1
+br label %statement_7
+statement_7:
+%param_ptr2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw3 = load i32, i32* %param_ptr2
+%reg4 = add i32 0, %param_raw3
+call void(i32) @printi(i32 %reg4)
+br label %func_end_14
+br label %func_end_14
+func_end_14:
 ret void
 }

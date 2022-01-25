@@ -16,21 +16,10 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-%raw_reg1 = zext i8  8 to i32
-%reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32 %raw_reg1, i32* %reg2
-br label %statement_8
-statement_8:
-%param_ptr3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw4 = load i32, i32* %param_ptr3
-%truncated_byte5 = trunc i32 %param_raw4 to i8
-%reg6 = add i8 0, %truncated_byte5
-%raw_reg7 = zext i8 %reg6 to i32
-call void(i32) @printi(i32 %raw_reg7)
-br label %statement_16
-statement_16:
-ret void
-br label %func_end_19
-func_end_19:
+%raw_reg1 = zext i8  11 to i32
+call void(i32) @printi(i32 %raw_reg1)
+br label %func_end_8
+br label %func_end_8
+func_end_8:
 ret void
 }

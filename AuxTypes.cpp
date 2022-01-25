@@ -31,14 +31,18 @@ std::vector<std::string> ExpTypeStringVector(std::vector<ExpType> types, bool ca
 Expression::Expression(ExpType type)
 	:type(type){};
 
-
-RegStoredExp::RegStoredExp(ExpType type, const string& rvalue_exp)
-	:Expression(type), reg(cb.getFreshReg()){
-	cb.emit(reg+" = "+rvalue_exp);
+RegStoredExp::RegStoredExp(ExpType type, const string& rvalue_exp, bool store_to_new_reg)
+	:Expression(type){
+	if(store_to_new_reg){
+		reg = cb.getFreshReg();
+		cb.emit(reg+" = "+rvalue_exp);
+	} else {
+		reg = rvalue_exp;
+	}
 }
 
-NumericExp::NumericExp(ExpType type, const string& rvalue_exp)
-	:RegStoredExp(type, rvalue_exp){}
+NumericExp::NumericExp(ExpType type, const string& rvalue_exp, bool store_to_new_reg)
+	:RegStoredExp(type, rvalue_exp, store_to_new_reg){}
 
 void NumericExp::convertToInt(){
 	if(type == BYTE_EXP){
