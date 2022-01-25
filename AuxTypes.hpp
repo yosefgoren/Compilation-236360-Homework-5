@@ -114,6 +114,7 @@ struct RegStoredExp: public Expression{
 
 struct NumericExp: public RegStoredExp{
 	NumericExp(ExpType type, const std::string& rvalue_exp);
+	void convertToInt();
 	std::string storeAsRawReg();
 	//virtual Expression* cloneCast(ExpType type) override;
 };

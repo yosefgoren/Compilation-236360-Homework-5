@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 using namespace std;
 extern SimpleSymtab symtab;
 
@@ -269,6 +270,8 @@ Expression* CodeBuffer::emitFunctionCall(const string& func_id, const vector<Exp
 		}
 		param_raw_value_regs.push_back(new_reg);//CHECK: are we putting the parameters backwards??
 	}
+	//this is since we have recived the parameters in reverse order:
+	reverse(param_raw_value_regs.begin(), param_raw_value_regs.end());
 
 	ExpType return_type = symtab.getReturnType(func_id);
 	

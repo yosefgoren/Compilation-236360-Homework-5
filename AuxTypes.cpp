@@ -40,6 +40,15 @@ RegStoredExp::RegStoredExp(ExpType type, const string& rvalue_exp)
 NumericExp::NumericExp(ExpType type, const string& rvalue_exp)
 	:RegStoredExp(type, rvalue_exp){}
 
+void NumericExp::convertToInt(){
+	if(type == BYTE_EXP){
+		string new_reg = cb.getFreshReg("byte2int_converted_reg");
+		cb.emit(new_reg+" = zext i8 "+reg+" to i32");
+		reg = new_reg;
+	}
+	type = INT_EXP;
+}
+
 string NumericExp::storeAsRawReg(){
 	string res;
 	if(type == INT_EXP){
