@@ -1,6 +1,6 @@
 # defaults:
 DEFAULT_MIN_TEST='1'
-DEFAULT_MAX_TEST='10'
+DEFAULT_MAX_TEST='15'
 EXIT_ON_FIRST_FAIL='1'
 DEFAULT_TESTS_DIR='yosnkos'
 EXE='../hw5'
@@ -23,7 +23,9 @@ function check_test () {
 	fi
 
 	if [ ! -f $TEST.in ]; then
-		printf "$TEST: ${BLUE} NOT FOUND ${NC}\n"
+		printf "$TEST.in: ${BLUE} NOT FOUND ${NC}\n"
+	elif [ ! -f $TEST.exp ]; then
+		printf "$TEST.exp: ${BLUE} NOT FOUND ${NC}\n"
 	else
 		$EXE < $TEST.in > $TEST.llvm
 		lli $TEST.llvm > $TEST.res
@@ -47,7 +49,7 @@ function check_test () {
 			elif [ $SHOULD_CAT_OUTPUT == 'gdb' ]; then
 				export TEST="$TEST.in"
 				gdb $EXE
-			# elif [ $SHOULD_CAT_OUTPUT == 'cgf' ]; then
+			# elif [ $SHOULD_CAT_OUTPUT == 'cfg' ]; then
 			# 	code $TEST.llvm
 			# 	opt --dot-cfg 1.ll; dot cfg.funcname.dot -Tpng > 1.png
 			fi

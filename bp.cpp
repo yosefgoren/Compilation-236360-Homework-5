@@ -166,7 +166,7 @@ Expression* CodeBuffer::emitLoadVar(const string& id){
 		emit(raw_value_reg+" = load i32, i32* "+param_ptr);
 	} else {
 		//if this id is a parameter:
-		raw_value_reg = "%"+to_string(-offset);
+		raw_value_reg = "%"+to_string(-offset-1);
 		//this is the parameter number as defined in llvm,
 		// for example the first parameter has offset -1, and is stored in register %1.
 	}
@@ -295,7 +295,7 @@ void CodeBuffer::emitFuncDecl(const string& id){
 		//all types are just the raw data (i32):
 		ir_types.push_back("i32");
 	}
-	string param_types = concatWithSpacing(ir_types, " ");
+	string param_types = concatWithSpacing(ir_types, ", ");
 
 	emit("define "+ir_ret_type+"@"+id+"("+param_types+"){");
 }

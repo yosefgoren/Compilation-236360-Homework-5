@@ -48,4 +48,7 @@ call void(i32) @printi(i32%reg17)
 br label %statement_34
 statement_34:
 ret void
+br label %func_end_37
+func_end_37:
+ret void
 }

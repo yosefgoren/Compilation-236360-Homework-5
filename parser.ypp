@@ -96,7 +96,7 @@
 				output::errorMainMissing();
 				exit(1);
 			} 
-		}else {
+		} else {
 			output::errorMainMissing();
 			exit(1);
 		}
@@ -201,10 +201,14 @@ FuncDecl:			RetType ID {check(symtab.declarableValidId(*$2), output::errorDef(yy
 					} RPAREN LBRACE Statements RBRACE {
 						symtab.finishFunc();
 						cb.bpatch(cb.makelist(Backpatch(cur_parsed_func_start_label_offset, FIRST)), $9->start_label);
-						//TODO: add support for user not having to put 'return' at the end of his functions.
+						//TODO: add support for user 
+						snot having to put 'return' at the end of his functions.
 						
-						//std::string func_end_label = cb.genLabel("func_end");
-						//cb.bpatch($9->nextlist, func_end_label);
+						Backpatch func_end_bp(cb.emit("br label @"), FIRST);
+						std::string func_end_label = cb.genLabel("func_end");
+						cb.bpatch($9->nextlist, func_end_label);
+						cb.bpatch(cb.makelist(func_end_bp), func_end_label);
+						cb.emit("ret "+cb.IrDefaultTypedValue($1));
 						
 						cb.emit("}");
 						delete $9;
