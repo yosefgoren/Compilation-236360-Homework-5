@@ -1,0 +1,149 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+define i1@foo(){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%reg1 = add i32 0, 100
+call void(i32) @printi(i32 %reg1)
+br label %statement_7
+statement_7:
+br label %true_case_9
+true_case_9:
+br label %set_bool_reg_13
+false_case_11:
+br label %set_bool_reg_13
+set_bool_reg_13:
+%reg2 = phi i1 [1, %true_case_9], [0, %false_case_11]
+ret i1 %reg2
+br label %func_end_17
+func_end_17:
+ret i1 0
+}
+define i1@other(i32){
+%sp = alloca [50 x i32]
+br label %statement_23
+statement_23:
+%reg3 = add i32 0, 0
+call void(i32) @printi(i32 %reg3)
+br label %statement_27
+statement_27:
+%reg4 = add i32 0, %0
+%reg5 = add i32 0, 5
+%reg6 = icmp eq i32 %reg4, %reg5
+br i1 %reg6, label %true_case_32, label %false_case_34
+true_case_32:
+br label %set_bool_reg_36
+false_case_34:
+br label %set_bool_reg_36
+set_bool_reg_36:
+%reg7 = phi i1 [1, %true_case_32], [0, %false_case_34]
+ret i1 %reg7
+br label %func_end_40
+func_end_40:
+ret i1 0
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_46
+statement_46:
+br label %parse_label_48
+parse_label_48:
+%reg8 = call i1() @foo()
+br i1 %reg8, label %true_case_51, label %false_case_53
+true_case_51:
+br label %true_case_55
+false_case_53:
+br label %false_case_57
+true_case_55:
+br label %set_bool_reg_59
+false_case_57:
+br label %set_bool_reg_59
+set_bool_reg_59:
+%reg9 = phi i32 [1, %true_case_55], [0, %false_case_57]
+%reg10 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg9, i32* %reg10
+br label %statement_64
+statement_64:
+%param_ptr11 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw12 = load i32, i32* %param_ptr11
+%reg13 = trunc i32 %param_raw12 to i1
+br i1 %reg13, label %true_case_69, label %false_case_71
+true_case_69:
+br label %true_case_81
+false_case_71:
+br label %parse_label_73
+parse_label_73:
+%reg14 = add i32 0, 3
+%reg15 = call i1(i32) @other(i32 %reg14)
+br i1 %reg15, label %true_case_77, label %false_case_79
+true_case_77:
+br label %true_case_81
+false_case_79:
+br label %false_case_83
+true_case_81:
+br label %set_bool_reg_85
+false_case_83:
+br label %set_bool_reg_85
+set_bool_reg_85:
+%reg16 = phi i32 [1, %true_case_81], [0, %false_case_83]
+%reg17 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg16, i32* %reg17
+br label %parse_label_90
+parse_label_90:
+%param_ptr18 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw19 = load i32, i32* %param_ptr18
+%reg20 = trunc i32 %param_raw19 to i1
+br i1 %reg20, label %true_case_95, label %false_case_97
+true_case_95:
+br label %statement_99
+false_case_97:
+br label %statement_127
+statement_99:
+%reg21 = add i32 0, 5
+call void(i32) @printi(i32 %reg21)
+br label %statement_103
+statement_103:
+br label %false_case_107
+true_case_105:
+br label %set_bool_reg_109
+false_case_107:
+br label %set_bool_reg_109
+set_bool_reg_109:
+%reg22 = phi i32 [1, %true_case_105], [0, %false_case_107]
+%reg23 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg22, i32* %reg23
+br label %parse_label_114
+parse_label_114:
+%param_ptr24 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw25 = load i32, i32* %param_ptr24
+%reg26 = trunc i32 %param_raw25 to i1
+br i1 %reg26, label %true_case_119, label %false_case_121
+true_case_119:
+br label %func_end_132
+false_case_121:
+br label %statement_123
+statement_123:
+%reg27 = add i32 0, 7
+call void(i32) @printi(i32 %reg27)
+br label %func_end_132
+statement_127:
+%reg28 = add i32 0, 6
+call void(i32) @printi(i32 %reg28)
+br label %func_end_132
+br label %func_end_132
+func_end_132:
+ret void
+}

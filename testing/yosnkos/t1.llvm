@@ -23,7 +23,7 @@ store i32 0, i32* %reg1
 br label %cond_3
 statement_9:
 %reg2 = add i32 0, 3
-call void(i32) @printi(i32%reg2)
+call void(i32) @printi(i32 %reg2)
 br label %statement_13
 statement_13:
 ret void

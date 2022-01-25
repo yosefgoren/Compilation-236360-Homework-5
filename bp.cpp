@@ -207,7 +207,7 @@ string CodeBuffer::IrFuncTypeFormat(const string& func_id){
 		//all types are just the raw data (i32):
 		ir_types.push_back("i32");
 	}
-	return return_type+"("+concatWithSpacing(ir_types, " ")+")";
+	return return_type+"("+concatWithSpacing(ir_types, ", ")+")";
 }
 
 Expression* CodeBuffer::createNonVoidExpFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data){
@@ -247,22 +247,32 @@ Expression* CodeBuffer::emitFunctionCall(const string& func_id, const vector<Exp
 	for(Expression* exp: param_expressions){
 		assert(exp->type != VOID_EXP);
 		string new_reg;
-		if(exp->type == STRING_EXP){
+		switch(exp->type){
+		case STRING_EXP:
 			//TODO: handle string case here:
 			#ifndef OLDT
 			throw NotImplementedError();
 			#else
 			new_reg = "NOT IMPLEMENTED";
 			#endif
-		} else {
-			new_reg = storeBoolOrNumericAsRawReg(exp);
+			break;
+		case BOOL_EXP: {
+			RegStoredExp* reg_bool_exp = dynamic_cast<RegStoredExp*>(exp);
+			assert(reg_bool_exp);
+			new_reg = reg_bool_exp->reg;
+			break;
 		}
-		param_raw_value_regs.push_back(new_reg);
+		default:
+			NumericExp* numeric_exp = dynamic_cast<NumericExp*>(exp);
+			assert(numeric_exp);
+			new_reg = numeric_exp->storeAsRawReg();
+		}
+		param_raw_value_regs.push_back(new_reg);//CHECK: are we putting the parameters backwards??
 	}
 
 	ExpType return_type = symtab.getReturnType(func_id);
 	
-	string ir_params_list = concatWithSpacing(prefixToEach(param_raw_value_regs, "i32"), ", ");
+	string ir_params_list = concatWithSpacing(prefixToEach(param_raw_value_regs, "i32 "), ", ");
 	string ir_func_type = IrFuncTypeFormat(func_id);
 	string call_format = "call "+ir_func_type+" @"+func_id+"("+ir_params_list+")";
 	

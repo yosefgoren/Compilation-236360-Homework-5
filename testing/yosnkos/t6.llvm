@@ -63,7 +63,7 @@ false_case_47:
 br label %cond_66
 statement_49:
 %reg11 = add i32 0, 8080
-call void(i32) @printi(i32%reg11)
+call void(i32) @printi(i32 %reg11)
 br label %parse_label_53
 parse_label_53:
 %param_ptr12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
@@ -76,7 +76,7 @@ false_case_60:
 br label %statement_100
 statement_62:
 %reg15 = add i32 0, 999
-call void(i32) @printi(i32%reg15)
+call void(i32) @printi(i32 %reg15)
 br label %statement_100
 cond_66:
 %param_ptr16 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -100,7 +100,7 @@ store i32 %reg19, i32* %reg20
 br label %statement_86
 statement_86:
 %reg21 = add i32 0, 11111
-call void(i32) @printi(i32%reg21)
+call void(i32) @printi(i32 %reg21)
 br label %cond_66
 statement_90:
 %reg22 = add i32 0, 0
@@ -110,7 +110,7 @@ statement_90:
 %reg26 = mul i32 %reg24, %reg25
 %reg27 = add i32 0, 1
 %reg28 = sdiv i32 %reg26, %reg27
-call void(i32) @printi(i32%reg28)
+call void(i32) @printi(i32 %reg28)
 br label %statement_100
 statement_100:
 ret void

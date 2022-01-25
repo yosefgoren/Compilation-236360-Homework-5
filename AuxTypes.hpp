@@ -130,7 +130,7 @@ struct BoolExp: public Expression{
 	std::string storeAsRawReg();
 	std::string storeAsReg();
 	//virtual Expression* cloneCast(ExpType type) override;
-	std::string end_label;
+	//std::string end_label;
 	std::vector<Backpatch> truelist;
 	std::vector<Backpatch> falselist;
 private:

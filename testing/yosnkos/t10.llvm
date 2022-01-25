@@ -17,7 +17,7 @@ define i1@trutru(){
 br label %statement_3
 statement_3:
 %reg1 = add i32 0, 9001
-call void(i32) @printi(i32%reg1)
+call void(i32) @printi(i32 %reg1)
 br label %statement_7
 statement_7:
 br label %true_case_9
@@ -46,7 +46,7 @@ false_case_30:
 br label %func_end_37
 statement_32:
 %reg4 = add i32 0, 9002
-call void(i32) @printi(i32%reg4)
+call void(i32) @printi(i32 %reg4)
 br label %func_end_37
 br label %func_end_37
 func_end_37:

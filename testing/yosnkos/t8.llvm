@@ -17,7 +17,7 @@ define i32@foo(){
 br label %statement_3
 statement_3:
 %reg1 = add i32 0, 3
-call void(i32) @printi(i32%reg1)
+call void(i32) @printi(i32 %reg1)
 br label %statement_7
 statement_7:
 %reg2 = add i32 0, 1
@@ -35,7 +35,7 @@ statement_17:
 br label %statement_21
 statement_21:
 %reg5 = add i32 0, 99
-call void(i32) @printi(i32%reg5)
+call void(i32) @printi(i32 %reg5)
 br label %statement_25
 statement_25:
 ret void

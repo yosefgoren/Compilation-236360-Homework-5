@@ -161,7 +161,7 @@
 %right IF
 %token ELSE
 
-%type <expression> Exp NumericExp BoolExp Call
+%type <expression> Exp NumericExp BoolExp Call InvocationExp
 %type <exp_type> RetType Type
 %type <exp_list> ExpList
 %type <formals_list> Formals FormalsList
@@ -247,9 +247,24 @@ Call:				ID LPAREN ExpList RPAREN {
 						delete $1;	
 					}
 					;
-ExpList:			Exp {$$ = new std::vector<Expression*>(); $$->push_back($1);}
-					|Exp COMMA ExpList {$$ = $3; $$->push_back($1);}
+ExpList:			InvocationExp {
+						$$ = new std::vector<Expression*>(); $$->push_back($1);
+					}
+					|InvocationExp COMMA ExpList {$$ = $3; $$->push_back($1);}
 					;
+
+InvocationExp:		Exp {
+						if($1->type == BOOL_EXP){
+							BoolExp* bool_exp = dynamic_cast<BoolExp*>($1);
+							assert(bool_exp);
+							$$ = new RegStoredExp(BOOL_EXP, "add i32 0, "+bool_exp->storeAsRawReg());
+							delete $1;
+						} else {
+							$$ = $1;
+						}
+					}
+					;
+
 Type:				INT {$$ = INT_EXP;}
 					|BYTE {$$ = BYTE_EXP;}
 					|BOOL {$$ = BOOL_EXP;}

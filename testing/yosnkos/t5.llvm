@@ -27,7 +27,7 @@ statement_9:
 %truncated_byte6 = trunc i32 %param_raw5 to i8
 %reg7 = add i8 0, %truncated_byte6
 %raw_reg8 = zext i8 %reg7 to i32
-call void(i32) @printi(i32%raw_reg8)
+call void(i32) @printi(i32 %raw_reg8)
 br label %statement_17
 statement_17:
 ret void

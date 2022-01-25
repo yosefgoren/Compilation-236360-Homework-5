@@ -119,118 +119,121 @@ false_case_103:
 br label %set_bool_reg_105
 set_bool_reg_105:
 %reg12 = phi i32 [1, %true_case_101], [0, %false_case_103]
-%reg13 = call i1(i32) @NOT(i32%reg12)
-br i1 %reg13, label %true_case_109, label %false_case_111
-true_case_109:
-br label %true_case_113
-false_case_111:
-br label %false_case_115
-true_case_113:
-br label %set_bool_reg_117
-false_case_115:
-br label %set_bool_reg_117
-set_bool_reg_117:
-%reg14 = phi i1 [1, %true_case_113], [0, %false_case_115]
-ret i1 %reg14
-br label %func_end_121
-func_end_121:
+%reg13 = add i32 0, %reg12
+%reg14 = call i1(i32) @NOT(i32 %reg13)
+br i1 %reg14, label %true_case_110, label %false_case_112
+true_case_110:
+br label %true_case_114
+false_case_112:
+br label %false_case_116
+true_case_114:
+br label %set_bool_reg_118
+false_case_116:
+br label %set_bool_reg_118
+set_bool_reg_118:
+%reg15 = phi i1 [1, %true_case_114], [0, %false_case_116]
+ret i1 %reg15
+br label %func_end_122
+func_end_122:
 ret i1 0
 }
 define i32@foo(){
 %sp = alloca [50 x i32]
-br label %parse_label_127
-parse_label_127:
-%reg15 = call i1() @TRUE()
-br i1 %reg15, label %true_case_130, label %false_case_132
-true_case_130:
-br label %true_case_146
-false_case_132:
-br label %false_case_148
-%reg16 = call i1() @FALSE()
-br i1 %reg16, label %true_case_136, label %false_case_138
-true_case_136:
-br label %true_case_140
-false_case_138:
-br label %false_case_142
-true_case_140:
-br label %set_bool_reg_144
-false_case_142:
-br label %set_bool_reg_144
-set_bool_reg_144:
-%reg17 = phi i32 [1, %true_case_140], [0, %false_case_142]
-true_case_146:
-br label %set_bool_reg_150
-false_case_148:
-br label %set_bool_reg_150
-set_bool_reg_150:
-%reg18 = phi i32 [1, %true_case_146], [0, %false_case_148]
-%reg19 = call i1(i32 i32) @OR(i32%reg17, i32%reg18)
-br i1 %reg19, label %true_case_154, label %false_case_156
-true_case_154:
-br label %parse_label_158
-false_case_156:
+br label %parse_label_128
+parse_label_128:
+%reg16 = call i1() @TRUE()
+br i1 %reg16, label %true_case_131, label %false_case_133
+true_case_131:
+br label %true_case_135
+false_case_133:
+br label %false_case_137
+true_case_135:
+br label %set_bool_reg_139
+false_case_137:
+br label %set_bool_reg_139
+set_bool_reg_139:
+%reg17 = phi i32 [1, %true_case_135], [0, %false_case_137]
+%reg18 = add i32 0, %reg17
+%reg19 = call i1() @FALSE()
+br i1 %reg19, label %true_case_144, label %false_case_146
+true_case_144:
+br label %true_case_148
+false_case_146:
+br label %false_case_150
+true_case_148:
+br label %set_bool_reg_152
+false_case_150:
+br label %set_bool_reg_152
+set_bool_reg_152:
+%reg20 = phi i32 [1, %true_case_148], [0, %false_case_150]
+%reg21 = add i32 0, %reg20
+%reg22 = call i1(i32, i32) @OR(i32 %reg21, i32 %reg18)
+br i1 %reg22, label %true_case_157, label %false_case_159
+true_case_157:
+br label %parse_label_161
+false_case_159:
+br label %statement_170
+parse_label_161:
+br label %statement_163
+statement_163:
+%reg23 = add i32 0, 800
+call void(i32) @printi(i32 %reg23)
 br label %statement_167
-parse_label_158:
-br label %statement_160
-statement_160:
-%reg20 = add i32 0, 800
-call void(i32) @printi(i32%reg20)
-br label %statement_164
-statement_164:
-%reg21 = add i32 0, 800
-ret i32%reg21
 statement_167:
-%reg22 = add i32 0, 900
-ret i32%reg22
-br label %func_end_171
-func_end_171:
+%reg24 = add i32 0, 800
+ret i32%reg24
+statement_170:
+%reg25 = add i32 0, 900
+ret i32%reg25
+br label %func_end_174
+func_end_174:
 ret i32 0
 }
 define void@main(){
 %sp = alloca [50 x i32]
-br label %statement_177
-statement_177:
-%reg23 = add i32 0, 878
-%reg24 = add i32 0, 10
-%reg25 = mul i32 %reg23, %reg24
-%reg26 = add i32 0, 7
-%reg27 = add i32 %reg25, %reg26
-call void(i32) @printi(i32%reg27)
-br label %statement_185
-statement_185:
-%reg28 = call i32() @foo()
-%reg29 = add i32 0, %reg28
-call void(i32) @printi(i32%reg29)
-br label %parse_label_190
-parse_label_190:
-br label %parse_label_204
-parse_label_192:
-%reg30 = call i1() @TRUE()
-br i1 %reg30, label %true_case_195, label %false_case_197
-true_case_195:
-br label %statement_199
-false_case_197:
-br label %parse_label_204
-statement_199:
-%reg31 = add i32 0, 1
-%reg32 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32 %reg31, i32* %reg32
-br label %parse_label_204
-parse_label_204:
-br label %statement_213
-parse_label_206:
+br label %statement_180
+statement_180:
+%reg26 = add i32 0, 878
+%reg27 = add i32 0, 10
+%reg28 = mul i32 %reg26, %reg27
+%reg29 = add i32 0, 7
+%reg30 = add i32 %reg28, %reg29
+call void(i32) @printi(i32 %reg30)
+br label %statement_188
+statement_188:
+%reg31 = call i32() @foo()
+%reg32 = add i32 0, %reg31
+call void(i32) @printi(i32 %reg32)
+br label %parse_label_193
+parse_label_193:
+br label %parse_label_207
+parse_label_195:
 %reg33 = call i1() @TRUE()
-br i1 %reg33, label %true_case_209, label %false_case_211
-true_case_209:
-br label %statement_213
-false_case_211:
-br label %func_end_219
-statement_213:
+br i1 %reg33, label %true_case_198, label %false_case_200
+true_case_198:
+br label %statement_202
+false_case_200:
+br label %parse_label_207
+statement_202:
 %reg34 = add i32 0, 1
 %reg35 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg34, i32* %reg35
-br label %func_end_219
-br label %func_end_219
-func_end_219:
+br label %parse_label_207
+parse_label_207:
+br label %statement_216
+parse_label_209:
+%reg36 = call i1() @TRUE()
+br i1 %reg36, label %true_case_212, label %false_case_214
+true_case_212:
+br label %statement_216
+false_case_214:
+br label %func_end_222
+statement_216:
+%reg37 = add i32 0, 1
+%reg38 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg37, i32* %reg38
+br label %func_end_222
+br label %func_end_222
+func_end_222:
 ret void
 }
