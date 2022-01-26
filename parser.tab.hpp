@@ -67,10 +67,10 @@ extern int yydebug;
     BREAK = 268,                   /* BREAK  */
     CONTINUE = 269,                /* CONTINUE  */
     SC = 270,                      /* SC  */
-    STRING = 271,                  /* STRING  */
-    COMMA = 272,                   /* COMMA  */
-    ID = 273,                      /* ID  */
-    NUM = 274,                     /* NUM  */
+    COMMA = 271,                   /* COMMA  */
+    ID = 272,                      /* ID  */
+    NUM = 273,                     /* NUM  */
+    STRING = 274,                  /* STRING  */
     ASSIGN = 275,                  /* ASSIGN  */
     OR = 276,                      /* OR  */
     AND = 277,                     /* AND  */

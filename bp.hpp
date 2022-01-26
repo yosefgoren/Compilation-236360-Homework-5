@@ -72,7 +72,7 @@ public:
 	void emitFuncDecl(const string& id);
 	Expression* emitFunctionCall(const string& func_id, const vector<Expression*>& param_expressions);
 	Expression* emitLoadVar(const string& id);
-	Expression* createNonVoidExpFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data);
+	Expression* createIdentifiableFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data);
 	
 	string createPtrToStackVar(int offset);
 	string getFreshReg(const string& reg_name = "reg");

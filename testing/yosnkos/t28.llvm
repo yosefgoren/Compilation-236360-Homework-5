@@ -2,23 +2,25 @@ declare i32 @printf(i8*, ...)
 declare void @exit(i32)
 @.int_specifier = constant [4 x i8] c"%d\0A\00"
 @.str_specifier = constant [4 x i8] c"%s\0A\00"
-
 define void @printi(i32) {
     %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
     call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
     ret void
 }
-
 define void @print(i8*) {
     %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
     call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
     ret void
 }
-
-@.str = internal constant [14 x i8] c"hello, world\0A\00"
-
-define i32 @main(){
-	%str_ptr = getelementptr [14 x i8], [14 x i8]* @.str, i32 0, i32 0
-	call void(i8*) @print(i8* %str_ptr)
-	ret i32 99
+@.string_id0 = constant [6 x i8] c"hello\00"
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%str_ptr_reg1 = getelementptr [6 x i8], [6 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg1)
+br label %func_end_8
+br label %func_end_8
+func_end_8:
+ret void
 }

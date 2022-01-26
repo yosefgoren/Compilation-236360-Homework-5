@@ -100,7 +100,6 @@ struct Expression{
 	ExpType type;
 
 	static Expression* generateExpByType(ExpType type);
-	//virtual Expression* cloneCast(ExpType type) = 0;
 
 	class InvalidCastException: public std::exception{};
 };
@@ -117,13 +116,17 @@ struct NumericExp: public RegStoredExp{
 	void convertToInt();
 	void convertToByte();
 	std::string storeAsRawReg();
-	//virtual Expression* cloneCast(ExpType type) override;
 };
 
 struct StrExp: public Expression{
-	StrExp();
+	StrExp(const std::string& value);
+	std::string loadPtrToReg();
 
-	//virtual Expression* cloneCast(ExpType type) override;
+	std::string llvm_global_id;
+	std::string ir_type;
+
+	static int str_count;
+	static std::string getFreshStringId();
 };
 
 struct BoolExp: public Expression{
@@ -131,8 +134,7 @@ struct BoolExp: public Expression{
 	BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data);
 	std::string storeAsRawReg();
 	std::string storeAsReg();
-	//virtual Expression* cloneCast(ExpType type) override;
-	//std::string end_label;
+	
 	std::vector<Backpatch> truelist;
 	std::vector<Backpatch> falselist;
 private:
@@ -141,8 +143,6 @@ private:
 
 struct VoidExp: public Expression{
 	VoidExp();
-
-	//virtual Expression* cloneCast(ExpType type) override;
 };
 
 struct BranchBlock{

@@ -73,10 +73,6 @@ string NumericExp::storeAsRawReg(){
 	return res;
 }
 
-// Expression* cloneCast(ExpType type){
-	
-// }
-
 BoolExp::BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data)
 	:Expression(BOOL_EXP){
 
@@ -133,18 +129,25 @@ string BoolExp::storeAsRawReg(){
 	return storeAsRegPrototype(true);
 }
 
-// Expression* BoolExp::cloneCast(ExpType type){
-// }
+int StrExp::str_count = 0;
+std::string StrExp::getFreshStringId(){
+	return "@.string_id"+to_string(StrExp::str_count++);
+}
 
-StrExp::StrExp()
-	:Expression(STRING_EXP){};
+StrExp::StrExp(const string& value)
+	:Expression(STRING_EXP), llvm_global_id(getFreshStringId()){
+	string clipped_value = value.substr(1, value.size()-2);//this removes the quotation marks from the string.
+	
+	ir_type = "[" + to_string(clipped_value.size()+1) + " x i8]";
 
-// Expression* StrExp::cloneCast(ExpType type){
-// 	if(type != STRING_EXP){
-// 		throw InvalidCastException();
-// 	}
-// 	return new StrExp();
-// }
+	cb.emitGlobal(llvm_global_id + " = constant "+ir_type+" c\""+ clipped_value + "\\00\"");
+}
+
+std::string StrExp::loadPtrToReg(){
+	string ptr_reg = cb.getFreshReg("str_ptr_reg");
+	cb.emit(ptr_reg+" = getelementptr "+ir_type+", "+ir_type+"* "+llvm_global_id+", i32 0, i32 0");
+	return ptr_reg;
+}
 
 VoidExp::VoidExp()
 	:Expression(VOID_EXP){};
@@ -190,11 +193,3 @@ RunBlock* RunBlock::newBreakBlockHere(const std::string& block_start_label){
 	res->breaklist = cb.makelist(Backpatch(cb.emit("br label @"), FIRST));
 	return res;
 }
-
-// RunBlock* RunBlock::newBlockHere(){
-// 	return new RunBlock(cb.genLabel("statment_start"));
-// }
-
-// void RunBlock::endBlock(){
-// 	nextlist = std::vector<Backpatch>(cb.makelist(Backpatch(cb.emit("br label @"), FIRST)));
-// }

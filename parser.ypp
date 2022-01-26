@@ -155,10 +155,10 @@
 %token TRUE FALSE
 %token RETURN WHILE BREAK CONTINUE SC
 
-%token STRING
 %token COMMA
 %token <id> ID
 %token <number_literal> NUM
+%token <string_literal> STRING
 
 %right ASSIGN
 %left OR
@@ -207,18 +207,14 @@ FuncDecl:			RetType ID {check(symtab.declarableValidId(*$2), output::errorDef(yy
 						cb.emitFuncDecl(*$2);
 						cb.emit("%sp = alloca [50 x i32]");
 						cur_parsed_func_start_label_offset = cb.emit("br label @");
-						//std::vector<Backpatch> bpv = cb.makelist(Backpatch(cb.emit("br label @"), FIRST));
 					} RPAREN LBRACE Statements RBRACE {
 						symtab.finishFunc();
 						cb.bpatch(cb.makelist(Backpatch(cur_parsed_func_start_label_offset, FIRST)), $9->start_label);
-						//TODO: add support for users not having to put 'return' at the end of his functions.
-						
 						Backpatch func_end_bp(cb.emit("br label @"), FIRST);
 						std::string func_end_label = cb.genLabel("func_end");
 						cb.bpatch($9->nextlist, func_end_label);
 						cb.bpatch(cb.makelist(func_end_bp), func_end_label);
 						cb.emit("ret "+cb.IrDefaultTypedValue($1));
-						
 						cb.emit("}");
 						delete $9;
 					}
@@ -298,7 +294,10 @@ Exp:				LPAREN Exp RPAREN {$$ = $2;}
 						}
 						delete $1;
 					}
-					| STRING {$$ = new StrExp();}
+					| STRING {
+						$$ = new StrExp(*$1);
+						delete $1;	
+					}
 					| LPAREN Type RPAREN Exp {
 						check(canExplicitCast($4->type, $2), output::errorMismatch(yylineno));
 						NumericExp* num_exp = dynamic_cast<NumericExp*>($4);
@@ -548,11 +547,11 @@ SimpleStatement:	Block {$$ = $1;}
 						}
 						delete $3;
 					}
-					| StatementLabel BREAK SC {//TODO: add support for break.
+					| StatementLabel BREAK SC {
 						check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));
 						$$ = RunBlock::newBreakBlockHere(*$1);
 					}
-					| StatementLabel CONTINUE SC {//TODO: add support for break.
+					| StatementLabel CONTINUE SC {
 						check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));
 						$$ = RunBlock::newContinueBlockHere(*$1);
 					}

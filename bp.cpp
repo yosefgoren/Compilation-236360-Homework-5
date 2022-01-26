@@ -177,7 +177,7 @@ Expression* CodeBuffer::emitLoadVar(const string& id){
 		// for example the first parameter has offset -1, and is stored in register %1.
 	}
 
-	return createNonVoidExpFromReg(raw_value_reg, type, true);
+	return createIdentifiableFromReg(raw_value_reg, type, true);
 }
 
 vector<string> prefixToEach(const vector<string>& words, const string& prefix){
@@ -211,13 +211,13 @@ string CodeBuffer::IrFuncTypeFormat(const string& func_id){
 	vector<string> ir_types;
 	for(ExpType type: func_type.getParameterTypes()){
 		//all types are just the raw data (i32):
-		ir_types.push_back("i32");
+		ir_types.push_back(type == STRING_EXP ? "i8*" : "i32");
 	}
 	return return_type+"("+concatWithSpacing(ir_types, ", ")+")";
 }
 
-Expression* CodeBuffer::createNonVoidExpFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data){
-	assert(type != VOID_EXP);
+Expression* CodeBuffer::createIdentifiableFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data){
+	assert(type != VOID_EXP && type != STRING_EXP);
 	string truncated_value_reg;
 	switch(type){
 	case INT_EXP:
@@ -232,13 +232,6 @@ Expression* CodeBuffer::createNonVoidExpFromReg(const string& reg_name, ExpType 
 		return new NumericExp(BYTE_EXP, "add i8 0, "+truncated_value_reg);
 	case BOOL_EXP:
 		return new BoolExp(reg_name, rvalue_reg_is_raw_data);
-	case STRING_EXP:
-		//TODO: implement string case.
-		#ifndef OLDT
-		throw NotImplementedError();
-		#else
-		return new StrExp();
-		#endif
 	}
 	assert(false);
 	return nullptr;
@@ -252,35 +245,30 @@ Expression* CodeBuffer::emitFunctionCall(const string& func_id, const vector<Exp
 	//this code will convert each parameter to raw data (i32 with the same value) into some new register: 
 	for(Expression* exp: param_expressions){
 		assert(exp->type != VOID_EXP);
-		string new_reg;
+		string new_typed_reg;
 		switch(exp->type){
 		case STRING_EXP:
-			//TODO: handle string case here:
-			#ifndef OLDT
-			throw NotImplementedError();
-			#else
-			new_reg = "NOT IMPLEMENTED";
-			#endif
+			new_typed_reg = "i8* " + dynamic_cast<StrExp*>(exp)->loadPtrToReg();
 			break;
 		case BOOL_EXP: {
 			RegStoredExp* reg_bool_exp = dynamic_cast<RegStoredExp*>(exp);
 			assert(reg_bool_exp);
-			new_reg = reg_bool_exp->reg;
+			new_typed_reg = "i32 " +  reg_bool_exp->reg;
 			break;
 		}
 		default:
 			NumericExp* numeric_exp = dynamic_cast<NumericExp*>(exp);
 			assert(numeric_exp);
-			new_reg = numeric_exp->storeAsRawReg();
+			new_typed_reg = "i32 " + numeric_exp->storeAsRawReg();
 		}
-		param_raw_value_regs.push_back(new_reg);//CHECK: are we putting the parameters backwards??
+		param_raw_value_regs.push_back(new_typed_reg);
 	}
 	//this is since we have recived the parameters in reverse order:
 	reverse(param_raw_value_regs.begin(), param_raw_value_regs.end());
 
 	ExpType return_type = symtab.getReturnType(func_id);
 	
-	string ir_params_list = concatWithSpacing(prefixToEach(param_raw_value_regs, "i32 "), ", ");
+	string ir_params_list = concatWithSpacing(param_raw_value_regs, ", ");
 	string ir_func_type = IrFuncTypeFormat(func_id);
 	string call_format = "call "+ir_func_type+" @"+func_id+"("+ir_params_list+")";
 	
@@ -291,7 +279,7 @@ Expression* CodeBuffer::emitFunctionCall(const string& func_id, const vector<Exp
 		//this code will emit a function call with all generated registers:
 		string result_reg = getFreshReg();
 		emit(result_reg+" = "+call_format);
-		return createNonVoidExpFromReg(result_reg, return_type, false);
+		return createIdentifiableFromReg(result_reg, return_type, false);
 	}
 	assert(false);
 	return nullptr;
