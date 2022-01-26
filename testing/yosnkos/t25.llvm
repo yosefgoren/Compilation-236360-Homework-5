@@ -12,6 +12,18 @@ define void @print(i8*) {
     call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
     ret void
 }
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
 define i8@foo(i32, i32){
 %sp = alloca [50 x i32]
 br label %statement_3

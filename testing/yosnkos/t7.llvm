@@ -12,6 +12,18 @@ define void @print(i8*) {
     call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
     ret void
 }
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
 define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
@@ -20,6 +32,7 @@ statement_3:
 store i32  1, i32* %reg1
 br label %statement_7
 statement_7:
+call void(i32) @errorIfZero9001(i32  100)
 %reg2 = sdiv i32  900,  100
 %reg3 = add i32 %reg2,  990
 %param_ptr4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
@@ -28,39 +41,39 @@ statement_7:
 %reg7 = add i32 %reg3, %reg6
 %reg8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 store i32 %reg7, i32* %reg8
-br label %parse_label_17
-parse_label_17:
-br label %parse_label_29
-parse_label_19:
-br label %parse_label_21
-parse_label_21:
-br label %parse_label_29
-parse_label_23:
-br label %parse_label_29
-parse_label_25:
-br label %statement_46
-parse_label_27:
-br label %parse_label_29
-parse_label_29:
-br label %parse_label_31
-parse_label_31:
-br label %parse_label_33
-parse_label_33:
-br label %parse_label_35
-parse_label_35:
-br label %statement_37
-statement_37:
+br label %parse_label_18
+parse_label_18:
+br label %parse_label_30
+parse_label_20:
+br label %parse_label_22
+parse_label_22:
+br label %parse_label_30
+parse_label_24:
+br label %parse_label_30
+parse_label_26:
+br label %statement_47
+parse_label_28:
+br label %parse_label_30
+parse_label_30:
+br label %parse_label_32
+parse_label_32:
+br label %parse_label_34
+parse_label_34:
+br label %parse_label_36
+parse_label_36:
+br label %statement_38
+statement_38:
 %param_ptr9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw10 = load i32, i32* %param_ptr9
 %reg11 = add i32 0, %param_raw10
 call void(i32) @printi(i32 %reg11)
-br label %statement_46
-statement_43:
+br label %statement_47
+statement_44:
 call void(i32) @printi(i32  8888)
-br label %statement_46
-statement_46:
+br label %statement_47
+statement_47:
 ret void
-br label %func_end_49
-func_end_49:
+br label %func_end_50
+func_end_50:
 ret void
 }

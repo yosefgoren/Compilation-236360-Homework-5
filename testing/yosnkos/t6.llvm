@@ -12,6 +12,18 @@ define void @print(i8*) {
     call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
     ret void
 }
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
 define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
@@ -72,10 +84,10 @@ br i1 %reg13, label %true_case_57, label %false_case_59
 true_case_57:
 br label %statement_61
 false_case_59:
-br label %statement_93
+br label %statement_94
 statement_61:
 call void(i32) @printi(i32  999)
-br label %statement_93
+br label %statement_94
 cond_64:
 %param_ptr14 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw15 = load i32, i32* %param_ptr14
@@ -100,14 +112,15 @@ statement_84:
 call void(i32) @printi(i32  11111)
 br label %cond_64
 statement_87:
-%reg19 = add i32  0,  0
-%reg20 = mul i32 %reg19,  0
-%reg21 = sdiv i32 %reg20,  1
+%reg19 = mul i32  0,  0
+call void(i32) @errorIfZero9001(i32  1)
+%reg20 = sdiv i32 %reg19,  1
+%reg21 = add i32  0, %reg20
 call void(i32) @printi(i32 %reg21)
-br label %statement_93
-statement_93:
+br label %statement_94
+statement_94:
 ret void
-br label %func_end_96
-func_end_96:
+br label %func_end_97
+func_end_97:
 ret void
 }

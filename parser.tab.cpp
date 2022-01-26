@@ -186,7 +186,7 @@
 			if(!isDigit(c))
 				return false;
 		}
-		return true;
+		return literal != "";
 	}
 
 	int cur_parsed_func_start_label_offset;
