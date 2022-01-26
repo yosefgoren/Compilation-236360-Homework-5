@@ -385,7 +385,7 @@ struct yy_trans_info
 static const flex_int16_t yy_accept[100] =
     {   0,
         0,    0,   42,   40,   39,   39,   40,   40,   20,   21,
-       33,   31,   19,   32,   34,   36,   36,   18,   27,   24,
+       31,   33,   19,   34,   32,   36,   36,   18,   27,   24,
        28,   35,   35,    4,   35,   35,   35,   35,   35,   35,
        35,   35,   35,   35,   22,   23,   26,    0,    0,    0,
        36,   29,   25,   30,   35,   35,   35,   35,   35,   35,
@@ -999,32 +999,32 @@ case 31:
 YY_RULE_SETUP
 #line 67 "scanner.lex"
 {
-									yylval.binop = PLUS;
-									return BINOP;
+									yylval.binop = MULT;
+									return HIGH_PRIO_BINOP;
 								}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 71 "scanner.lex"
 {
-									yylval.binop = MINUS;
-									return BINOP;
+									yylval.binop = DIV;
+									return HIGH_PRIO_BINOP;
 								}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 75 "scanner.lex"
 {
-									yylval.binop = MULT;
-									return BINOP;
+									yylval.binop = PLUS;
+									return LOW_PRIO_BINOP;
 								}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 79 "scanner.lex"
 {
-									yylval.binop = DIV;
-									return BINOP;
+									yylval.binop = MINUS;
+									return LOW_PRIO_BINOP;
 								}
 	YY_BREAK
 case 35:

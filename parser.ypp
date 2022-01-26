@@ -164,7 +164,8 @@
 %left OR
 %left AND
 %left <relop> RELOP
-%left <binop> BINOP
+%left <binop> LOW_PRIO_BINOP
+%left <binop> HIGH_PRIO_BINOP
 %right NOT
 
 %left LPAREN RPAREN LBRACE RBRACE
@@ -313,26 +314,46 @@ Exp:				LPAREN Exp RPAREN {$$ = $2;}
 					| BoolExp
 					;
 
-NumericExp:			Exp BINOP Exp {//TODO: add support for overflow and div by 0 protection.
+NumericExp:			Exp HIGH_PRIO_BINOP Exp {//TODO: add support for overflow and div by 0 protection.
+					//NOTE: DUPLICATED CODE MAKE SURE TO CHANGE TWICE :)
 						checkNumeralType($1->type);
 						NumericExp* numeric_e1 = dynamic_cast<NumericExp*>($1);
 						assert(numeric_e1);
 						checkNumeralType($3->type);
 						NumericExp* numeric_e2 = dynamic_cast<NumericExp*>($3);
 						assert(numeric_e2);
-						
 						if($2 == DIV){
 							vector<Expression*> error_check_params;
 							error_check_params.push_back(numeric_e2);
 							cb.emitFunctionCall("errorIfZero9001", error_check_params);
 						}
-
 						ExpType max_type = maxNumeralType(numeric_e1->type, numeric_e2->type);
 						if(max_type == INT_EXP){
 							numeric_e1->convertToInt();
 							numeric_e2->convertToInt();
 						}
-
+						string rvalue_exp = cb.binopRvalFormat(numeric_e1->reg, numeric_e2->reg, max_type, $2);
+						$$ = new NumericExp(max_type, rvalue_exp);
+						delete $1;
+						delete $3;
+					}
+					| Exp LOW_PRIO_BINOP Exp {//TODO: add support for overflow and div by 0 protection.
+						checkNumeralType($1->type);
+						NumericExp* numeric_e1 = dynamic_cast<NumericExp*>($1);
+						assert(numeric_e1);
+						checkNumeralType($3->type);
+						NumericExp* numeric_e2 = dynamic_cast<NumericExp*>($3);
+						assert(numeric_e2);
+						if($2 == DIV){
+							vector<Expression*> error_check_params;
+							error_check_params.push_back(numeric_e2);
+							cb.emitFunctionCall("errorIfZero9001", error_check_params);
+						}
+						ExpType max_type = maxNumeralType(numeric_e1->type, numeric_e2->type);
+						if(max_type == INT_EXP){
+							numeric_e1->convertToInt();
+							numeric_e2->convertToInt();
+						}
 						string rvalue_exp = cb.binopRvalFormat(numeric_e1->reg, numeric_e2->reg, max_type, $2);
 						$$ = new NumericExp(max_type, rvalue_exp);
 						delete $1;
@@ -520,6 +541,12 @@ SimpleStatement:	Block {$$ = $1;}
 					}
 					| StatementLabel Call SC {
 						$$ = RunBlock::newBlockEndingHere(*$1);
+						if($2->type == BOOL_EXP){
+							BoolExp* bool_exp = dynamic_cast<BoolExp*>($2);
+							assert(bool_exp);
+							$$->nextlist = cb.merge($$->nextlist, bool_exp->truelist);
+							$$->nextlist = cb.merge($$->nextlist, bool_exp->falselist);
+						}
 					}
 					| StatementLabel RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC {
 						$$ = RunBlock::newSinkBlockEndingHere(*$1);

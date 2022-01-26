@@ -64,21 +64,21 @@ continue						return CONTINUE;
 									return RELOP;
 								}
 
-(\+)							{
-									yylval.binop = PLUS;
-									return BINOP;
-								}
-(\-)							{
-									yylval.binop = MINUS;
-									return BINOP;
-								}
 (\*)							{
 									yylval.binop = MULT;
-									return BINOP;
+									return HIGH_PRIO_BINOP;
 								}
 {div_symbol}					{
 									yylval.binop = DIV;
-									return BINOP;
+									return HIGH_PRIO_BINOP;
+								}
+(\+)							{
+									yylval.binop = PLUS;
+									return LOW_PRIO_BINOP;
+								}
+(\-)							{
+									yylval.binop = MINUS;
+									return LOW_PRIO_BINOP;
 								}
 [a-zA-Z][a-zA-Z0-9]*			{
 									yylval.id = new string(yytext);

@@ -75,14 +75,15 @@ extern int yydebug;
     OR = 276,                      /* OR  */
     AND = 277,                     /* AND  */
     RELOP = 278,                   /* RELOP  */
-    BINOP = 279,                   /* BINOP  */
-    NOT = 280,                     /* NOT  */
-    LPAREN = 281,                  /* LPAREN  */
-    RPAREN = 282,                  /* RPAREN  */
-    LBRACE = 283,                  /* LBRACE  */
-    RBRACE = 284,                  /* RBRACE  */
-    IF = 285,                      /* IF  */
-    ELSE = 286                     /* ELSE  */
+    LOW_PRIO_BINOP = 279,          /* LOW_PRIO_BINOP  */
+    HIGH_PRIO_BINOP = 280,         /* HIGH_PRIO_BINOP  */
+    NOT = 281,                     /* NOT  */
+    LPAREN = 282,                  /* LPAREN  */
+    RPAREN = 283,                  /* RPAREN  */
+    LBRACE = 284,                  /* LBRACE  */
+    RBRACE = 285,                  /* RBRACE  */
+    IF = 286,                      /* IF  */
+    ELSE = 287                     /* ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -119,7 +120,7 @@ union YYSTYPE
 
 	DecInfo dec_info;
 
-#line 123 "parser.tab.hpp"
+#line 124 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
