@@ -149,7 +149,6 @@ void CodeBuffer::emitStoreVar(const string& id, Expression* exp_to_assign){
 }
 
 void CodeBuffer::emitStoreVar(const string& id, const string& reg_or_immidiate){
-	
 	emitStoreVarBasic(id, reg_or_immidiate);
 }
 

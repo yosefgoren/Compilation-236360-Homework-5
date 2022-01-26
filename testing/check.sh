@@ -1,8 +1,10 @@
 # defaults:
 DEFAULT_MIN_TEST='1'
-DEFAULT_MAX_TEST='20'
+DEFAULT_MAX_TEST='30'
 EXIT_ON_FIRST_FAIL='1'
 DEFAULT_TESTS_DIR='yosnkos'
+
+VIEWING_PROGRAM='code'
 EXE='../hw5'
 
 RED='\033[0;31m'
@@ -38,22 +40,22 @@ function check_test () {
 			printf "\t${BLUE}< expected but not found${NC}\n"
 			printf "\t${BLUE}> found but not expected${NC}\n"
 			
-			printf "\n${YELLOW}what to do? [nothing <enter> | cat | vsc | gdb | src]${NC}\n"
+			printf "\n${YELLOW}what to do? [nothing<enter> | llvm<l> | input<i> | expected<e> | output<o> | gdb<g>]${NC}\n"
 			read SHOULD_CAT_OUTPUT
 			if [ -z $SHOULD_CAT_OUTPUT ]; then
 				exit 1
-			elif [ $SHOULD_CAT_OUTPUT == 'cat' ]; then
-				cat $TEST.llvm
-			elif [ $SHOULD_CAT_OUTPUT == 'vsc' ]; then
-				code $TEST.llvm
-			elif [ $SHOULD_CAT_OUTPUT == 'src' ]; then
-				code $TEST.in
-			elif [ $SHOULD_CAT_OUTPUT == 'gdb' ]; then
+			elif [ $SHOULD_CAT_OUTPUT == 'l' ]; then
+				$VIEWING_PROGRAM $TEST.llvm
+			elif [ $SHOULD_CAT_OUTPUT == 'i' ]; then
+				$VIEWING_PROGRAM $TEST.in
+			elif [ $SHOULD_CAT_OUTPUT == 'e' ]; then
+				$VIEWING_PROGRAM $TEST.exp
+			elif [ $SHOULD_CAT_OUTPUT == 'o' ]; then
+				$VIEWING_PROGRAM $TEST.res
+			elif [ $SHOULD_CAT_OUTPUT == 'g' ]; then
+				echo "run on gdb with 'run < \$TEST'"
 				export TEST="$TEST.in"
 				gdb $EXE
-			# elif [ $SHOULD_CAT_OUTPUT == 'cfg' ]; then
-			# 	code $TEST.llvm
-			# 	opt --dot-cfg 1.ll; dot cfg.funcname.dot -Tpng > 1.png
 			fi
 			exit 1
 		fi

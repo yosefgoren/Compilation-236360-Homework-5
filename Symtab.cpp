@@ -34,7 +34,6 @@ void SimpleSymtab::popScope(bool print_end_scope){
 
 void SimpleSymtab::declareConstVar(const string& id, ExpType type, const string& reg_value){
 	assert(declarableValidId(id));
-	assert(type == INT_EXP || type == BYTE_EXP);
 	variable_decls[id] = {.type = type, .is_const = true
 		, .offset = curr_offset, .const_value = reg_value};
 	scope_ids_stack.back().push_back(id);
