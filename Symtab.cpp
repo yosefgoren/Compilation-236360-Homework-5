@@ -32,9 +32,17 @@ void SimpleSymtab::popScope(bool print_end_scope){
 	assert(curr_offset >= 0);
 }
 
-void SimpleSymtab::declareVar(const string& id, ExpType type, bool is_const){
+void SimpleSymtab::declareConstVar(const string& id, ExpType type, const string& reg_value){
 	assert(declarableValidId(id));
-		variable_decls[id] = {.type = type, .is_const = is_const, .offset = curr_offset};
+	variable_decls[id] = {.type = type, .is_const = true
+		, .offset = curr_offset, .const_value = reg_value};
+	scope_ids_stack.back().push_back(id);
+	++curr_offset;
+}
+
+void SimpleSymtab::declareVar(const string& id, ExpType type){
+	assert(declarableValidId(id));
+	variable_decls[id] = {.type = type, .is_const = false, .offset = curr_offset};
 	scope_ids_stack.back().push_back(id);
 	++curr_offset;
 }
@@ -97,15 +105,24 @@ bool SimpleSymtab::isConst(const std::string& id) const {
 	return variable_decls.at(id).is_const;
 }
 
+std::string SimpleSymtab::getConstValue(const std::string& id) const{
+	assert(isConst(id));
+	return variable_decls.at(id).const_value;
+}
+
 ExpType SimpleSymtab::getVariableType(const string& id) const{
 	assert(variable_decls.count(id) == 1);
 	return variable_decls.at(id).type;
+}
+int SimpleSymtab::getVariableOffset(const std::string& id) const{
+	return variable_decls.at(id).offset;
 }
 
 ExpType SimpleSymtab::getReturnType(const string& id) const{
 	assert(callableValidId(id));
 	return function_decls.at(id).return_type;
 }
+
 FunctionType& SimpleSymtab::getFunctionType(const std::string& id){
 	assert(function_decls.count(id) == 1);
 	return function_decls[id];

@@ -5,6 +5,8 @@
 	#include "Symtab.hpp"
 	#include "AuxTypes.hpp" 
 	#include "hw3_output.hpp"
+	#include "bp.hpp"
+	#include "assert.h"
 	#include <iostream>
 	#include <algorithm>
 	#include <set>
@@ -15,7 +17,7 @@
 		#define YYERROR_VERBOSE 1
 		#define YYDEBUG 1
 		extern int yydebug;
-#endif
+	#endif
 
 	SimpleSymtab symtab;
 	using namespace std;
@@ -53,7 +55,7 @@
 		return first_operand_type == INT_EXP ? INT_EXP : second_operand_type;
 	}
 
-	void checkFuncDec(const string& func_id, const vector<Parameter>& parameters){
+	void checkFuncDec(const string& func_id, const std::vector<Parameter>& parameters){
 		std::set<std::string> tmp_params_set;
 		for(auto it = parameters.rbegin(); it != parameters.rend(); ++it){
 			auto param = *it;
@@ -67,14 +69,13 @@
 		}
 	}
 
-	void checkPrototypeMismatch(const string& func_id, const vector<ExpType>& reverse_exp_types_in_call){
-		vector<ExpType> exp_types_required = symtab.getFunctionType(func_id).getParameterTypes();
-		//TODO: add something to remember the line of each expression so we can add the correct 
-		// 		line of the expression to this error (something like 'line_of_origin').
+	void checkPrototypeMismatch(const string& func_id, const std::vector<Expression*>& reverse_exp_list_in_call){
+		std::vector<ExpType> exp_types_required = symtab.getFunctionType(func_id).getParameterTypes();
 		auto required_types_it = exp_types_required.begin();
-		for(auto called_type_it = reverse_exp_types_in_call.rbegin();
-				called_type_it != reverse_exp_types_in_call.rend(); ++called_type_it){
-			ExpType called_type = *called_type_it;
+		for(auto called_exp_it = reverse_exp_list_in_call.rbegin();
+				called_exp_it != reverse_exp_list_in_call.rend(); ++called_exp_it){
+			
+			ExpType called_type = (*called_exp_it)->type;
 			if(required_types_it == exp_types_required.end() || !canImplicitCast(called_type, *required_types_it)){
 				output::errorPrototypeMismatch(yylineno, func_id, ExpTypeStringVector(exp_types_required, true));
 				exit(1);
@@ -93,7 +94,7 @@
 				output::errorMainMissing();
 				exit(1);
 			} 
-		}else {
+		} else {
 			output::errorMainMissing();
 			exit(1);
 		}
@@ -105,6 +106,21 @@
 			exit(1);
 		}
 	}
+
+	bool isDigit(char c){
+		return '0' <= c && c <= '9';
+	}
+
+	bool constValueIsNumLiteral(const string& literal){
+		for(char c: literal){
+			if(!isDigit(c))
+				return false;
+		}
+		return true;
+	}
+
+	int cur_parsed_func_start_label_offset;
+	CodeBuffer& cb = CodeBuffer::instance();
 %}
 
 %union{
@@ -114,13 +130,24 @@
 	int number_literal;
 	
 	//parser metadata fields:
-	NumericExp* numeric_exp;
-	ExpType exp_type;
-	vector<ExpType>* exp_type_list;
-	vector<Parameter>* formals_list;
-	Parameter* formal;
 	int line_number;
 	bool is_const;
+	
+	Binop binop;
+	Relop relop;
+	ExpType exp_type;
+
+	std::vector<Expression*>* exp_list;
+	std::vector<Parameter>* formals_list;
+	std::string* label;
+	
+	Expression* expression;
+	BranchBlock* branch_block;
+	RunBlock* run_block;
+	NumericExp* numeric_exp;
+	Parameter* formal;
+	FuncDecl* func_decl;
+
 	DecInfo dec_info;
 };
 
@@ -128,28 +155,33 @@
 %token TRUE FALSE
 %token RETURN WHILE BREAK CONTINUE SC
 
-%token STRING
 %token COMMA
 %token <id> ID
 %token <number_literal> NUM
+%token <string_literal> STRING
 
 %right ASSIGN
 %left OR
 %left AND
-%left RELOP
-%left BINOP
+%left <relop> RELOP
+%left <binop> BINOP
 %right NOT
 
 %left LPAREN RPAREN LBRACE RBRACE
 %right IF
 %token ELSE
 
-%type <exp_type> Exp NumericExp BoolExp RetType Type Call
-%type <exp_type_list> ExpList
+%type <expression> Exp NumericExp BoolExp Call InvocationExp
+%type <exp_type> RetType Type
+%type <exp_list> ExpList
 %type <formals_list> Formals FormalsList
 %type <line_number> LineCapture
 %type <is_const> TypeAnnotation
 %type <dec_info> VarDecStart
+%type <label> Label CondLabel StatementLabel
+%type <run_block> Statements Statement OpenStatment ClosedStatment SimpleStatement Block
+%type <branch_block> IfStart WhileStart
+
 %%
 
 Program:			Funcs
@@ -158,49 +190,89 @@ OpenScope:			{symtab.pushScope();};
 CloseScope:			{symtab.popScope();};
 OpenLoop:			{++loop_depth;};
 CloseLoop:			{--loop_depth;};
-Block:				LBRACE OpenScope Statements RBRACE CloseScope;
+
+Block:				LBRACE OpenScope Statements RBRACE CloseScope {
+						$$ = $3;
+					}
+					;
 
 Funcs:				FuncDecl Funcs
 					|
 					;
+
 FuncDecl:			RetType ID {check(symtab.declarableValidId(*$2), output::errorDef(yylineno, *$2));}
 					LPAREN Formals {	
 						checkFuncDec(*$2, *$5);
 						symtab.declareFunc(*$2, $1, $5);
-					} RPAREN LBRACE Statements RBRACE {symtab.finishFunc();}
+						cb.emitFuncDecl(*$2);
+						cb.emit("%sp = alloca [50 x i32]");
+						cur_parsed_func_start_label_offset = cb.emit("br label @");
+					} RPAREN LBRACE Statements RBRACE {
+						symtab.finishFunc();
+						cb.bpatch(cb.makelist(Backpatch(cur_parsed_func_start_label_offset, FIRST)), $9->start_label);
+						Backpatch func_end_bp(cb.emit("br label @"), FIRST);
+						std::string func_end_label = cb.genLabel("func_end");
+						cb.bpatch($9->nextlist, func_end_label);
+						cb.bpatch(cb.makelist(func_end_bp), func_end_label);
+						cb.emit("ret "+cb.IrDefaultTypedValue($1));
+						cb.emit("}");
+						delete $9;
+					}
 					;
-RetType:			Type {$$ = $1;}//5
-					|VOID {$$ = VOID_EXP;}//6
+RetType:			Type {$$ = $1;}
+					|VOID {$$ = VOID_EXP;}
 					;
-Formals:			{$$ = new vector<Parameter>();}//7
-					|FormalsList {$$ = $1;}//8 
+Formals:			{$$ = new std::vector<Parameter>();}
+					|FormalsList {$$ = $1;} 
 
-FormalsList:		TypeAnnotation Type ID {$$ = new vector<Parameter>(); $$->push_back(Parameter(*$3, $2, yylineno, $1)); delete $3;} //9
-					|TypeAnnotation Type ID LineCapture COMMA FormalsList {$$ = $6; $$->push_back(Parameter(*$3, $2, $4, $1)); delete $3;} //10
+FormalsList:		TypeAnnotation Type ID {$$ = new std::vector<Parameter>(); $$->push_back(Parameter(*$3, $2, yylineno, $1)); delete $3;}
+					|TypeAnnotation Type ID LineCapture COMMA FormalsList {$$ = $6; $$->push_back(Parameter(*$3, $2, $4, $1)); delete $3;}
 					;
 LineCapture:		{$$ = yylineno;};
 
-Statements:			Statement //12
-					|Statements Statement //13
+Statements:			Statement {$$ = $1;}
+					|Statements Statement {
+						cb.bpatch($1->nextlist, $2->start_label);
+						$$ = new RunBlock($1->start_label);
+						$$->nextlist = $2->nextlist;
+						$$->continuelist = cb.merge($1->continuelist, $2->continuelist);
+						$$->breaklist = cb.merge($1->breaklist, $2->breaklist);
+						delete $1; delete $2;
+					}
 					;
 Call:				ID LPAREN ExpList RPAREN {
 						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
 						checkPrototypeMismatch(*$1, *$3);
-						$$ = symtab.getReturnType(*$1);
+						$$ = cb.emitFunctionCall(*$1, *$3);
 						delete $1;
-					}//26
+					}
 					|ID LPAREN RPAREN {
 						check(symtab.callableValidId(*$1), output::errorUndefFunc(yylineno, *$1));
-						//there are no arguments used in the call so vector is empty:
-						vector<ExpType> call_arg_types = {};
+						//there are no arguments used in the call so std::vector is empty:
+						std::vector<Expression*> call_arg_types = {};
 						checkPrototypeMismatch(*$1, call_arg_types);
-						$$ = symtab.getReturnType(*$1);
+						$$ = cb.emitFunctionCall(*$1, std::vector<Expression*>());
 						delete $1;	
-					}//27
+					}
 					;
-ExpList:			Exp {$$ = new vector<ExpType>(); $$->push_back($1);}//28
-					|Exp COMMA ExpList {$$ = $3; $$->push_back($1);}//29
+ExpList:			InvocationExp {
+						$$ = new std::vector<Expression*>(); $$->push_back($1);
+					}
+					|InvocationExp COMMA ExpList {$$ = $3; $$->push_back($1);}
 					;
+
+InvocationExp:		Exp {
+						if($1->type == BOOL_EXP){
+							BoolExp* bool_exp = dynamic_cast<BoolExp*>($1);
+							assert(bool_exp);
+							$$ = new RegStoredExp(BOOL_EXP, "add i32 0, "+bool_exp->storeAsRawReg());
+							delete $1;
+						} else {
+							$$ = $1;
+						}
+					}
+					;
+
 Type:				INT {$$ = INT_EXP;}
 					|BYTE {$$ = BYTE_EXP;}
 					|BOOL {$$ = BOOL_EXP;}
@@ -211,75 +283,284 @@ TypeAnnotation:		CONST {$$ = true;}
 Exp:				LPAREN Exp RPAREN {$$ = $2;}
 					| Call {$$ = $1;}
 					| ID {
-						check(symtab.rvalValidId(*$1), output::errorUndef(yylineno, *$1));
-						$$ = symtab.getVariableType(*$1);
+						const string& id = *$1;
+						check(symtab.rvalValidId(id), output::errorUndef(yylineno, id));
+						if(symtab.isConst(id) && constValueIsNumLiteral(symtab.getConstValue(id))){
+							//get the constant value from the symtable and set it to the value of the expression:
+							$$ = new NumericExp(symtab.getVariableType(id), symtab.getConstValue(id), false);
+						} else {
+							//load value from stack:
+							$$ = cb.emitLoadVar(id);
+						}
 						delete $1;
 					}
-					| STRING {$$ = STRING_EXP;}
+					| STRING {
+						$$ = new StrExp(*$1);
+						delete $1;	
+					}
 					| LPAREN Type RPAREN Exp {
-						check(canExplicitCast($4, $2), output::errorMismatch(yylineno));
-						$$ = $2;
+						check(canExplicitCast($4->type, $2), output::errorMismatch(yylineno));
+						NumericExp* num_exp = dynamic_cast<NumericExp*>($4);
+						assert(num_exp);
+						
+						if($2 == BYTE_EXP)
+							num_exp->convertToByte();
+						else if($2 == INT_EXP)
+							num_exp->convertToInt();
+						$$ = num_exp;
 					}
 					| NumericExp
 					| BoolExp
 					;
 
-NumericExp:			Exp BINOP Exp {checkNumeralType($1); checkNumeralType($3); $$ = maxNumeralType($1, $3);}
-					| NUM {$$ = INT_EXP;}
-					| NUM B {
-						$$ = BYTE_EXP;
-						checkByteTooLarge($1);
-					}
-					;
+NumericExp:			Exp BINOP Exp {//TODO: add support for overflow and div by 0 protection.
+						checkNumeralType($1->type);
+						NumericExp* numeric_e1 = dynamic_cast<NumericExp*>($1);
+						assert(numeric_e1);
+						checkNumeralType($3->type);
+						NumericExp* numeric_e2 = dynamic_cast<NumericExp*>($3);
+						assert(numeric_e2);
+						
+						if($2 == DIV){
+							vector<Expression*> error_check_params;
+							error_check_params.push_back(numeric_e2);
+							cb.emitFunctionCall("errorIfZero9001", error_check_params);
+						}
 
-BoolExp: 			Exp AND Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}
-					| Exp OR Exp {checkMismatch($1, BOOL_EXP); checkMismatch($3, BOOL_EXP); $$ = BOOL_EXP;}
-					| Exp RELOP Exp {check(isNumeralType($1) && isNumeralType($3), output::errorMismatch(yylineno)); $$ = BOOL_EXP;}
-					| NOT Exp {checkMismatch($2, BOOL_EXP); $$ = BOOL_EXP;}
-					| TRUE {$$ = BOOL_EXP;}
-					| FALSE {$$ = BOOL_EXP;}
-					;
+						ExpType max_type = maxNumeralType(numeric_e1->type, numeric_e2->type);
+						if(max_type == INT_EXP){
+							numeric_e1->convertToInt();
+							numeric_e2->convertToInt();
+						}
 
-Statement:			OpenStatment
-					| ClosedStatment;
-					
-OpenStatment:		IfStart OpenScope Statement CloseScope
-					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope OpenStatment CloseScope
-					| WhileStart OpenLoop OpenScope OpenStatment CloseScope CloseLoop
-					;
-
-ClosedStatment:		SimpleStatement
-					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope ClosedStatment CloseScope
-					| WhileStart OpenLoop OpenScope ClosedStatment CloseScope CloseLoop
-					;
-IfStart:			IF LPAREN Exp {checkBool($3);} RPAREN;
-WhileStart:			WHILE LPAREN Exp {checkBool($3);} RPAREN;
-
-SimpleStatement:	Block
-					|VarDecStart SC {
-						check(!$1.is_const, output::errorConstDef(yylineno));
-						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
-						delete $1.id;
-					}
-					|VarDecStart ASSIGN Exp SC {
-						checkMismatch($3, $1.raw_type);
-						symtab.declareVar(*$1.id, $1.raw_type, $1.is_const);
-						delete $1.id;
-					}
-					|ID ASSIGN Exp SC {
-						check(symtab.containsVar(*$1), output::errorUndef(yylineno, *$1));
-						check(!symtab.isConst(*$1), output::errorConstMismatch(yylineno));
-						checkMismatch($3, symtab.getVariableType(*$1));
+						string rvalue_exp = cb.binopRvalFormat(numeric_e1->reg, numeric_e2->reg, max_type, $2);
+						$$ = new NumericExp(max_type, rvalue_exp);
 						delete $1;
+						delete $3;
 					}
-					|Call SC
-					|RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC
-					|RETURN Exp {
-						checkMismatch($2, symtab.getCurrentlyParsedFuncType().return_type);
-						check($2 != VOID_EXP, output::errorMismatch(yylineno));
-					} SC
-					|BREAK SC {check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));}
-					|CONTINUE SC {check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));}
+					| NUM {$$ = new NumericExp(INT_EXP, " "+std::to_string($1), false);}
+					| NUM B {
+						checkByteTooLarge($1);
+						$$ = new NumericExp(BYTE_EXP, " "+std::to_string($1), false);
+					}
+					;
+Label: 				{$$ = new string(cb.genLabel("parse_label"));};
+CondLabel:			{$$ = new string(cb.genLabel("cond"));};
+StatementLabel:		{$$ = new string(cb.genLabel("statement"));};
+
+BoolExp: 			Exp AND Label Exp {
+						checkMismatch($1->type, BOOL_EXP);
+						checkMismatch($4->type, BOOL_EXP);
+						BoolExp* exp1 = dynamic_cast<BoolExp*>($1);
+						assert(exp1);
+						BoolExp* exp2 = dynamic_cast<BoolExp*>($4);
+						assert(exp2);
+						
+						cb.bpatch(exp1->truelist, *$3);
+						$$ = new BoolExp(exp2->truelist, cb.merge(exp1->falselist, exp2->falselist));
+					
+						delete $1; delete $3; delete $4;
+					}
+		 			|Exp OR Label Exp {
+						checkMismatch($1->type, BOOL_EXP);
+						checkMismatch($4->type, BOOL_EXP);
+						BoolExp* exp1 = dynamic_cast<BoolExp*>($1);
+						assert(exp1);
+						BoolExp* exp2 = dynamic_cast<BoolExp*>($4);
+						assert(exp2);
+
+						cb.bpatch(exp1->falselist, *$3);
+						$$ = new BoolExp(cb.merge(exp1->truelist, exp2->truelist), exp2->falselist);
+
+						delete $1; delete $3; delete $4;
+					}
+					| Exp RELOP Exp {
+						check(isNumeralType($1->type) && isNumeralType($3->type), output::errorMismatch(yylineno));
+						NumericExp* exp1 = dynamic_cast<NumericExp*>($1);
+						assert(exp1);
+						NumericExp* exp2 = dynamic_cast<NumericExp*>($3);
+						assert(exp2);
+						
+						ExpType operand_type = maxNumeralType(exp1->type, exp2->type);
+						if(operand_type == INT_EXP){
+							exp1->convertToInt();
+							exp2->convertToInt();
+						}
+						std::string cond_rval = cb.relopRvalFormat(exp1->reg, exp2->reg, operand_type, $2);
+						std::string cond_reg = cb.getFreshReg();
+						cb.emit(cond_reg+" = "+cond_rval);
+						int br_address = cb.emit("br i1 "+cond_reg+", label @, label @");
+						
+						$$ = new BoolExp(cb.makelist(Backpatch(br_address, FIRST))
+							, cb.makelist(Backpatch(br_address, SECOND)));
+						
+						delete $1; delete $3;
+					}
+					| NOT Exp {
+						checkMismatch($2->type, BOOL_EXP);
+						BoolExp* exp = dynamic_cast<BoolExp*>($2);
+						assert(exp);
+						auto tmp = exp->truelist;
+						exp->truelist = exp->falselist;
+						exp->falselist = tmp;
+						$$ = exp;
+					}
+					| TRUE {
+						int position = cb.emit("br label @");
+						Backpatch bp_details(position, FIRST);
+						$$ = new BoolExp(CodeBuffer::makelist(bp_details), cb.makeEmptyList());
+					}
+					| FALSE {
+						int position = cb.emit("br label @");
+						Backpatch bp_details(position, FIRST);
+						$$ = new BoolExp(cb.makeEmptyList(), CodeBuffer::makelist(bp_details));
+					}
+					;
+
+Statement:			OpenStatment {$$ = $1;}
+					| ClosedStatment {$$ = $1;}
+					;
+
+
+OpenStatment:		IfStart OpenScope Statement CloseScope {
+						cb.bpatch($1->truelist, $3->start_label);
+						$$ = new RunBlock($1->cond_label);
+						$$->nextlist = cb.merge($1->falselist, $3->nextlist);
+						$$->breaklist = $3->breaklist;
+						$$->continuelist = $3->continuelist;
+						delete $1; delete $3;
+					}
+					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope OpenStatment CloseScope {
+						cb.bpatch($1->truelist, $3->start_label);
+						cb.bpatch($1->falselist, $7->start_label);
+						$$ = new RunBlock($1->cond_label, *$3, *$7);
+						
+						delete $1; delete $3; delete $7;
+					}
+					| WhileStart OpenLoop OpenScope OpenStatment CloseScope CloseLoop {
+						cb.bpatch($1->truelist, $4->start_label);
+						cb.bpatch($4->nextlist, $1->cond_label);
+						$$ = new RunBlock($1->cond_label);
+						$$->nextlist = cb.merge($1->falselist, $4->breaklist);
+						cb.bpatch($4->continuelist, $1->cond_label);
+						
+						delete $1; delete $4;
+					}
+					;
+
+ClosedStatment:		SimpleStatement {$$ = $1;}
+					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope ClosedStatment CloseScope {
+						cb.bpatch($1->truelist, $3->start_label);
+						cb.bpatch($1->falselist, $7->start_label);
+						$$ = new RunBlock($1->cond_label, *$3, *$7);
+						
+						delete $1; delete $3; delete $7;
+					}
+					| WhileStart OpenLoop OpenScope ClosedStatment CloseScope CloseLoop {
+						cb.bpatch($1->truelist, $4->start_label);
+						cb.bpatch($4->nextlist, $1->cond_label);
+						$$ = new RunBlock($1->cond_label);
+						$$->nextlist = cb.merge($1->falselist, $4->breaklist);
+						cb.bpatch($4->continuelist, $1->cond_label);
+						
+						delete $1; delete $4;
+					}
+					;
+IfStart:			IF LPAREN Label Exp {checkBool($4->type);} RPAREN {
+						$$ = new BranchBlock(*$3, $4);
+						delete $3; delete $4;
+					};	
+
+WhileStart:			WHILE LPAREN CondLabel Exp {checkBool($4->type);} RPAREN {
+						$$ = new BranchBlock(*$3, $4);
+						delete $3; delete $4;
+					};
+
+
+SimpleStatement:	Block {$$ = $1;}
+					| StatementLabel VarDecStart SC {
+						check(!$2.is_const, output::errorConstDef(yylineno));
+						symtab.declareVar(*$2.id, $2.raw_type);
+						cb.emitStoreVar(*$2.id, "0");
+						$$ = RunBlock::newBlockEndingHere(*$1);
+						delete $2.id;
+					}
+					| StatementLabel VarDecStart ASSIGN Exp SC {
+						ExpType id_type = $2.raw_type;
+						checkMismatch($4->type, $2.raw_type);
+						if(id_type == INT_EXP)
+							dynamic_cast<NumericExp*>($4)->convertToInt();
+						
+						if($2.is_const){
+							assert(id_type == BOOL_EXP || id_type == INT_EXP || id_type == BYTE_EXP);
+							std::string reg_or_literal = id_type == BOOL_EXP
+								? dynamic_cast<BoolExp*>($4)->storeAsRawReg()
+								: dynamic_cast<NumericExp*>($4)->storeAsRawReg();
+							symtab.declareConstVar(*$2.id, id_type, reg_or_literal);
+							if(!constValueIsNumLiteral(reg_or_literal))//store the variable on the stack:
+								cb.emitStoreVar(*$2.id, reg_or_literal);		
+						} else {
+							symtab.declareVar(*$2.id, id_type);
+							cb.emitStoreVar(*$2.id, $4);	
+						}
+						
+						$$ = RunBlock::newBlockEndingHere(*$1);
+						delete $2.id; delete $4;
+					}
+					| StatementLabel ID ASSIGN Exp SC {
+						check(symtab.containsVar(*$2), output::errorUndef(yylineno, *$2));
+						check(!symtab.isConst(*$2), output::errorConstMismatch(yylineno));
+						ExpType id_type = symtab.getVariableType(*$2);
+						checkMismatch($4->type, id_type);
+						if(id_type == INT_EXP)
+							dynamic_cast<NumericExp*>($4)->convertToInt();
+						cb.emitStoreVar(*$2, $4);
+						$$ = RunBlock::newBlockEndingHere(*$1);
+						delete $2; delete $4;
+					}
+					| StatementLabel Call SC {
+						$$ = RunBlock::newBlockEndingHere(*$1);
+					}
+					| StatementLabel RETURN {checkMismatch(VOID_EXP, symtab.getCurrentlyParsedFuncType().return_type);} SC {
+						$$ = RunBlock::newSinkBlockEndingHere(*$1);
+						ExpType ret_type = symtab.getCurrentlyParsedFuncType().return_type;
+						cb.emit("ret "+cb.IrDefaultTypedValue(ret_type)); 
+					}
+					| StatementLabel RETURN Exp {
+						checkMismatch($3->type, symtab.getCurrentlyParsedFuncType().return_type);
+						check($3->type != VOID_EXP, output::errorMismatch(yylineno));
+						check($3->type != STRING_EXP, output::errorMismatch(yylineno));
+					} SC {
+						$$ = RunBlock::newSinkBlockEndingHere(*$1);
+						ExpType ret_type = symtab.getCurrentlyParsedFuncType().return_type;
+						if(ret_type == INT_EXP)
+							dynamic_cast<NumericExp*>($3)->convertToInt();
+						switch($3->type){
+						case INT_EXP:
+						case BYTE_EXP:{
+							NumericExp* numeric_exp = dynamic_cast<NumericExp*>($3);
+							assert(numeric_exp);
+							cb.emit("ret "+cb.IrType(numeric_exp->type)+numeric_exp->reg);}
+							break;
+						case BOOL_EXP:{
+							BoolExp* bool_exp = dynamic_cast<BoolExp*>($3);
+							assert(bool_exp);
+							string res_reg = bool_exp->storeAsReg();
+							cb.emit("ret i1 "+res_reg);}
+							break;
+						default:
+							assert(false);
+						}
+						delete $3;
+					}
+					| StatementLabel BREAK SC {
+						check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));
+						$$ = RunBlock::newBreakBlockHere(*$1);
+					}
+					| StatementLabel CONTINUE SC {
+						check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));
+						$$ = RunBlock::newContinueBlockHere(*$1);
+					}
 					;
 VarDecStart:		TypeAnnotation Type ID {
 						check(symtab.declarableValidId(*$3), output::errorDef(yylineno, *$3));
@@ -296,15 +577,19 @@ void declareLibraryFuncs(){
 	//FunctionType creates a shared pinter for these allocations:
 	std::vector<Parameter>* print_params = new std::vector<Parameter>();
 	std::vector<Parameter>* printi_params = new std::vector<Parameter>();
+	std::vector<Parameter>* div_error_params = new std::vector<Parameter>();
 
 	//in print/i line of origin and is_const parameters are irrelevant, but have to be given some value:
 	print_params->push_back(Parameter("str", STRING_EXP, 0, true));
 	printi_params->push_back(Parameter("i", INT_EXP, 0, true));
+	div_error_params->push_back(Parameter("n", INT_EXP, 0, true));
+	
 	symtab.declareFunc("print", VOID_EXP, print_params);
 	symtab.finishFunc(false);
 	symtab.declareFunc("printi", VOID_EXP, printi_params);
 	symtab.finishFunc(false);
-	
+	symtab.declareFunc("errorIfZero9001", VOID_EXP, div_error_params);
+	symtab.finishFunc(false);
 }
 
 int main(){
@@ -313,10 +598,21 @@ int main(){
 	#endif
 	symtab = SimpleSymtab();
 	declareLibraryFuncs();
+	#ifndef OLDT
+	cb.emitLibFuncs();
+	#endif
+
 	loop_depth = 0;
-	int res = yyparse();
+	yyparse();
+	
 	checkMainMissing();
+	#ifdef OLDT
 	output::endScope();//this is the global scope.
 	symtab.printFuncDecls();
-	return res;
+	#else
+	cb.printGlobalBuffer();
+	cb.printCodeBuffer();
+	#endif
+
+	return 0;
 }

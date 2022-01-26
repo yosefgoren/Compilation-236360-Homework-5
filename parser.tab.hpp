@@ -67,10 +67,10 @@ extern int yydebug;
     BREAK = 268,                   /* BREAK  */
     CONTINUE = 269,                /* CONTINUE  */
     SC = 270,                      /* SC  */
-    STRING = 271,                  /* STRING  */
-    COMMA = 272,                   /* COMMA  */
-    ID = 273,                      /* ID  */
-    NUM = 274,                     /* NUM  */
+    COMMA = 271,                   /* COMMA  */
+    ID = 272,                      /* ID  */
+    NUM = 273,                     /* NUM  */
+    STRING = 274,                  /* STRING  */
     ASSIGN = 275,                  /* ASSIGN  */
     OR = 276,                      /* OR  */
     AND = 277,                     /* AND  */
@@ -91,7 +91,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 110 "parser.ypp"
+#line 126 "parser.ypp"
 
 	//lexer proivided fields:
 	string* id;
@@ -99,16 +99,27 @@ union YYSTYPE
 	int number_literal;
 	
 	//parser metadata fields:
-	NumericExp* numeric_exp;
-	ExpType exp_type;
-	vector<ExpType>* exp_type_list;
-	vector<Parameter>* formals_list;
-	Parameter* formal;
 	int line_number;
 	bool is_const;
+	
+	Binop binop;
+	Relop relop;
+	ExpType exp_type;
+
+	std::vector<Expression*>* exp_list;
+	std::vector<Parameter>* formals_list;
+	std::string* label;
+	
+	Expression* expression;
+	BranchBlock* branch_block;
+	RunBlock* run_block;
+	NumericExp* numeric_exp;
+	Parameter* formal;
+	FuncDecl* func_decl;
+
 	DecInfo dec_info;
 
-#line 112 "parser.tab.hpp"
+#line 123 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

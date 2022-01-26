@@ -7,12 +7,11 @@
 %option noyywrap
 %option yylineno
 
-real_operation		(==)|(!=)|(<)|(>)|(<=)|(>=)
-binary_operation	[(\+)(\-)(\*)(/)]
 number				(0|[1-9][0-9]*)
 string				(\"([^\n\r\"\\]|\\[rnt\"\\])+\")
 comment				(\/\/[^\r\n]*((\r)|(\n)|(\r\n)))
 whitespace			[\t\r\n ]
+div_symbol			[/]
 
 %%
 void							return VOID;
@@ -39,8 +38,48 @@ continue						return CONTINUE;
 \{								return LBRACE;
 \}								return RBRACE;
 =								return ASSIGN;
-{real_operation}				return RELOP;
-{binary_operation}				return BINOP;
+
+(==)							{
+									yylval.relop = EQUAL;
+									return RELOP;
+								}
+(!=)							{
+									yylval.relop = NOT_EQUAL;
+									return RELOP;
+								}
+(<)								{
+									yylval.relop = LESS;
+									return RELOP;
+								}
+(>)								{
+									yylval.relop = GREATER;
+									return RELOP;
+								}
+(<=)							{
+									yylval.relop = LESS_EQUAL;
+									return RELOP;
+								}
+(>=)							{
+									yylval.relop = GREATER_EQUAL;
+									return RELOP;
+								}
+
+(\+)							{
+									yylval.binop = PLUS;
+									return BINOP;
+								}
+(\-)							{
+									yylval.binop = MINUS;
+									return BINOP;
+								}
+(\*)							{
+									yylval.binop = MULT;
+									return BINOP;
+								}
+{div_symbol}					{
+									yylval.binop = DIV;
+									return BINOP;
+								}
 [a-zA-Z][a-zA-Z0-9]*			{
 									yylval.id = new string(yytext);
 									return ID;

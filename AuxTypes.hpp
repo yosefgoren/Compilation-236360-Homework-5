@@ -5,18 +5,42 @@
 #include <string>
 #include <memory>
 #include <algorithm>
+#include <map>
+#include <utility>
 
 enum ExpType{
 	INT_EXP,
 	BOOL_EXP,
 	BYTE_EXP,
-
 	STRING_EXP,
 	VOID_EXP
 };
 
+enum Binop{
+	PLUS,
+	MINUS,
+	MULT,
+	DIV
+};
+
+enum Relop{
+	EQUAL,
+	NOT_EQUAL,
+	LESS,
+	GREATER,
+	LESS_EQUAL,
+	GREATER_EQUAL
+};
+
+//this enum is used to distinguish between the two possible missing labels of a conditional branch in LLVM during backpatching.
+//for an unconditional branch (which contains only a single label) use FIRST.
+enum BranchLabelIndex {FIRST, SECOND};
+typedef std::pair<int, BranchLabelIndex> Backpatch;
+
 std::string ExpTypeString(ExpType type, bool capital_letters = false);
 std::vector<std::string> ExpTypeStringVector(std::vector<ExpType> types, bool capital_letters = false);
+
+class NotImplementedError: public std::exception{};
 
 struct Parameter{
 	Parameter(const std::string& id, ExpType type, int line_of_origin, bool is_const)
@@ -56,6 +80,15 @@ struct FunctionType{
 			result.push_back((*it).type);
 		return result;
 	}
+	std::vector<std::string> getParameterIds() const{
+		std::vector<std::string> result;
+		for(auto it = parameters->rbegin(); it != parameters->rend(); ++it)
+			result.push_back((*it).id);
+		return result;
+	}
+	int getNumParameters() const{
+		return parameters->size();
+	}
 
 	ExpType return_type;
 	std::shared_ptr<std::vector<Parameter>> parameters;
@@ -63,19 +96,78 @@ struct FunctionType{
 
 struct Expression{
 	Expression(ExpType type);
+	virtual ~Expression() = default;
 	ExpType type;
+
+	static Expression* generateExpByType(ExpType type);
+
+	class InvalidCastException: public std::exception{};
 };
 
-struct NumericExp: public Expression{
-	NumericExp(ExpType type);
-
+struct RegStoredExp: public Expression{
+	RegStoredExp(ExpType type, const std::string& rvalue_exp, bool store_to_new_reg = true);
 	std::string reg;
 
 	static const std::string REG_NOT_ASSIGNED;
-	bool isRegisterAssigned() const;
+};
+
+struct NumericExp: public RegStoredExp{
+	NumericExp(ExpType type, const std::string& rvalue_exp, bool store_to_new_reg = true);
+	void convertToInt();
+	void convertToByte();
+	std::string storeAsRawReg();
+};
+
+struct StrExp: public Expression{
+	StrExp(const std::string& value);
+	std::string loadPtrToReg();
+
+	std::string llvm_global_id;
+	std::string ir_type;
+
+	static int str_count;
+	static std::string getFreshStringId();
 };
 
 struct BoolExp: public Expression{
-	BoolExp();
+	BoolExp(std::vector<Backpatch> truelist, std::vector<Backpatch> falselist);
+	BoolExp(const std::string rvalue_reg, bool rvalue_reg_is_raw_data);
+	std::string storeAsRawReg();
+	std::string storeAsReg();
+	
+	std::vector<Backpatch> truelist;
+	std::vector<Backpatch> falselist;
+private:
+	std::string storeAsRegPrototype(bool as_raw_reg);
 };
+
+struct VoidExp: public Expression{
+	VoidExp();
+};
+
+struct BranchBlock{
+	BranchBlock(std::string cond_label, Expression* cond_exp);
+	std::string cond_label;
+	std::vector<Backpatch> truelist;
+	std::vector<Backpatch> falselist;
+};
+
+struct RunBlock{
+	RunBlock(const std::string& start_label);
+	RunBlock(const std::string& start_label, const RunBlock& first_merge_part, const RunBlock& second_merge_part);
+	static RunBlock* newBlockEndingHere(const std::string& block_start_label);
+	static RunBlock* newSinkBlockEndingHere(const std::string& block_start_label);
+	static RunBlock* newContinueBlockHere(const std::string& block_start_label);
+	static RunBlock* newBreakBlockHere(const std::string& block_start_label);
+
+	std::string start_label;
+	std::vector<Backpatch> nextlist;
+	std::vector<Backpatch> continuelist;
+	std::vector<Backpatch> breaklist;
+};
+
+struct FuncDecl{
+	int start_label_offset;
+};
+
 #endif

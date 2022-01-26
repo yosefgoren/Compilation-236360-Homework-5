@@ -1,0 +1,84 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+define i32@foo(){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  3, i32* %reg1
+br label %func_end_8
+br label %func_end_8
+func_end_8:
+ret i32 0
+}
+define i1@bar(){
+%sp = alloca [50 x i32]
+br label %statement_14
+statement_14:
+%reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  9001, i32* %reg2
+br label %func_end_19
+br label %func_end_19
+func_end_19:
+ret i1 0
+}
+define i8@zoo(){
+%sp = alloca [50 x i32]
+br label %statement_25
+statement_25:
+%reg3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  42, i32* %reg3
+br label %func_end_30
+br label %func_end_30
+func_end_30:
+ret i8 0
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_36
+statement_36:
+%reg4 = call i32() @foo()
+%reg5 = add i32 0, %reg4
+call void(i32) @printi(i32 %reg5)
+br label %parse_label_41
+parse_label_41:
+%reg6 = call i1() @bar()
+br i1 %reg6, label %true_case_44, label %false_case_46
+true_case_44:
+br label %statement_48
+false_case_46:
+br label %statement_51
+statement_48:
+call void(i32) @printi(i32  1)
+br label %parse_label_54
+statement_51:
+call void(i32) @printi(i32  0)
+br label %parse_label_54
+parse_label_54:
+%reg7 = call i8() @zoo()
+%reg8 = add i8 0, %reg7
+%b2int_conv_reg9 = zext i8 %reg8 to i32
+%reg10 = icmp eq i32 %b2int_conv_reg9,  0
+br i1 %reg10, label %statement_60, label %statement_63
+statement_60:
+call void(i32) @printi(i32  7070)
+br label %func_end_67
+statement_63:
+call void(i32) @printi(i32  60818)
+br label %func_end_67
+br label %func_end_67
+func_end_67:
+ret void
+}

@@ -1,0 +1,13 @@
+digraph "CFG for 'main' function" {
+	label="CFG for 'main' function";
+
+	Node0x209f940 [shape=record,label="{%0:\l  %sp = alloca [50 x i32]\l  br label %parse_label_3\l}"];
+	Node0x209f940 -> Node0x209fb60;
+	Node0x209fb60 [shape=record,label="{parse_label_3:                                    \l  br label %parse_label_10\l}"];
+	Node0x209fb60 -> Node0x209fca0;
+	Node0x209fd80 [shape=record,label="{%1:                                                  \l  br label %parse_label_6\l}"];
+	Node0x209fd80 -> Node0x209fdf0;
+	Node0x209fdf0 [shape=record,label="{parse_label_6:                                    \l  %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0\l  store i32 0, i32* %reg1\l  br label %parse_label_10\l}"];
+	Node0x209fdf0 -> Node0x209fca0;
+	Node0x209fca0 [shape=record,label="{parse_label_10:                                   \l  %reg2 = add i32 0, 3\l  call void @printi(i32 %reg2)\l  ret i32 0\l}"];
+}

@@ -3,12 +3,9 @@
 
 #include <vector>
 #include <string>
+#include "AuxTypes.hpp"
 
 using namespace std;
-
-//this enum is used to distinguish between the two possible missing labels of a conditional branch in LLVM during backpatching.
-//for an unconditional branch (which contains only a single label) use FIRST.
-enum BranchLabelIndex {FIRST, SECOND};
 
 class CodeBuffer{
 	CodeBuffer();
@@ -22,16 +19,17 @@ public:
 	// ******** Methods to handle the code section ******** //
 
 	//generates a jump location label for the next command, writes it to the buffer and returns it
-	std::string genLabel();
+	std::string genLabel(const string& label_name = "label");
 
 	//writes command to the buffer, returns its location in the buffer
 	int emit(const std::string &command);
 
 	//gets a pair<int,BranchLabelIndex> item of the form {buffer_location, branch_label_index} and creates a list for it
-	static vector<pair<int,BranchLabelIndex>> makelist(pair<int,BranchLabelIndex> item);
+	static vector<Backpatch> makelist(pair<int,BranchLabelIndex> item);
+	static vector<Backpatch> makeEmptyList();
 
 	//merges two lists of {buffer_location, branch_label_index} items
-	static vector<pair<int,BranchLabelIndex>> merge(const vector<pair<int,BranchLabelIndex>> &l1,const vector<pair<int,BranchLabelIndex>> &l2);
+	static vector<Backpatch> merge(const vector<Backpatch> &l1,const vector<Backpatch> &l2);
 
 	/* accepts a list of {buffer_location, branch_label_index} items and a label.
 	For each {buffer_location, branch_label_index} item in address_list, backpatches the branch command 
@@ -47,7 +45,7 @@ public:
 	bpatch(makelist({loc2,SECOND}),"my_false_label"); - location loc2 in the buffer will now contain the command "br i1 %cond, label @, label %my_false_label"
 	bpatch(makelist({loc2,FIRST}),"my_true_label"); - location loc2 in the buffer will now contain the command "br i1 %cond, label @my_true_label, label %my_false_label"
 	*/
-	void bpatch(const vector<pair<int,BranchLabelIndex>>& address_list, const std::string &label);
+	void bpatch(const vector<Backpatch>& address_list, const std::string &label);
 	
 	//prints the content of the code buffer to stdout
 	void printCodeBuffer();
@@ -58,6 +56,36 @@ public:
 	//print the content of the global buffer to stdout
 	void printGlobalBuffer();
 
+	// ******** Methods to produce LLVM IR ******** //
+	void emitLibFuncs();
+	
+	/**
+	 * @brief creates a new register and assigns it the value of 'src_reg_type'.
+	 * @param src_reg_type - either a name of a register in the form of '%reg' or an immidiate value like '3'.
+	 * @param new_reg_prefix - the prefix to the name of the newly created register.
+	 * @return the name of the newly created register.
+	 **/
+	string emitCopyReg(const string& src_reg_or_imm, ExpType src_reg_type, const string& new_reg_prefix = "copy");
+	//string emitRegDecl(const string& lvalue_id, const string& rvalue_exp); 
+	void emitStoreVar(const string& id, Expression* exp_to_assign);
+	void emitStoreVar(const string& id, const string& reg_or_immidiate);
+	void emitFuncDecl(const string& id);
+	Expression* emitFunctionCall(const string& func_id, const vector<Expression*>& param_expressions);
+	Expression* emitLoadVar(const string& id);
+	Expression* createIdentifiableFromReg(const string& reg_name, ExpType type, bool rvalue_reg_is_raw_data);
+	
+	string createPtrToStackVar(int offset);
+	string getFreshReg(const string& reg_name = "reg");
+	string IrDefaultTypedValue(ExpType type);
+	string IrType(ExpType type);
+	string IrRelopType(Relop rel_type, ExpType type);
+	string IrFuncTypeFormat(const string& func_id);
+	string relopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Relop relop);
+	string binopRvalFormat(const string& first_reg, const string& second_reg, ExpType type, Binop binop);
+	string literalRvalFormat(int value, ExpType type);
+private:
+	int reg_count = 1;
+	void emitStoreVarBasic(const string& id, const string& immidiate_or_reg);
 };
 
 #endif

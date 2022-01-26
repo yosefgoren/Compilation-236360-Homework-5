@@ -1,0 +1,53 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+define void@foo(i32){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%truncated_byte1 = trunc i32 %0 to i8
+%reg2 = add i8 0, %truncated_byte1
+%raw_reg3 = zext i8 %reg2 to i32
+call void(i32) @printi(i32 %raw_reg3)
+br label %func_end_10
+br label %func_end_10
+func_end_10:
+ret void
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_16
+statement_16:
+%reg4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  9, i32* %reg4
+br label %statement_20
+statement_20:
+%param_ptr5 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw6 = load i32, i32* %param_ptr5
+%reg7 = add i32 0, %param_raw6
+%reg8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg7, i32* %reg8
+br label %statement_27
+statement_27:
+%param_ptr9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw10 = load i32, i32* %param_ptr9
+%reg11 = add i32 0, %param_raw10
+%int2byte_conv_reg12 = trunc i32 %reg11 to i8
+%raw_reg13 = zext i8 %int2byte_conv_reg12 to i32
+call void(i32) @foo(i32 %raw_reg13)
+br label %func_end_36
+br label %func_end_36
+func_end_36:
+ret void
+}

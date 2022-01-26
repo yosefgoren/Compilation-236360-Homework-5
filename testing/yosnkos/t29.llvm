@@ -1,0 +1,53 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.string_id0 = constant [15 x i8] c"ola mi amigos!\00"
+@.string_id1 = constant [5 x i8] c"paap\00"
+define void@foo(i32, i32, i32){
+%sp = alloca [50 x i32]
+br label %parse_label_3
+parse_label_3:
+%reg1 = add i32 0, %0
+%reg2 = icmp eq i32 %reg1,  3
+br i1 %reg2, label %parse_label_7, label %statement_19
+parse_label_7:
+%reg3 = add i32 0, %1
+%reg4 = icmp eq i32 %reg3,  2
+br i1 %reg4, label %parse_label_11, label %statement_19
+parse_label_11:
+%reg5 = add i32 0, %2
+%reg6 = icmp eq i32 %reg5,  1
+br i1 %reg6, label %statement_15, label %statement_19
+statement_15:
+%str_ptr_reg7 = getelementptr [15 x i8], [15 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg7)
+br label %func_end_24
+statement_19:
+%str_ptr_reg8 = getelementptr [5 x i8], [5 x i8]* @.string_id1, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg8)
+br label %func_end_24
+br label %func_end_24
+func_end_24:
+ret void
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_30
+statement_30:
+call void(i32, i32, i32) @foo(i32  3, i32  2, i32  1)
+br label %func_end_34
+br label %func_end_34
+func_end_34:
+ret void
+}

@@ -13,7 +13,8 @@ public:
 	void pushScope();
 	void popScope(bool print_end_scope = true);
 
-	void declareVar(const std::string& id, ExpType type, bool is_const);
+	void declareConstVar(const std::string& id, ExpType type, const std::string& reg_value);
+	void declareVar(const std::string& id, ExpType type);
 	void declareFunc(const std::string& id, ExpType return_type, std::vector<Parameter>* params);
 	//void declareLibFunc(const std::string& func_id, ExpType type, std::vector<Parameter>* params);
 	void finishFunc(bool print_decls = true);
@@ -22,7 +23,9 @@ public:
 	bool rvalValidId(const std::string& id) const;
 	bool callableValidId(const std::string& id) const;
 	bool isConst(const std::string& id) const;
+	std::string getConstValue(const std::string& id) const;
 	ExpType getVariableType(const std::string& id) const;
+	int getVariableOffset(const std::string& id) const;
 	ExpType getReturnType(const std::string& id) const;
 	/**
 	 * @param id - the identifier assigned to to the function; the function we want the type of.
@@ -39,6 +42,7 @@ private:
 		ExpType type;
 		bool is_const;
 		int offset;
+		std::string const_value;//this attribute has undefined value if 'is_const' is not true.
 	};
 	std::unordered_map<std::string, SymInfo> variable_decls;
 	//in each scope here, each id is a variable defined in the last scope:

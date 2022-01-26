@@ -5,11 +5,15 @@
 using namespace std;
 
 void output::endScope(){
+	#ifdef OLDT
     cout << "---end scope---" << endl;
+	#endif
 }
 
 void output::printID(const string& id, int offset, const string& type) {
+	#ifdef OLDT
     cout << id << " " << type <<  " " << offset <<  endl;
+	#endif
 }
 
 string typeListToString(const std::vector<string>& argTypes) {

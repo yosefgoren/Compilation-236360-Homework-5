@@ -13,14 +13,23 @@ define void @printi(i32) {
 
 define i32 @fact(i32){
 	fact_entry:
-		%1 = icmp sle i32 1, %0
+		%ptr1 = alloca i32
+		%ptr2 = alloca i32
+		store i32 %0, i32* %ptr2
+		store i32 %0, i32* %ptr1
+		%tmp1 = load i32, i32* %ptr1
+		%1 = icmp sle i32 1, %tmp1
 		br i1 %1, label %fact_step, label %fact_done
 	fact_done:
 		ret i32 1
 	fact_step:
-		%samller = sub i32 %0, 1
+		%tmp2 = load i32, i32* %ptr1
+		%samller = sub i32 %tmp2, 1
 		%returned = call i32 (i32) @fact(i32 %samller)
-		%multiplication = mul i32 %0, %returned
+		
+		%ptr3 = getelementptr i32, i32* %ptr1, i32 1
+		%tmp3 = load i32, i32* %ptr3
+		%multiplication = mul i32 %tmp3, %returned
 		ret i32 %multiplication
 }
 
