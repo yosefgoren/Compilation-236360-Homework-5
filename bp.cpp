@@ -152,6 +152,11 @@ void CodeBuffer::emitStoreVar(const string& id, const string& reg_or_immidiate){
 	emitStoreVarBasic(id, reg_or_immidiate);
 }
 
+string paramRegisterAtOffset(int offset){
+	assert(offset < 0);
+	return "%"+to_string(-offset-1);
+}
+
 Expression* CodeBuffer::emitLoadVar(const string& id){
 	assert(symtab.rvalValidId(id));
 	int offset = symtab.getVariableOffset(id);
@@ -167,7 +172,7 @@ Expression* CodeBuffer::emitLoadVar(const string& id){
 		emit(raw_value_reg+" = load i32, i32* "+param_ptr);
 	} else {
 		//if this id is a parameter:
-		raw_value_reg = "%"+to_string(-offset-1);
+		raw_value_reg = paramRegisterAtOffset(offset);
 		//this is the parameter number as defined in llvm,
 		// for example the first parameter has offset -1, and is stored in register %1.
 	}
@@ -292,8 +297,12 @@ Expression* CodeBuffer::emitFunctionCall(const string& func_id, const vector<Exp
 	return nullptr;
 }
 
+
 void CodeBuffer::emitStoreVarBasic(const string& id, const string& immidiate_or_reg){
 	int offset = symtab.getVariableOffset(id);
+	ExpType var_type = symtab.getVariableType(id);
+	assert(offset >= 0);
+	//this means that the parameter has to be a local variable, hence stored on stack:
 	string ptr = createPtrToStackVar(offset);
 	emit("store i32 "+immidiate_or_reg+", i32* "+ptr);
 }

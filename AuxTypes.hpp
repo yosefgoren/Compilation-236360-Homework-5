@@ -154,11 +154,16 @@ struct BranchBlock{
 
 struct RunBlock{
 	RunBlock(const std::string& start_label);
+	RunBlock(const std::string& start_label, const RunBlock& first_merge_part, const RunBlock& second_merge_part);
 	static RunBlock* newBlockEndingHere(const std::string& block_start_label);
 	static RunBlock* newSinkBlockEndingHere(const std::string& block_start_label);
+	static RunBlock* newContinueBlockHere(const std::string& block_start_label);
+	static RunBlock* newBreakBlockHere(const std::string& block_start_label);
 
 	std::string start_label;
 	std::vector<Backpatch> nextlist;
+	std::vector<Backpatch> continuelist;
+	std::vector<Backpatch> breaklist;
 };
 
 struct FuncDecl{

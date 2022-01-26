@@ -161,6 +161,12 @@ BranchBlock::BranchBlock(std::string cond_label, Expression* cond_exp)
 RunBlock::RunBlock(const std::string& start_label)
 	:start_label(start_label){}
 
+RunBlock::RunBlock(const std::string& start_label, const RunBlock& first_merge_part, const RunBlock& second_merge_part)
+	:start_label(start_label)
+	, nextlist(cb.merge(first_merge_part.nextlist, second_merge_part.nextlist))
+	, continuelist(cb.merge(first_merge_part.continuelist, second_merge_part.continuelist))
+	, breaklist(cb.merge(first_merge_part.breaklist, second_merge_part.breaklist)){}
+
 RunBlock* RunBlock::newSinkBlockEndingHere(const std::string& block_start_label){
 	RunBlock* res = new RunBlock(block_start_label); 
 	res->nextlist = std::vector<Backpatch>();
@@ -170,6 +176,18 @@ RunBlock* RunBlock::newSinkBlockEndingHere(const std::string& block_start_label)
 RunBlock* RunBlock::newBlockEndingHere(const std::string& block_start_label){
 	RunBlock* res = new RunBlock(block_start_label); 
 	res->nextlist = cb.makelist(Backpatch(cb.emit("br label @"), FIRST));
+	return res;
+}
+
+RunBlock* RunBlock::newContinueBlockHere(const std::string& block_start_label){
+	RunBlock* res = new RunBlock(block_start_label); 
+	res->continuelist = cb.makelist(Backpatch(cb.emit("br label @"), FIRST));
+	return res;
+}
+
+RunBlock* RunBlock::newBreakBlockHere(const std::string& block_start_label){
+	RunBlock* res = new RunBlock(block_start_label); 
+	res->breaklist = cb.makelist(Backpatch(cb.emit("br label @"), FIRST));
 	return res;
 }
 

@@ -71,8 +71,6 @@
 
 	void checkPrototypeMismatch(const string& func_id, const std::vector<Expression*>& reverse_exp_list_in_call){
 		std::vector<ExpType> exp_types_required = symtab.getFunctionType(func_id).getParameterTypes();
-		//TODO: add something to remember the line of each expression so we can add the correct 
-		// 		line of the expression to this error (something like 'line_of_origin').
 		auto required_types_it = exp_types_required.begin();
 		for(auto called_exp_it = reverse_exp_list_in_call.rbegin();
 				called_exp_it != reverse_exp_list_in_call.rend(); ++called_exp_it){
@@ -241,7 +239,9 @@ Statements:			Statement {$$ = $1;}
 						cb.bpatch($1->nextlist, $2->start_label);
 						$$ = new RunBlock($1->start_label);
 						$$->nextlist = $2->nextlist;
-						delete $2;
+						$$->continuelist = cb.merge($1->continuelist, $2->continuelist);
+						$$->breaklist = cb.merge($1->breaklist, $2->breaklist);
+						delete $1; delete $2;
 					}
 					;
 Call:				ID LPAREN ExpList RPAREN {
@@ -421,20 +421,24 @@ OpenStatment:		IfStart OpenScope Statement CloseScope {
 						cb.bpatch($1->truelist, $3->start_label);
 						$$ = new RunBlock($1->cond_label);
 						$$->nextlist = cb.merge($1->falselist, $3->nextlist);
+						$$->breaklist = $3->breaklist;
+						$$->continuelist = $3->continuelist;
 						delete $1; delete $3;
 					}
 					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope OpenStatment CloseScope {
 						cb.bpatch($1->truelist, $3->start_label);
 						cb.bpatch($1->falselist, $7->start_label);
-						$$ = new RunBlock($1->cond_label);
-						$$->nextlist = cb.merge($3->nextlist, $7->nextlist);
+						$$ = new RunBlock($1->cond_label, *$3, *$7);
+						
 						delete $1; delete $3; delete $7;
 					}
 					| WhileStart OpenLoop OpenScope OpenStatment CloseScope CloseLoop {
 						cb.bpatch($1->truelist, $4->start_label);
 						cb.bpatch($4->nextlist, $1->cond_label);
 						$$ = new RunBlock($1->cond_label);
-						$$->nextlist = $1->falselist;
+						$$->nextlist = cb.merge($1->falselist, $4->breaklist);
+						cb.bpatch($4->continuelist, $1->cond_label);
+						
 						delete $1; delete $4;
 					}
 					;
@@ -443,15 +447,17 @@ ClosedStatment:		SimpleStatement {$$ = $1;}
 					| IfStart OpenScope ClosedStatment CloseScope ELSE OpenScope ClosedStatment CloseScope {
 						cb.bpatch($1->truelist, $3->start_label);
 						cb.bpatch($1->falselist, $7->start_label);
-						$$ = new RunBlock($1->cond_label);
-						$$->nextlist = cb.merge($3->nextlist, $7->nextlist);
+						$$ = new RunBlock($1->cond_label, *$3, *$7);
+						
 						delete $1; delete $3; delete $7;
 					}
 					| WhileStart OpenLoop OpenScope ClosedStatment CloseScope CloseLoop {
 						cb.bpatch($1->truelist, $4->start_label);
 						cb.bpatch($4->nextlist, $1->cond_label);
 						$$ = new RunBlock($1->cond_label);
-						$$->nextlist = $1->falselist;
+						$$->nextlist = cb.merge($1->falselist, $4->breaklist);
+						cb.bpatch($4->continuelist, $1->cond_label);
+						
 						delete $1; delete $4;
 					}
 					;
@@ -481,7 +487,6 @@ SimpleStatement:	Block {$$ = $1;}
 							dynamic_cast<NumericExp*>($4)->convertToInt();
 						
 						if($2.is_const){
-							//TODO: what if Exp is not a nuemrical expresion ?
 							assert(id_type == BOOL_EXP || id_type == INT_EXP || id_type == BYTE_EXP);
 							std::string reg_or_literal = id_type == BOOL_EXP
 								? dynamic_cast<BoolExp*>($4)->storeAsRawReg()
@@ -545,11 +550,11 @@ SimpleStatement:	Block {$$ = $1;}
 					}
 					| StatementLabel BREAK SC {//TODO: add support for break.
 						check(loop_depth!=0, output::errorUnexpectedBreak(yylineno));
-						$$ = RunBlock::newBlockEndingHere(*$1);
+						$$ = RunBlock::newBreakBlockHere(*$1);
 					}
 					| StatementLabel CONTINUE SC {//TODO: add support for break.
 						check(loop_depth!=0, output::errorUnexpectedContinue(yylineno));
-						$$ = RunBlock::newBlockEndingHere(*$1);
+						$$ = RunBlock::newContinueBlockHere(*$1);
 					}
 					;
 VarDecStart:		TypeAnnotation Type ID {
