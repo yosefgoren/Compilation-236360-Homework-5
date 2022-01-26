@@ -1,0 +1,1606 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+@.string_id0 = constant [9 x i8] c"Success!\00"
+define i1@divideBy0(){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+call void(i32) @errorIfZero9001(i32  0)
+%reg1 = sdiv i32  5,  0
+%reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg1, i32* %reg2
+br label %statement_9
+statement_9:
+br label %true_case_11
+true_case_11:
+br label %set_bool_reg_15
+false_case_13:
+br label %set_bool_reg_15
+set_bool_reg_15:
+%reg3 = phi i1 [1, %true_case_11], [0, %false_case_13]
+ret i1 %reg3
+br label %func_end_19
+func_end_19:
+ret i1 0
+}
+define i1@True(){
+%sp = alloca [50 x i32]
+br label %statement_25
+statement_25:
+br label %true_case_27
+true_case_27:
+br label %set_bool_reg_31
+false_case_29:
+br label %set_bool_reg_31
+set_bool_reg_31:
+%reg4 = phi i1 [1, %true_case_27], [0, %false_case_29]
+ret i1 %reg4
+br label %func_end_35
+func_end_35:
+ret i1 0
+}
+define i1@False(){
+%sp = alloca [50 x i32]
+br label %statement_41
+statement_41:
+br label %false_case_45
+true_case_43:
+br label %set_bool_reg_47
+false_case_45:
+br label %set_bool_reg_47
+set_bool_reg_47:
+%reg5 = phi i1 [1, %true_case_43], [0, %false_case_45]
+ret i1 %reg5
+br label %func_end_51
+func_end_51:
+ret i1 0
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_57
+statement_57:
+br label %true_case_59
+true_case_59:
+br label %set_bool_reg_63
+false_case_61:
+br label %set_bool_reg_63
+set_bool_reg_63:
+%reg6 = phi i32 [1, %true_case_59], [0, %false_case_61]
+%reg7 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg6, i32* %reg7
+br label %statement_68
+statement_68:
+br label %false_case_72
+true_case_70:
+br label %set_bool_reg_74
+false_case_72:
+br label %set_bool_reg_74
+set_bool_reg_74:
+%reg8 = phi i32 [1, %true_case_70], [0, %false_case_72]
+%reg9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg8, i32* %reg9
+br label %statement_79
+statement_79:
+%reg10 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 0, i32* %reg10
+br label %statement_83
+statement_83:
+br label %true_case_92
+parse_label_85:
+%reg11 = call i1() @divideBy0()
+br i1 %reg11, label %true_case_88, label %false_case_90
+true_case_88:
+br label %true_case_92
+false_case_90:
+br label %false_case_94
+true_case_92:
+br label %set_bool_reg_96
+false_case_94:
+br label %set_bool_reg_96
+set_bool_reg_96:
+%reg12 = phi i32 [1, %true_case_92], [0, %false_case_94]
+%reg13 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg12, i32* %reg13
+br label %statement_101
+statement_101:
+br label %false_case_112
+parse_label_103:
+%reg14 = call i1() @divideBy0()
+br i1 %reg14, label %true_case_106, label %false_case_108
+true_case_106:
+br label %true_case_110
+false_case_108:
+br label %false_case_112
+true_case_110:
+br label %set_bool_reg_114
+false_case_112:
+br label %set_bool_reg_114
+set_bool_reg_114:
+%reg15 = phi i32 [1, %true_case_110], [0, %false_case_112]
+%reg16 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg15, i32* %reg16
+br label %statement_119
+statement_119:
+%reg17 = icmp sgt i32  5,  4
+br i1 %reg17, label %true_case_129, label %parse_label_122
+parse_label_122:
+%reg18 = call i1() @divideBy0()
+br i1 %reg18, label %true_case_125, label %false_case_127
+true_case_125:
+br label %true_case_129
+false_case_127:
+br label %false_case_131
+true_case_129:
+br label %set_bool_reg_133
+false_case_131:
+br label %set_bool_reg_133
+set_bool_reg_133:
+%reg19 = phi i32 [1, %true_case_129], [0, %false_case_131]
+%reg20 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg19, i32* %reg20
+br label %statement_138
+statement_138:
+%reg21 = icmp sgt i32  4,  5
+br i1 %reg21, label %parse_label_141, label %false_case_150
+parse_label_141:
+%reg22 = call i1() @divideBy0()
+br i1 %reg22, label %true_case_144, label %false_case_146
+true_case_144:
+br label %true_case_148
+false_case_146:
+br label %false_case_150
+true_case_148:
+br label %set_bool_reg_152
+false_case_150:
+br label %set_bool_reg_152
+set_bool_reg_152:
+%reg23 = phi i32 [1, %true_case_148], [0, %false_case_150]
+%reg24 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg23, i32* %reg24
+br label %statement_157
+statement_157:
+%reg25 = icmp eq i32  4,  4
+br i1 %reg25, label %true_case_167, label %parse_label_160
+parse_label_160:
+%reg26 = call i1() @divideBy0()
+br i1 %reg26, label %true_case_163, label %false_case_165
+true_case_163:
+br label %true_case_167
+false_case_165:
+br label %false_case_169
+true_case_167:
+br label %set_bool_reg_171
+false_case_169:
+br label %set_bool_reg_171
+set_bool_reg_171:
+%reg27 = phi i32 [1, %true_case_167], [0, %false_case_169]
+%reg28 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg27, i32* %reg28
+br label %statement_176
+statement_176:
+%reg29 = icmp ne i32  4,  4
+br i1 %reg29, label %parse_label_179, label %false_case_188
+parse_label_179:
+%reg30 = call i1() @divideBy0()
+br i1 %reg30, label %true_case_182, label %false_case_184
+true_case_182:
+br label %true_case_186
+false_case_184:
+br label %false_case_188
+true_case_186:
+br label %set_bool_reg_190
+false_case_188:
+br label %set_bool_reg_190
+set_bool_reg_190:
+%reg31 = phi i32 [1, %true_case_186], [0, %false_case_188]
+%reg32 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg31, i32* %reg32
+br label %statement_195
+statement_195:
+%reg33 = call i1() @True()
+br i1 %reg33, label %true_case_198, label %false_case_200
+true_case_198:
+br label %true_case_209
+false_case_200:
+br label %parse_label_202
+parse_label_202:
+%reg34 = call i1() @divideBy0()
+br i1 %reg34, label %true_case_205, label %false_case_207
+true_case_205:
+br label %true_case_209
+false_case_207:
+br label %false_case_211
+true_case_209:
+br label %set_bool_reg_213
+false_case_211:
+br label %set_bool_reg_213
+set_bool_reg_213:
+%reg35 = phi i32 [1, %true_case_209], [0, %false_case_211]
+%reg36 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg35, i32* %reg36
+br label %statement_218
+statement_218:
+%reg37 = call i1() @False()
+br i1 %reg37, label %true_case_221, label %false_case_223
+true_case_221:
+br label %parse_label_225
+false_case_223:
+br label %false_case_234
+parse_label_225:
+%reg38 = call i1() @divideBy0()
+br i1 %reg38, label %true_case_228, label %false_case_230
+true_case_228:
+br label %true_case_232
+false_case_230:
+br label %false_case_234
+true_case_232:
+br label %set_bool_reg_236
+false_case_234:
+br label %set_bool_reg_236
+set_bool_reg_236:
+%reg39 = phi i32 [1, %true_case_232], [0, %false_case_234]
+%reg40 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg39, i32* %reg40
+br label %statement_241
+statement_241:
+%param_ptr41 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw42 = load i32, i32* %param_ptr41
+%reg43 = trunc i32 %param_raw42 to i1
+br i1 %reg43, label %true_case_246, label %false_case_248
+true_case_246:
+br label %true_case_257
+false_case_248:
+br label %parse_label_250
+parse_label_250:
+%reg44 = call i1() @divideBy0()
+br i1 %reg44, label %true_case_253, label %false_case_255
+true_case_253:
+br label %true_case_257
+false_case_255:
+br label %false_case_259
+true_case_257:
+br label %set_bool_reg_261
+false_case_259:
+br label %set_bool_reg_261
+set_bool_reg_261:
+%reg45 = phi i32 [1, %true_case_257], [0, %false_case_259]
+%reg46 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg45, i32* %reg46
+br label %statement_266
+statement_266:
+%param_ptr47 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw48 = load i32, i32* %param_ptr47
+%reg49 = trunc i32 %param_raw48 to i1
+br i1 %reg49, label %true_case_271, label %false_case_273
+true_case_271:
+br label %parse_label_275
+false_case_273:
+br label %false_case_284
+parse_label_275:
+%reg50 = call i1() @divideBy0()
+br i1 %reg50, label %true_case_278, label %false_case_280
+true_case_278:
+br label %true_case_282
+false_case_280:
+br label %false_case_284
+true_case_282:
+br label %set_bool_reg_286
+false_case_284:
+br label %set_bool_reg_286
+set_bool_reg_286:
+%reg51 = phi i32 [1, %true_case_282], [0, %false_case_284]
+%reg52 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg51, i32* %reg52
+br label %statement_291
+statement_291:
+br label %parse_label_293
+parse_label_293:
+br label %true_case_302
+parse_label_295:
+%reg53 = call i1() @divideBy0()
+br i1 %reg53, label %true_case_298, label %false_case_300
+true_case_298:
+br label %true_case_302
+false_case_300:
+br label %false_case_304
+true_case_302:
+br label %set_bool_reg_306
+false_case_304:
+br label %set_bool_reg_306
+set_bool_reg_306:
+%reg54 = phi i32 [1, %true_case_302], [0, %false_case_304]
+%reg55 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg54, i32* %reg55
+br label %statement_311
+statement_311:
+%reg56 = icmp sgt i32  5,  4
+br i1 %reg56, label %parse_label_314, label %parse_label_316
+parse_label_314:
+br label %true_case_323
+parse_label_316:
+%reg57 = call i1() @divideBy0()
+br i1 %reg57, label %true_case_319, label %false_case_321
+true_case_319:
+br label %true_case_323
+false_case_321:
+br label %false_case_325
+true_case_323:
+br label %set_bool_reg_327
+false_case_325:
+br label %set_bool_reg_327
+set_bool_reg_327:
+%reg58 = phi i32 [1, %true_case_323], [0, %false_case_325]
+%reg59 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg58, i32* %reg59
+br label %statement_332
+statement_332:
+%reg60 = icmp eq i32  4,  4
+br i1 %reg60, label %parse_label_335, label %parse_label_337
+parse_label_335:
+br label %true_case_344
+parse_label_337:
+%reg61 = call i1() @divideBy0()
+br i1 %reg61, label %true_case_340, label %false_case_342
+true_case_340:
+br label %true_case_344
+false_case_342:
+br label %false_case_346
+true_case_344:
+br label %set_bool_reg_348
+false_case_346:
+br label %set_bool_reg_348
+set_bool_reg_348:
+%reg62 = phi i32 [1, %true_case_344], [0, %false_case_346]
+%reg63 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg62, i32* %reg63
+br label %statement_353
+statement_353:
+%reg64 = call i1() @True()
+br i1 %reg64, label %true_case_356, label %false_case_358
+true_case_356:
+br label %parse_label_360
+false_case_358:
+br label %parse_label_362
+parse_label_360:
+br label %true_case_369
+parse_label_362:
+%reg65 = call i1() @divideBy0()
+br i1 %reg65, label %true_case_365, label %false_case_367
+true_case_365:
+br label %true_case_369
+false_case_367:
+br label %false_case_371
+true_case_369:
+br label %set_bool_reg_373
+false_case_371:
+br label %set_bool_reg_373
+set_bool_reg_373:
+%reg66 = phi i32 [1, %true_case_369], [0, %false_case_371]
+%reg67 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg66, i32* %reg67
+br label %statement_378
+statement_378:
+%param_ptr68 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw69 = load i32, i32* %param_ptr68
+%reg70 = trunc i32 %param_raw69 to i1
+br i1 %reg70, label %true_case_383, label %false_case_385
+true_case_383:
+br label %parse_label_387
+false_case_385:
+br label %parse_label_389
+parse_label_387:
+br label %true_case_396
+parse_label_389:
+%reg71 = call i1() @divideBy0()
+br i1 %reg71, label %true_case_392, label %false_case_394
+true_case_392:
+br label %true_case_396
+false_case_394:
+br label %false_case_398
+true_case_396:
+br label %set_bool_reg_400
+false_case_398:
+br label %set_bool_reg_400
+set_bool_reg_400:
+%reg72 = phi i32 [1, %true_case_396], [0, %false_case_398]
+%reg73 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg72, i32* %reg73
+br label %statement_405
+statement_405:
+br label %parse_label_407
+parse_label_407:
+%reg74 = icmp sgt i32  5,  4
+br i1 %reg74, label %true_case_417, label %parse_label_410
+parse_label_410:
+%reg75 = call i1() @divideBy0()
+br i1 %reg75, label %true_case_413, label %false_case_415
+true_case_413:
+br label %true_case_417
+false_case_415:
+br label %false_case_419
+true_case_417:
+br label %set_bool_reg_421
+false_case_419:
+br label %set_bool_reg_421
+set_bool_reg_421:
+%reg76 = phi i32 [1, %true_case_417], [0, %false_case_419]
+%reg77 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg76, i32* %reg77
+br label %statement_426
+statement_426:
+%reg78 = icmp sgt i32  5,  4
+br i1 %reg78, label %parse_label_429, label %parse_label_432
+parse_label_429:
+%reg79 = icmp sgt i32  5,  4
+br i1 %reg79, label %true_case_439, label %parse_label_432
+parse_label_432:
+%reg80 = call i1() @divideBy0()
+br i1 %reg80, label %true_case_435, label %false_case_437
+true_case_435:
+br label %true_case_439
+false_case_437:
+br label %false_case_441
+true_case_439:
+br label %set_bool_reg_443
+false_case_441:
+br label %set_bool_reg_443
+set_bool_reg_443:
+%reg81 = phi i32 [1, %true_case_439], [0, %false_case_441]
+%reg82 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg81, i32* %reg82
+br label %statement_448
+statement_448:
+%reg83 = icmp eq i32  4,  4
+br i1 %reg83, label %parse_label_451, label %parse_label_454
+parse_label_451:
+%reg84 = icmp sgt i32  5,  4
+br i1 %reg84, label %true_case_461, label %parse_label_454
+parse_label_454:
+%reg85 = call i1() @divideBy0()
+br i1 %reg85, label %true_case_457, label %false_case_459
+true_case_457:
+br label %true_case_461
+false_case_459:
+br label %false_case_463
+true_case_461:
+br label %set_bool_reg_465
+false_case_463:
+br label %set_bool_reg_465
+set_bool_reg_465:
+%reg86 = phi i32 [1, %true_case_461], [0, %false_case_463]
+%reg87 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg86, i32* %reg87
+br label %statement_470
+statement_470:
+%reg88 = call i1() @True()
+br i1 %reg88, label %true_case_473, label %false_case_475
+true_case_473:
+br label %parse_label_477
+false_case_475:
+br label %parse_label_480
+parse_label_477:
+%reg89 = icmp sgt i32  5,  4
+br i1 %reg89, label %true_case_487, label %parse_label_480
+parse_label_480:
+%reg90 = call i1() @divideBy0()
+br i1 %reg90, label %true_case_483, label %false_case_485
+true_case_483:
+br label %true_case_487
+false_case_485:
+br label %false_case_489
+true_case_487:
+br label %set_bool_reg_491
+false_case_489:
+br label %set_bool_reg_491
+set_bool_reg_491:
+%reg91 = phi i32 [1, %true_case_487], [0, %false_case_489]
+%reg92 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg91, i32* %reg92
+br label %statement_496
+statement_496:
+%param_ptr93 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw94 = load i32, i32* %param_ptr93
+%reg95 = trunc i32 %param_raw94 to i1
+br i1 %reg95, label %true_case_501, label %false_case_503
+true_case_501:
+br label %parse_label_505
+false_case_503:
+br label %parse_label_508
+parse_label_505:
+%reg96 = icmp sgt i32  5,  4
+br i1 %reg96, label %true_case_515, label %parse_label_508
+parse_label_508:
+%reg97 = call i1() @divideBy0()
+br i1 %reg97, label %true_case_511, label %false_case_513
+true_case_511:
+br label %true_case_515
+false_case_513:
+br label %false_case_517
+true_case_515:
+br label %set_bool_reg_519
+false_case_517:
+br label %set_bool_reg_519
+set_bool_reg_519:
+%reg98 = phi i32 [1, %true_case_515], [0, %false_case_517]
+%reg99 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg98, i32* %reg99
+br label %statement_524
+statement_524:
+br label %parse_label_526
+parse_label_526:
+%reg100 = icmp eq i32  4,  4
+br i1 %reg100, label %true_case_536, label %parse_label_529
+parse_label_529:
+%reg101 = call i1() @divideBy0()
+br i1 %reg101, label %true_case_532, label %false_case_534
+true_case_532:
+br label %true_case_536
+false_case_534:
+br label %false_case_538
+true_case_536:
+br label %set_bool_reg_540
+false_case_538:
+br label %set_bool_reg_540
+set_bool_reg_540:
+%reg102 = phi i32 [1, %true_case_536], [0, %false_case_538]
+%reg103 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg102, i32* %reg103
+br label %statement_545
+statement_545:
+%reg104 = icmp sgt i32  5,  4
+br i1 %reg104, label %parse_label_548, label %parse_label_551
+parse_label_548:
+%reg105 = icmp eq i32  4,  4
+br i1 %reg105, label %true_case_558, label %parse_label_551
+parse_label_551:
+%reg106 = call i1() @divideBy0()
+br i1 %reg106, label %true_case_554, label %false_case_556
+true_case_554:
+br label %true_case_558
+false_case_556:
+br label %false_case_560
+true_case_558:
+br label %set_bool_reg_562
+false_case_560:
+br label %set_bool_reg_562
+set_bool_reg_562:
+%reg107 = phi i32 [1, %true_case_558], [0, %false_case_560]
+%reg108 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg107, i32* %reg108
+br label %statement_567
+statement_567:
+%reg109 = icmp eq i32  4,  4
+br i1 %reg109, label %parse_label_570, label %parse_label_573
+parse_label_570:
+%reg110 = icmp eq i32  4,  4
+br i1 %reg110, label %true_case_580, label %parse_label_573
+parse_label_573:
+%reg111 = call i1() @divideBy0()
+br i1 %reg111, label %true_case_576, label %false_case_578
+true_case_576:
+br label %true_case_580
+false_case_578:
+br label %false_case_582
+true_case_580:
+br label %set_bool_reg_584
+false_case_582:
+br label %set_bool_reg_584
+set_bool_reg_584:
+%reg112 = phi i32 [1, %true_case_580], [0, %false_case_582]
+%reg113 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg112, i32* %reg113
+br label %statement_589
+statement_589:
+%reg114 = call i1() @True()
+br i1 %reg114, label %true_case_592, label %false_case_594
+true_case_592:
+br label %parse_label_596
+false_case_594:
+br label %parse_label_599
+parse_label_596:
+%reg115 = icmp eq i32  4,  4
+br i1 %reg115, label %true_case_606, label %parse_label_599
+parse_label_599:
+%reg116 = call i1() @divideBy0()
+br i1 %reg116, label %true_case_602, label %false_case_604
+true_case_602:
+br label %true_case_606
+false_case_604:
+br label %false_case_608
+true_case_606:
+br label %set_bool_reg_610
+false_case_608:
+br label %set_bool_reg_610
+set_bool_reg_610:
+%reg117 = phi i32 [1, %true_case_606], [0, %false_case_608]
+%reg118 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg117, i32* %reg118
+br label %statement_615
+statement_615:
+%param_ptr119 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw120 = load i32, i32* %param_ptr119
+%reg121 = trunc i32 %param_raw120 to i1
+br i1 %reg121, label %true_case_620, label %false_case_622
+true_case_620:
+br label %parse_label_624
+false_case_622:
+br label %parse_label_627
+parse_label_624:
+%reg122 = icmp eq i32  4,  4
+br i1 %reg122, label %true_case_634, label %parse_label_627
+parse_label_627:
+%reg123 = call i1() @divideBy0()
+br i1 %reg123, label %true_case_630, label %false_case_632
+true_case_630:
+br label %true_case_634
+false_case_632:
+br label %false_case_636
+true_case_634:
+br label %set_bool_reg_638
+false_case_636:
+br label %set_bool_reg_638
+set_bool_reg_638:
+%reg124 = phi i32 [1, %true_case_634], [0, %false_case_636]
+%reg125 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg124, i32* %reg125
+br label %statement_643
+statement_643:
+br label %parse_label_645
+parse_label_645:
+%reg126 = call i1() @True()
+br i1 %reg126, label %true_case_648, label %false_case_650
+true_case_648:
+br label %true_case_659
+false_case_650:
+br label %parse_label_652
+parse_label_652:
+%reg127 = call i1() @divideBy0()
+br i1 %reg127, label %true_case_655, label %false_case_657
+true_case_655:
+br label %true_case_659
+false_case_657:
+br label %false_case_661
+true_case_659:
+br label %set_bool_reg_663
+false_case_661:
+br label %set_bool_reg_663
+set_bool_reg_663:
+%reg128 = phi i32 [1, %true_case_659], [0, %false_case_661]
+%reg129 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg128, i32* %reg129
+br label %statement_668
+statement_668:
+%reg130 = icmp sgt i32  5,  4
+br i1 %reg130, label %parse_label_671, label %parse_label_678
+parse_label_671:
+%reg131 = call i1() @True()
+br i1 %reg131, label %true_case_674, label %false_case_676
+true_case_674:
+br label %true_case_685
+false_case_676:
+br label %parse_label_678
+parse_label_678:
+%reg132 = call i1() @divideBy0()
+br i1 %reg132, label %true_case_681, label %false_case_683
+true_case_681:
+br label %true_case_685
+false_case_683:
+br label %false_case_687
+true_case_685:
+br label %set_bool_reg_689
+false_case_687:
+br label %set_bool_reg_689
+set_bool_reg_689:
+%reg133 = phi i32 [1, %true_case_685], [0, %false_case_687]
+%reg134 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg133, i32* %reg134
+br label %statement_694
+statement_694:
+%reg135 = icmp eq i32  4,  4
+br i1 %reg135, label %parse_label_697, label %parse_label_704
+parse_label_697:
+%reg136 = call i1() @True()
+br i1 %reg136, label %true_case_700, label %false_case_702
+true_case_700:
+br label %true_case_711
+false_case_702:
+br label %parse_label_704
+parse_label_704:
+%reg137 = call i1() @divideBy0()
+br i1 %reg137, label %true_case_707, label %false_case_709
+true_case_707:
+br label %true_case_711
+false_case_709:
+br label %false_case_713
+true_case_711:
+br label %set_bool_reg_715
+false_case_713:
+br label %set_bool_reg_715
+set_bool_reg_715:
+%reg138 = phi i32 [1, %true_case_711], [0, %false_case_713]
+%reg139 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg138, i32* %reg139
+br label %statement_720
+statement_720:
+%reg140 = call i1() @True()
+br i1 %reg140, label %true_case_723, label %false_case_725
+true_case_723:
+br label %parse_label_727
+false_case_725:
+br label %parse_label_734
+parse_label_727:
+%reg141 = call i1() @True()
+br i1 %reg141, label %true_case_730, label %false_case_732
+true_case_730:
+br label %true_case_741
+false_case_732:
+br label %parse_label_734
+parse_label_734:
+%reg142 = call i1() @divideBy0()
+br i1 %reg142, label %true_case_737, label %false_case_739
+true_case_737:
+br label %true_case_741
+false_case_739:
+br label %false_case_743
+true_case_741:
+br label %set_bool_reg_745
+false_case_743:
+br label %set_bool_reg_745
+set_bool_reg_745:
+%reg143 = phi i32 [1, %true_case_741], [0, %false_case_743]
+%reg144 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg143, i32* %reg144
+br label %statement_750
+statement_750:
+%param_ptr145 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw146 = load i32, i32* %param_ptr145
+%reg147 = trunc i32 %param_raw146 to i1
+br i1 %reg147, label %true_case_755, label %false_case_757
+true_case_755:
+br label %parse_label_759
+false_case_757:
+br label %parse_label_766
+parse_label_759:
+%reg148 = call i1() @True()
+br i1 %reg148, label %true_case_762, label %false_case_764
+true_case_762:
+br label %true_case_773
+false_case_764:
+br label %parse_label_766
+parse_label_766:
+%reg149 = call i1() @divideBy0()
+br i1 %reg149, label %true_case_769, label %false_case_771
+true_case_769:
+br label %true_case_773
+false_case_771:
+br label %false_case_775
+true_case_773:
+br label %set_bool_reg_777
+false_case_775:
+br label %set_bool_reg_777
+set_bool_reg_777:
+%reg150 = phi i32 [1, %true_case_773], [0, %false_case_775]
+%reg151 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg150, i32* %reg151
+br label %statement_782
+statement_782:
+br label %parse_label_784
+parse_label_784:
+%param_ptr152 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw153 = load i32, i32* %param_ptr152
+%reg154 = trunc i32 %param_raw153 to i1
+br i1 %reg154, label %true_case_789, label %false_case_791
+true_case_789:
+br label %true_case_800
+false_case_791:
+br label %parse_label_793
+parse_label_793:
+%reg155 = call i1() @divideBy0()
+br i1 %reg155, label %true_case_796, label %false_case_798
+true_case_796:
+br label %true_case_800
+false_case_798:
+br label %false_case_802
+true_case_800:
+br label %set_bool_reg_804
+false_case_802:
+br label %set_bool_reg_804
+set_bool_reg_804:
+%reg156 = phi i32 [1, %true_case_800], [0, %false_case_802]
+%reg157 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg156, i32* %reg157
+br label %statement_809
+statement_809:
+%reg158 = icmp sgt i32  5,  4
+br i1 %reg158, label %parse_label_812, label %parse_label_821
+parse_label_812:
+%param_ptr159 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw160 = load i32, i32* %param_ptr159
+%reg161 = trunc i32 %param_raw160 to i1
+br i1 %reg161, label %true_case_817, label %false_case_819
+true_case_817:
+br label %true_case_828
+false_case_819:
+br label %parse_label_821
+parse_label_821:
+%reg162 = call i1() @divideBy0()
+br i1 %reg162, label %true_case_824, label %false_case_826
+true_case_824:
+br label %true_case_828
+false_case_826:
+br label %false_case_830
+true_case_828:
+br label %set_bool_reg_832
+false_case_830:
+br label %set_bool_reg_832
+set_bool_reg_832:
+%reg163 = phi i32 [1, %true_case_828], [0, %false_case_830]
+%reg164 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg163, i32* %reg164
+br label %statement_837
+statement_837:
+%reg165 = icmp eq i32  4,  4
+br i1 %reg165, label %parse_label_840, label %parse_label_849
+parse_label_840:
+%param_ptr166 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw167 = load i32, i32* %param_ptr166
+%reg168 = trunc i32 %param_raw167 to i1
+br i1 %reg168, label %true_case_845, label %false_case_847
+true_case_845:
+br label %true_case_856
+false_case_847:
+br label %parse_label_849
+parse_label_849:
+%reg169 = call i1() @divideBy0()
+br i1 %reg169, label %true_case_852, label %false_case_854
+true_case_852:
+br label %true_case_856
+false_case_854:
+br label %false_case_858
+true_case_856:
+br label %set_bool_reg_860
+false_case_858:
+br label %set_bool_reg_860
+set_bool_reg_860:
+%reg170 = phi i32 [1, %true_case_856], [0, %false_case_858]
+%reg171 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg170, i32* %reg171
+br label %statement_865
+statement_865:
+%reg172 = call i1() @True()
+br i1 %reg172, label %true_case_868, label %false_case_870
+true_case_868:
+br label %parse_label_872
+false_case_870:
+br label %parse_label_881
+parse_label_872:
+%param_ptr173 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw174 = load i32, i32* %param_ptr173
+%reg175 = trunc i32 %param_raw174 to i1
+br i1 %reg175, label %true_case_877, label %false_case_879
+true_case_877:
+br label %true_case_888
+false_case_879:
+br label %parse_label_881
+parse_label_881:
+%reg176 = call i1() @divideBy0()
+br i1 %reg176, label %true_case_884, label %false_case_886
+true_case_884:
+br label %true_case_888
+false_case_886:
+br label %false_case_890
+true_case_888:
+br label %set_bool_reg_892
+false_case_890:
+br label %set_bool_reg_892
+set_bool_reg_892:
+%reg177 = phi i32 [1, %true_case_888], [0, %false_case_890]
+%reg178 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg177, i32* %reg178
+br label %statement_897
+statement_897:
+%param_ptr179 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw180 = load i32, i32* %param_ptr179
+%reg181 = trunc i32 %param_raw180 to i1
+br i1 %reg181, label %true_case_902, label %false_case_904
+true_case_902:
+br label %parse_label_906
+false_case_904:
+br label %parse_label_915
+parse_label_906:
+%param_ptr182 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw183 = load i32, i32* %param_ptr182
+%reg184 = trunc i32 %param_raw183 to i1
+br i1 %reg184, label %true_case_911, label %false_case_913
+true_case_911:
+br label %true_case_922
+false_case_913:
+br label %parse_label_915
+parse_label_915:
+%reg185 = call i1() @divideBy0()
+br i1 %reg185, label %true_case_918, label %false_case_920
+true_case_918:
+br label %true_case_922
+false_case_920:
+br label %false_case_924
+true_case_922:
+br label %set_bool_reg_926
+false_case_924:
+br label %set_bool_reg_926
+set_bool_reg_926:
+%reg186 = phi i32 [1, %true_case_922], [0, %false_case_924]
+%reg187 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg186, i32* %reg187
+br label %statement_931
+statement_931:
+br label %parse_label_933
+parse_label_933:
+br label %false_case_944
+parse_label_935:
+%reg188 = call i1() @divideBy0()
+br i1 %reg188, label %true_case_938, label %false_case_940
+true_case_938:
+br label %true_case_942
+false_case_940:
+br label %false_case_944
+true_case_942:
+br label %set_bool_reg_946
+false_case_944:
+br label %set_bool_reg_946
+set_bool_reg_946:
+%reg189 = phi i32 [1, %true_case_942], [0, %false_case_944]
+%reg190 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg189, i32* %reg190
+br label %statement_951
+statement_951:
+%reg191 = icmp slt i32  5,  4
+br i1 %reg191, label %parse_label_956, label %parse_label_954
+parse_label_954:
+br label %false_case_965
+parse_label_956:
+%reg192 = call i1() @divideBy0()
+br i1 %reg192, label %true_case_959, label %false_case_961
+true_case_959:
+br label %true_case_963
+false_case_961:
+br label %false_case_965
+true_case_963:
+br label %set_bool_reg_967
+false_case_965:
+br label %set_bool_reg_967
+set_bool_reg_967:
+%reg193 = phi i32 [1, %true_case_963], [0, %false_case_965]
+%reg194 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg193, i32* %reg194
+br label %statement_972
+statement_972:
+%reg195 = icmp ne i32  4,  4
+br i1 %reg195, label %parse_label_977, label %parse_label_975
+parse_label_975:
+br label %false_case_986
+parse_label_977:
+%reg196 = call i1() @divideBy0()
+br i1 %reg196, label %true_case_980, label %false_case_982
+true_case_980:
+br label %true_case_984
+false_case_982:
+br label %false_case_986
+true_case_984:
+br label %set_bool_reg_988
+false_case_986:
+br label %set_bool_reg_988
+set_bool_reg_988:
+%reg197 = phi i32 [1, %true_case_984], [0, %false_case_986]
+%reg198 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg197, i32* %reg198
+br label %statement_993
+statement_993:
+%reg199 = call i1() @False()
+br i1 %reg199, label %true_case_996, label %false_case_998
+true_case_996:
+br label %parse_label_1002
+false_case_998:
+br label %parse_label_1000
+parse_label_1000:
+br label %false_case_1011
+parse_label_1002:
+%reg200 = call i1() @divideBy0()
+br i1 %reg200, label %true_case_1005, label %false_case_1007
+true_case_1005:
+br label %true_case_1009
+false_case_1007:
+br label %false_case_1011
+true_case_1009:
+br label %set_bool_reg_1013
+false_case_1011:
+br label %set_bool_reg_1013
+set_bool_reg_1013:
+%reg201 = phi i32 [1, %true_case_1009], [0, %false_case_1011]
+%reg202 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg201, i32* %reg202
+br label %statement_1018
+statement_1018:
+%param_ptr203 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw204 = load i32, i32* %param_ptr203
+%reg205 = trunc i32 %param_raw204 to i1
+br i1 %reg205, label %true_case_1023, label %false_case_1025
+true_case_1023:
+br label %parse_label_1029
+false_case_1025:
+br label %parse_label_1027
+parse_label_1027:
+br label %false_case_1038
+parse_label_1029:
+%reg206 = call i1() @divideBy0()
+br i1 %reg206, label %true_case_1032, label %false_case_1034
+true_case_1032:
+br label %true_case_1036
+false_case_1034:
+br label %false_case_1038
+true_case_1036:
+br label %set_bool_reg_1040
+false_case_1038:
+br label %set_bool_reg_1040
+set_bool_reg_1040:
+%reg207 = phi i32 [1, %true_case_1036], [0, %false_case_1038]
+%reg208 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg207, i32* %reg208
+br label %statement_1045
+statement_1045:
+br label %parse_label_1047
+parse_label_1047:
+%reg209 = icmp slt i32  5,  4
+br i1 %reg209, label %parse_label_1050, label %false_case_1059
+parse_label_1050:
+%reg210 = call i1() @divideBy0()
+br i1 %reg210, label %true_case_1053, label %false_case_1055
+true_case_1053:
+br label %true_case_1057
+false_case_1055:
+br label %false_case_1059
+true_case_1057:
+br label %set_bool_reg_1061
+false_case_1059:
+br label %set_bool_reg_1061
+set_bool_reg_1061:
+%reg211 = phi i32 [1, %true_case_1057], [0, %false_case_1059]
+%reg212 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg211, i32* %reg212
+br label %statement_1066
+statement_1066:
+%reg213 = icmp slt i32  5,  4
+br i1 %reg213, label %parse_label_1072, label %parse_label_1069
+parse_label_1069:
+%reg214 = icmp slt i32  5,  4
+br i1 %reg214, label %parse_label_1072, label %false_case_1081
+parse_label_1072:
+%reg215 = call i1() @divideBy0()
+br i1 %reg215, label %true_case_1075, label %false_case_1077
+true_case_1075:
+br label %true_case_1079
+false_case_1077:
+br label %false_case_1081
+true_case_1079:
+br label %set_bool_reg_1083
+false_case_1081:
+br label %set_bool_reg_1083
+set_bool_reg_1083:
+%reg216 = phi i32 [1, %true_case_1079], [0, %false_case_1081]
+%reg217 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg216, i32* %reg217
+br label %statement_1088
+statement_1088:
+%reg218 = icmp ne i32  4,  4
+br i1 %reg218, label %parse_label_1094, label %parse_label_1091
+parse_label_1091:
+%reg219 = icmp slt i32  5,  4
+br i1 %reg219, label %parse_label_1094, label %false_case_1103
+parse_label_1094:
+%reg220 = call i1() @divideBy0()
+br i1 %reg220, label %true_case_1097, label %false_case_1099
+true_case_1097:
+br label %true_case_1101
+false_case_1099:
+br label %false_case_1103
+true_case_1101:
+br label %set_bool_reg_1105
+false_case_1103:
+br label %set_bool_reg_1105
+set_bool_reg_1105:
+%reg221 = phi i32 [1, %true_case_1101], [0, %false_case_1103]
+%reg222 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg221, i32* %reg222
+br label %statement_1110
+statement_1110:
+%reg223 = call i1() @False()
+br i1 %reg223, label %true_case_1113, label %false_case_1115
+true_case_1113:
+br label %parse_label_1120
+false_case_1115:
+br label %parse_label_1117
+parse_label_1117:
+%reg224 = icmp slt i32  5,  4
+br i1 %reg224, label %parse_label_1120, label %false_case_1129
+parse_label_1120:
+%reg225 = call i1() @divideBy0()
+br i1 %reg225, label %true_case_1123, label %false_case_1125
+true_case_1123:
+br label %true_case_1127
+false_case_1125:
+br label %false_case_1129
+true_case_1127:
+br label %set_bool_reg_1131
+false_case_1129:
+br label %set_bool_reg_1131
+set_bool_reg_1131:
+%reg226 = phi i32 [1, %true_case_1127], [0, %false_case_1129]
+%reg227 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg226, i32* %reg227
+br label %statement_1136
+statement_1136:
+%param_ptr228 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw229 = load i32, i32* %param_ptr228
+%reg230 = trunc i32 %param_raw229 to i1
+br i1 %reg230, label %true_case_1141, label %false_case_1143
+true_case_1141:
+br label %parse_label_1148
+false_case_1143:
+br label %parse_label_1145
+parse_label_1145:
+%reg231 = icmp slt i32  5,  4
+br i1 %reg231, label %parse_label_1148, label %false_case_1157
+parse_label_1148:
+%reg232 = call i1() @divideBy0()
+br i1 %reg232, label %true_case_1151, label %false_case_1153
+true_case_1151:
+br label %true_case_1155
+false_case_1153:
+br label %false_case_1157
+true_case_1155:
+br label %set_bool_reg_1159
+false_case_1157:
+br label %set_bool_reg_1159
+set_bool_reg_1159:
+%reg233 = phi i32 [1, %true_case_1155], [0, %false_case_1157]
+%reg234 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg233, i32* %reg234
+br label %statement_1164
+statement_1164:
+br label %parse_label_1166
+parse_label_1166:
+%reg235 = icmp ne i32  4,  4
+br i1 %reg235, label %parse_label_1169, label %false_case_1178
+parse_label_1169:
+%reg236 = call i1() @divideBy0()
+br i1 %reg236, label %true_case_1172, label %false_case_1174
+true_case_1172:
+br label %true_case_1176
+false_case_1174:
+br label %false_case_1178
+true_case_1176:
+br label %set_bool_reg_1180
+false_case_1178:
+br label %set_bool_reg_1180
+set_bool_reg_1180:
+%reg237 = phi i32 [1, %true_case_1176], [0, %false_case_1178]
+%reg238 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg237, i32* %reg238
+br label %statement_1185
+statement_1185:
+%reg239 = icmp slt i32  5,  4
+br i1 %reg239, label %parse_label_1191, label %parse_label_1188
+parse_label_1188:
+%reg240 = icmp ne i32  4,  4
+br i1 %reg240, label %parse_label_1191, label %false_case_1200
+parse_label_1191:
+%reg241 = call i1() @divideBy0()
+br i1 %reg241, label %true_case_1194, label %false_case_1196
+true_case_1194:
+br label %true_case_1198
+false_case_1196:
+br label %false_case_1200
+true_case_1198:
+br label %set_bool_reg_1202
+false_case_1200:
+br label %set_bool_reg_1202
+set_bool_reg_1202:
+%reg242 = phi i32 [1, %true_case_1198], [0, %false_case_1200]
+%reg243 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg242, i32* %reg243
+br label %statement_1207
+statement_1207:
+%reg244 = icmp ne i32  4,  4
+br i1 %reg244, label %parse_label_1213, label %parse_label_1210
+parse_label_1210:
+%reg245 = icmp ne i32  4,  4
+br i1 %reg245, label %parse_label_1213, label %false_case_1222
+parse_label_1213:
+%reg246 = call i1() @divideBy0()
+br i1 %reg246, label %true_case_1216, label %false_case_1218
+true_case_1216:
+br label %true_case_1220
+false_case_1218:
+br label %false_case_1222
+true_case_1220:
+br label %set_bool_reg_1224
+false_case_1222:
+br label %set_bool_reg_1224
+set_bool_reg_1224:
+%reg247 = phi i32 [1, %true_case_1220], [0, %false_case_1222]
+%reg248 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg247, i32* %reg248
+br label %statement_1229
+statement_1229:
+%reg249 = call i1() @False()
+br i1 %reg249, label %true_case_1232, label %false_case_1234
+true_case_1232:
+br label %parse_label_1239
+false_case_1234:
+br label %parse_label_1236
+parse_label_1236:
+%reg250 = icmp ne i32  4,  4
+br i1 %reg250, label %parse_label_1239, label %false_case_1248
+parse_label_1239:
+%reg251 = call i1() @divideBy0()
+br i1 %reg251, label %true_case_1242, label %false_case_1244
+true_case_1242:
+br label %true_case_1246
+false_case_1244:
+br label %false_case_1248
+true_case_1246:
+br label %set_bool_reg_1250
+false_case_1248:
+br label %set_bool_reg_1250
+set_bool_reg_1250:
+%reg252 = phi i32 [1, %true_case_1246], [0, %false_case_1248]
+%reg253 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg252, i32* %reg253
+br label %statement_1255
+statement_1255:
+%param_ptr254 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw255 = load i32, i32* %param_ptr254
+%reg256 = trunc i32 %param_raw255 to i1
+br i1 %reg256, label %true_case_1260, label %false_case_1262
+true_case_1260:
+br label %parse_label_1267
+false_case_1262:
+br label %parse_label_1264
+parse_label_1264:
+%reg257 = icmp ne i32  4,  4
+br i1 %reg257, label %parse_label_1267, label %false_case_1276
+parse_label_1267:
+%reg258 = call i1() @divideBy0()
+br i1 %reg258, label %true_case_1270, label %false_case_1272
+true_case_1270:
+br label %true_case_1274
+false_case_1272:
+br label %false_case_1276
+true_case_1274:
+br label %set_bool_reg_1278
+false_case_1276:
+br label %set_bool_reg_1278
+set_bool_reg_1278:
+%reg259 = phi i32 [1, %true_case_1274], [0, %false_case_1276]
+%reg260 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg259, i32* %reg260
+br label %statement_1283
+statement_1283:
+br label %parse_label_1285
+parse_label_1285:
+%reg261 = call i1() @False()
+br i1 %reg261, label %true_case_1288, label %false_case_1290
+true_case_1288:
+br label %parse_label_1292
+false_case_1290:
+br label %false_case_1301
+parse_label_1292:
+%reg262 = call i1() @divideBy0()
+br i1 %reg262, label %true_case_1295, label %false_case_1297
+true_case_1295:
+br label %true_case_1299
+false_case_1297:
+br label %false_case_1301
+true_case_1299:
+br label %set_bool_reg_1303
+false_case_1301:
+br label %set_bool_reg_1303
+set_bool_reg_1303:
+%reg263 = phi i32 [1, %true_case_1299], [0, %false_case_1301]
+%reg264 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg263, i32* %reg264
+br label %statement_1308
+statement_1308:
+%reg265 = icmp slt i32  5,  4
+br i1 %reg265, label %parse_label_1318, label %parse_label_1311
+parse_label_1311:
+%reg266 = call i1() @False()
+br i1 %reg266, label %true_case_1314, label %false_case_1316
+true_case_1314:
+br label %parse_label_1318
+false_case_1316:
+br label %false_case_1327
+parse_label_1318:
+%reg267 = call i1() @divideBy0()
+br i1 %reg267, label %true_case_1321, label %false_case_1323
+true_case_1321:
+br label %true_case_1325
+false_case_1323:
+br label %false_case_1327
+true_case_1325:
+br label %set_bool_reg_1329
+false_case_1327:
+br label %set_bool_reg_1329
+set_bool_reg_1329:
+%reg268 = phi i32 [1, %true_case_1325], [0, %false_case_1327]
+%reg269 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg268, i32* %reg269
+br label %statement_1334
+statement_1334:
+%reg270 = icmp ne i32  4,  4
+br i1 %reg270, label %parse_label_1344, label %parse_label_1337
+parse_label_1337:
+%reg271 = call i1() @False()
+br i1 %reg271, label %true_case_1340, label %false_case_1342
+true_case_1340:
+br label %parse_label_1344
+false_case_1342:
+br label %false_case_1353
+parse_label_1344:
+%reg272 = call i1() @divideBy0()
+br i1 %reg272, label %true_case_1347, label %false_case_1349
+true_case_1347:
+br label %true_case_1351
+false_case_1349:
+br label %false_case_1353
+true_case_1351:
+br label %set_bool_reg_1355
+false_case_1353:
+br label %set_bool_reg_1355
+set_bool_reg_1355:
+%reg273 = phi i32 [1, %true_case_1351], [0, %false_case_1353]
+%reg274 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg273, i32* %reg274
+br label %statement_1360
+statement_1360:
+%reg275 = call i1() @False()
+br i1 %reg275, label %true_case_1363, label %false_case_1365
+true_case_1363:
+br label %parse_label_1374
+false_case_1365:
+br label %parse_label_1367
+parse_label_1367:
+%reg276 = call i1() @False()
+br i1 %reg276, label %true_case_1370, label %false_case_1372
+true_case_1370:
+br label %parse_label_1374
+false_case_1372:
+br label %false_case_1383
+parse_label_1374:
+%reg277 = call i1() @divideBy0()
+br i1 %reg277, label %true_case_1377, label %false_case_1379
+true_case_1377:
+br label %true_case_1381
+false_case_1379:
+br label %false_case_1383
+true_case_1381:
+br label %set_bool_reg_1385
+false_case_1383:
+br label %set_bool_reg_1385
+set_bool_reg_1385:
+%reg278 = phi i32 [1, %true_case_1381], [0, %false_case_1383]
+%reg279 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg278, i32* %reg279
+br label %statement_1390
+statement_1390:
+%param_ptr280 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw281 = load i32, i32* %param_ptr280
+%reg282 = trunc i32 %param_raw281 to i1
+br i1 %reg282, label %true_case_1395, label %false_case_1397
+true_case_1395:
+br label %parse_label_1406
+false_case_1397:
+br label %parse_label_1399
+parse_label_1399:
+%reg283 = call i1() @False()
+br i1 %reg283, label %true_case_1402, label %false_case_1404
+true_case_1402:
+br label %parse_label_1406
+false_case_1404:
+br label %false_case_1415
+parse_label_1406:
+%reg284 = call i1() @divideBy0()
+br i1 %reg284, label %true_case_1409, label %false_case_1411
+true_case_1409:
+br label %true_case_1413
+false_case_1411:
+br label %false_case_1415
+true_case_1413:
+br label %set_bool_reg_1417
+false_case_1415:
+br label %set_bool_reg_1417
+set_bool_reg_1417:
+%reg285 = phi i32 [1, %true_case_1413], [0, %false_case_1415]
+%reg286 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg285, i32* %reg286
+br label %statement_1422
+statement_1422:
+br label %parse_label_1424
+parse_label_1424:
+%param_ptr287 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw288 = load i32, i32* %param_ptr287
+%reg289 = trunc i32 %param_raw288 to i1
+br i1 %reg289, label %true_case_1429, label %false_case_1431
+true_case_1429:
+br label %parse_label_1433
+false_case_1431:
+br label %false_case_1442
+parse_label_1433:
+%reg290 = call i1() @divideBy0()
+br i1 %reg290, label %true_case_1436, label %false_case_1438
+true_case_1436:
+br label %true_case_1440
+false_case_1438:
+br label %false_case_1442
+true_case_1440:
+br label %set_bool_reg_1444
+false_case_1442:
+br label %set_bool_reg_1444
+set_bool_reg_1444:
+%reg291 = phi i32 [1, %true_case_1440], [0, %false_case_1442]
+%reg292 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg291, i32* %reg292
+br label %statement_1449
+statement_1449:
+%reg293 = icmp slt i32  5,  4
+br i1 %reg293, label %parse_label_1461, label %parse_label_1452
+parse_label_1452:
+%param_ptr294 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw295 = load i32, i32* %param_ptr294
+%reg296 = trunc i32 %param_raw295 to i1
+br i1 %reg296, label %true_case_1457, label %false_case_1459
+true_case_1457:
+br label %parse_label_1461
+false_case_1459:
+br label %false_case_1470
+parse_label_1461:
+%reg297 = call i1() @divideBy0()
+br i1 %reg297, label %true_case_1464, label %false_case_1466
+true_case_1464:
+br label %true_case_1468
+false_case_1466:
+br label %false_case_1470
+true_case_1468:
+br label %set_bool_reg_1472
+false_case_1470:
+br label %set_bool_reg_1472
+set_bool_reg_1472:
+%reg298 = phi i32 [1, %true_case_1468], [0, %false_case_1470]
+%reg299 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg298, i32* %reg299
+br label %statement_1477
+statement_1477:
+%reg300 = icmp ne i32  4,  4
+br i1 %reg300, label %parse_label_1489, label %parse_label_1480
+parse_label_1480:
+%param_ptr301 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw302 = load i32, i32* %param_ptr301
+%reg303 = trunc i32 %param_raw302 to i1
+br i1 %reg303, label %true_case_1485, label %false_case_1487
+true_case_1485:
+br label %parse_label_1489
+false_case_1487:
+br label %false_case_1498
+parse_label_1489:
+%reg304 = call i1() @divideBy0()
+br i1 %reg304, label %true_case_1492, label %false_case_1494
+true_case_1492:
+br label %true_case_1496
+false_case_1494:
+br label %false_case_1498
+true_case_1496:
+br label %set_bool_reg_1500
+false_case_1498:
+br label %set_bool_reg_1500
+set_bool_reg_1500:
+%reg305 = phi i32 [1, %true_case_1496], [0, %false_case_1498]
+%reg306 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg305, i32* %reg306
+br label %statement_1505
+statement_1505:
+%reg307 = call i1() @False()
+br i1 %reg307, label %true_case_1508, label %false_case_1510
+true_case_1508:
+br label %parse_label_1521
+false_case_1510:
+br label %parse_label_1512
+parse_label_1512:
+%param_ptr308 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw309 = load i32, i32* %param_ptr308
+%reg310 = trunc i32 %param_raw309 to i1
+br i1 %reg310, label %true_case_1517, label %false_case_1519
+true_case_1517:
+br label %parse_label_1521
+false_case_1519:
+br label %false_case_1530
+parse_label_1521:
+%reg311 = call i1() @divideBy0()
+br i1 %reg311, label %true_case_1524, label %false_case_1526
+true_case_1524:
+br label %true_case_1528
+false_case_1526:
+br label %false_case_1530
+true_case_1528:
+br label %set_bool_reg_1532
+false_case_1530:
+br label %set_bool_reg_1532
+set_bool_reg_1532:
+%reg312 = phi i32 [1, %true_case_1528], [0, %false_case_1530]
+%reg313 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg312, i32* %reg313
+br label %statement_1537
+statement_1537:
+%param_ptr314 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw315 = load i32, i32* %param_ptr314
+%reg316 = trunc i32 %param_raw315 to i1
+br i1 %reg316, label %true_case_1542, label %false_case_1544
+true_case_1542:
+br label %parse_label_1555
+false_case_1544:
+br label %parse_label_1546
+parse_label_1546:
+%param_ptr317 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw318 = load i32, i32* %param_ptr317
+%reg319 = trunc i32 %param_raw318 to i1
+br i1 %reg319, label %true_case_1551, label %false_case_1553
+true_case_1551:
+br label %parse_label_1555
+false_case_1553:
+br label %false_case_1564
+parse_label_1555:
+%reg320 = call i1() @divideBy0()
+br i1 %reg320, label %true_case_1558, label %false_case_1560
+true_case_1558:
+br label %true_case_1562
+false_case_1560:
+br label %false_case_1564
+true_case_1562:
+br label %set_bool_reg_1566
+false_case_1564:
+br label %set_bool_reg_1566
+set_bool_reg_1566:
+%reg321 = phi i32 [1, %true_case_1562], [0, %false_case_1564]
+%reg322 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg321, i32* %reg322
+br label %statement_1571
+statement_1571:
+%str_ptr_reg323 = getelementptr [9 x i8], [9 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg323)
+br label %func_end_1576
+br label %func_end_1576
+func_end_1576:
+ret void
+}

@@ -1,0 +1,132 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+@.string_id0 = constant [3 x i8] c"a=\00"
+@.string_id1 = constant [3 x i8] c"k=\00"
+@.string_id2 = constant [13 x i8] c"f(a,g(3,2))=\00"
+define i32@g(i32, i32){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%reg1 = add i32 0, %0
+%reg2 = add i32 0, %1
+%reg3 = mul i32 %reg2,  2
+%reg4 = add i32 %reg1, %reg3
+%reg5 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg4, i32* %reg5
+br label %statement_11
+statement_11:
+%param_ptr6 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw7 = load i32, i32* %param_ptr6
+%reg8 = add i32 0, %param_raw7
+%reg9 = add i32 %reg8,  1
+call void(i32) @errorIfZero9001(i32  2)
+%reg10 = sdiv i32 %reg9,  2
+ret i32%reg10
+br label %func_end_20
+func_end_20:
+ret i32 0
+}
+define void@f(i32, i32){
+%sp = alloca [50 x i32]
+br label %statement_26
+statement_26:
+%reg11 = add i32 0, %0
+%reg12 = add i32 0, %1
+%reg13 = mul i32 %reg12,  2
+%reg14 = add i32 %reg11, %reg13
+%reg15 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg14, i32* %reg15
+br label %statement_34
+statement_34:
+%reg16 = add i32 0, %0
+%reg17 = add i32 0, %1
+%reg18 = add i32 %reg16, %reg17
+%param_ptr19 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw20 = load i32, i32* %param_ptr19
+%reg21 = add i32 0, %param_raw20
+%reg22 = add i32 %reg18, %reg21
+call void(i32) @printi(i32 %reg22)
+br label %func_end_45
+br label %func_end_45
+func_end_45:
+ret void
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_51
+statement_51:
+%reg23 = call i32(i32, i32) @g(i32  1, i32  2)
+%reg24 = add i32 0, %reg23
+%reg25 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg24, i32* %reg25
+br label %statement_57
+statement_57:
+%str_ptr_reg26 = getelementptr [3 x i8], [3 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg26)
+br label %statement_61
+statement_61:
+%param_ptr27 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw28 = load i32, i32* %param_ptr27
+%reg29 = add i32 0, %param_raw28
+call void(i32) @printi(i32 %reg29)
+br label %statement_67
+statement_67:
+%str_ptr_reg30 = getelementptr [3 x i8], [3 x i8]* @.string_id1, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg30)
+br label %statement_71
+statement_71:
+%param_ptr31 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw32 = load i32, i32* %param_ptr31
+%reg33 = add i32 0, %param_raw32
+%reg34 = add i32 %reg33,  3
+%reg35 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg34, i32* %reg35
+br label %statement_79
+statement_79:
+%param_ptr36 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw37 = load i32, i32* %param_ptr36
+%reg38 = add i32 0, %param_raw37
+call void(i32) @printi(i32 %reg38)
+br label %statement_85
+statement_85:
+%str_ptr_reg39 = getelementptr [13 x i8], [13 x i8]* @.string_id2, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg39)
+br label %statement_89
+statement_89:
+%param_ptr40 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw41 = load i32, i32* %param_ptr40
+%reg42 = add i32 0, %param_raw41
+%reg43 = call i32(i32, i32) @g(i32  3, i32  2)
+%reg44 = add i32 0, %reg43
+call void(i32, i32) @f(i32 %reg42, i32 %reg44)
+br label %statement_97
+statement_97:
+ret void
+br label %func_end_100
+func_end_100:
+ret void
+}

@@ -1,0 +1,290 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+@.string_id0 = constant [17 x i8] c"I heart Compi...\00"
+@.string_id1 = constant [5 x i8] c"NOT!\00"
+@.string_id2 = constant [17 x i8] c"I heart Compi...\00"
+@.string_id3 = constant [5 x i8] c"NOT!\00"
+@.string_id4 = constant [17 x i8] c"I heart Compi...\00"
+@.string_id5 = constant [5 x i8] c"NOT!\00"
+@.string_id6 = constant [13 x i8] c"I really do!\00"
+@.string_id7 = constant [19 x i8] c"max of 3 and 2 is \00"
+@.string_id8 = constant [21 x i8] c"max of 3b and 2b is \00"
+@.string_id9 = constant [27 x i8] c"Is 3 really bigger then 2?\00"
+@.string_id10 = constant [5 x i8] c"yes!\00"
+@.string_id11 = constant [4 x i8] c"no!\00"
+define i32@max(i32, i32){
+%sp = alloca [50 x i32]
+br label %parse_label_3
+parse_label_3:
+%reg1 = add i32 0, %0
+%reg2 = add i32 0, %1
+%reg3 = icmp sge i32 %reg1, %reg2
+br i1 %reg3, label %statement_8, label %statement_11
+statement_8:
+%reg4 = add i32 0, %0
+ret i32%reg4
+statement_11:
+%reg5 = add i32 0, %1
+ret i32%reg5
+statement_14:
+%reg6 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  42, i32* %reg6
+br label %statement_18
+statement_18:
+ret i32 42
+br label %func_end_21
+func_end_21:
+ret i32 0
+}
+define i8@maxb(i32, i32){
+%sp = alloca [50 x i32]
+br label %parse_label_27
+parse_label_27:
+%truncated_byte7 = trunc i32 %0 to i8
+%reg8 = add i8 0, %truncated_byte7
+%truncated_byte9 = trunc i32 %1 to i8
+%reg10 = add i8 0, %truncated_byte9
+%reg11 = icmp ult i8 %reg8, %reg10
+br i1 %reg11, label %statement_34, label %statement_38
+statement_34:
+%reg12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 0, i32* %reg12
+br label %statement_42
+statement_38:
+%truncated_byte13 = trunc i32 %0 to i8
+%reg14 = add i8 0, %truncated_byte13
+ret i8%reg14
+statement_42:
+%truncated_byte15 = trunc i32 %1 to i8
+%reg16 = add i8 0, %truncated_byte15
+ret i8%reg16
+br label %func_end_47
+func_end_47:
+ret i8 0
+}
+define i1@isFirstBigger(i32, i32){
+%sp = alloca [50 x i32]
+br label %parse_label_53
+parse_label_53:
+%reg17 = add i32 0, %0
+%reg18 = add i32 0, %1
+%reg19 = icmp sge i32 %reg17, %reg18
+br i1 %reg19, label %parse_label_58, label %statement_81
+parse_label_58:
+%reg20 = add i32 0, %0
+%reg21 = add i32 0, %1
+%reg22 = icmp ne i32 %reg20, %reg21
+br i1 %reg22, label %statement_63, label %statement_72
+statement_63:
+br label %true_case_65
+true_case_65:
+br label %set_bool_reg_69
+false_case_67:
+br label %set_bool_reg_69
+set_bool_reg_69:
+%reg23 = phi i1 [1, %true_case_65], [0, %false_case_67]
+ret i1 %reg23
+statement_72:
+br label %false_case_76
+true_case_74:
+br label %set_bool_reg_78
+false_case_76:
+br label %set_bool_reg_78
+set_bool_reg_78:
+%reg24 = phi i1 [1, %true_case_74], [0, %false_case_76]
+ret i1 %reg24
+statement_81:
+br label %false_case_85
+true_case_83:
+br label %set_bool_reg_87
+false_case_85:
+br label %set_bool_reg_87
+set_bool_reg_87:
+%reg25 = phi i1 [1, %true_case_83], [0, %false_case_85]
+ret i1 %reg25
+br label %func_end_91
+func_end_91:
+ret i1 0
+}
+define void@printStatement(i32){
+%sp = alloca [50 x i32]
+br label %statement_97
+statement_97:
+%str_ptr_reg26 = getelementptr [17 x i8], [17 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg26)
+br label %parse_label_101
+parse_label_101:
+%reg27 = trunc i32 %0 to i1
+br i1 %reg27, label %true_case_104, label %false_case_106
+true_case_104:
+br label %statement_110
+false_case_106:
+br label %statement_108
+statement_108:
+ret void
+statement_110:
+%str_ptr_reg28 = getelementptr [5 x i8], [5 x i8]* @.string_id1, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg28)
+br label %func_end_115
+br label %func_end_115
+func_end_115:
+ret void
+}
+define void@printStatement2(i32){
+%sp = alloca [50 x i32]
+br label %statement_121
+statement_121:
+%str_ptr_reg29 = getelementptr [17 x i8], [17 x i8]* @.string_id2, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg29)
+br label %parse_label_125
+parse_label_125:
+%reg30 = trunc i32 %0 to i1
+br i1 %reg30, label %true_case_128, label %false_case_130
+true_case_128:
+br label %statement_132
+false_case_130:
+br label %statement_136
+statement_132:
+%str_ptr_reg31 = getelementptr [5 x i8], [5 x i8]* @.string_id3, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg31)
+br label %func_end_139
+statement_136:
+ret void
+br label %func_end_139
+func_end_139:
+ret void
+}
+define void@printStatement3(i32){
+%sp = alloca [50 x i32]
+br label %statement_145
+statement_145:
+%str_ptr_reg32 = getelementptr [17 x i8], [17 x i8]* @.string_id4, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg32)
+br label %parse_label_149
+parse_label_149:
+%reg33 = trunc i32 %0 to i1
+br i1 %reg33, label %true_case_152, label %false_case_154
+true_case_152:
+br label %statement_156
+false_case_154:
+br label %statement_162
+statement_156:
+%str_ptr_reg34 = getelementptr [5 x i8], [5 x i8]* @.string_id5, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg34)
+br label %statement_160
+statement_160:
+ret void
+statement_162:
+ret void
+statement_164:
+%str_ptr_reg35 = getelementptr [13 x i8], [13 x i8]* @.string_id6, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg35)
+br label %func_end_169
+br label %func_end_169
+func_end_169:
+ret void
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_175
+statement_175:
+%str_ptr_reg36 = getelementptr [19 x i8], [19 x i8]* @.string_id7, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg36)
+br label %statement_179
+statement_179:
+%reg37 = call i32(i32, i32) @max(i32  3, i32  2)
+%reg38 = add i32 0, %reg37
+call void(i32) @printi(i32 %reg38)
+br label %statement_184
+statement_184:
+%str_ptr_reg39 = getelementptr [21 x i8], [21 x i8]* @.string_id8, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg39)
+br label %statement_188
+statement_188:
+%raw_reg40 = zext i8  2 to i32
+%raw_reg41 = zext i8  3 to i32
+%reg42 = call i8(i32, i32) @maxb(i32 %raw_reg41, i32 %raw_reg40)
+%reg43 = add i8 0, %reg42
+%raw_reg44 = zext i8 %reg43 to i32
+call void(i32) @printi(i32 %raw_reg44)
+br label %statement_196
+statement_196:
+%str_ptr_reg45 = getelementptr [27 x i8], [27 x i8]* @.string_id9, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg45)
+br label %parse_label_200
+parse_label_200:
+%reg46 = call i1(i32, i32) @isFirstBigger(i32  3, i32  2)
+br i1 %reg46, label %true_case_203, label %false_case_205
+true_case_203:
+br label %statement_207
+false_case_205:
+br label %statement_211
+statement_207:
+%str_ptr_reg47 = getelementptr [5 x i8], [5 x i8]* @.string_id10, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg47)
+br label %statement_215
+statement_211:
+%str_ptr_reg48 = getelementptr [4 x i8], [4 x i8]* @.string_id11, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg48)
+br label %statement_215
+statement_215:
+br label %false_case_219
+true_case_217:
+br label %set_bool_reg_221
+false_case_219:
+br label %set_bool_reg_221
+set_bool_reg_221:
+%reg49 = phi i32 [1, %true_case_217], [0, %false_case_219]
+%reg50 = add i32 0, %reg49
+call void(i32) @printStatement(i32 %reg50)
+br label %statement_226
+statement_226:
+br label %false_case_230
+true_case_228:
+br label %set_bool_reg_232
+false_case_230:
+br label %set_bool_reg_232
+set_bool_reg_232:
+%reg51 = phi i32 [1, %true_case_228], [0, %false_case_230]
+%reg52 = add i32 0, %reg51
+call void(i32) @printStatement2(i32 %reg52)
+br label %statement_237
+statement_237:
+br label %true_case_239
+true_case_239:
+br label %set_bool_reg_243
+false_case_241:
+br label %set_bool_reg_243
+set_bool_reg_243:
+%reg53 = phi i32 [1, %true_case_239], [0, %false_case_241]
+%reg54 = add i32 0, %reg53
+call void(i32) @printStatement3(i32 %reg54)
+br label %func_end_249
+br label %func_end_249
+func_end_249:
+ret void
+}

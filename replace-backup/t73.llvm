@@ -1,0 +1,853 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+@.string_id0 = constant [11 x i8] c"BASIC TEST\00"
+@.string_id1 = constant [4 x i8] c"ADD\00"
+@.string_id2 = constant [4 x i8] c"SUB\00"
+@.string_id3 = constant [5 x i8] c"MULT\00"
+@.string_id4 = constant [4 x i8] c"DIV\00"
+@.string_id5 = constant [10 x i8] c"COMPOSITE\00"
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%str_ptr_reg1 = getelementptr [11 x i8], [11 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg1)
+br label %statement_7
+statement_7:
+%str_ptr_reg2 = getelementptr [4 x i8], [4 x i8]* @.string_id1, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg2)
+br label %statement_11
+statement_11:
+%reg3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  0, i32* %reg3
+br label %statement_15
+statement_15:
+%param_ptr4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw5 = load i32, i32* %param_ptr4
+%reg6 = add i32 0, %param_raw5
+%reg7 = add i32 %reg6,  1
+%reg8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg7, i32* %reg8
+br label %statement_23
+statement_23:
+%param_ptr9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw10 = load i32, i32* %param_ptr9
+%reg11 = add i32 0, %param_raw10
+call void(i32) @printi(i32 %reg11)
+br label %statement_29
+statement_29:
+%param_ptr12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw13 = load i32, i32* %param_ptr12
+%reg14 = add i32 0, %param_raw13
+%reg15 = add i32  1, %reg14
+%reg16 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg15, i32* %reg16
+br label %statement_37
+statement_37:
+%param_ptr17 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw18 = load i32, i32* %param_ptr17
+%reg19 = add i32 0, %param_raw18
+call void(i32) @printi(i32 %reg19)
+br label %statement_43
+statement_43:
+%reg20 = add i32  1,  2
+%reg21 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg20, i32* %reg21
+br label %statement_48
+statement_48:
+%param_ptr22 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw23 = load i32, i32* %param_ptr22
+%reg24 = add i32 0, %param_raw23
+call void(i32) @printi(i32 %reg24)
+br label %statement_54
+statement_54:
+%reg25 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32  1, i32* %reg25
+br label %statement_58
+statement_58:
+%param_ptr26 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw27 = load i32, i32* %param_ptr26
+%reg28 = add i32 0, %param_raw27
+%param_ptr29 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw30 = load i32, i32* %param_ptr29
+%reg31 = add i32 0, %param_raw30
+%reg32 = add i32 %reg28, %reg31
+%reg33 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg32, i32* %reg33
+br label %statement_69
+statement_69:
+%param_ptr34 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw35 = load i32, i32* %param_ptr34
+%reg36 = add i32 0, %param_raw35
+call void(i32) @printi(i32 %reg36)
+br label %statement_75
+statement_75:
+%param_ptr37 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw38 = load i32, i32* %param_ptr37
+%reg39 = add i32 0, %param_raw38
+call void(i32) @printi(i32 %reg39)
+br label %statement_81
+statement_81:
+%str_ptr_reg40 = getelementptr [4 x i8], [4 x i8]* @.string_id2, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg40)
+br label %statement_85
+statement_85:
+%reg41 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  10, i32* %reg41
+br label %statement_89
+statement_89:
+%param_ptr42 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw43 = load i32, i32* %param_ptr42
+%reg44 = add i32 0, %param_raw43
+%reg45 = sub i32 %reg44,  1
+%reg46 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg45, i32* %reg46
+br label %statement_97
+statement_97:
+%param_ptr47 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw48 = load i32, i32* %param_ptr47
+%reg49 = add i32 0, %param_raw48
+call void(i32) @printi(i32 %reg49)
+br label %statement_103
+statement_103:
+%param_ptr50 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw51 = load i32, i32* %param_ptr50
+%reg52 = add i32 0, %param_raw51
+%reg53 = sub i32  1, %reg52
+%reg54 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg53, i32* %reg54
+br label %statement_111
+statement_111:
+%param_ptr55 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw56 = load i32, i32* %param_ptr55
+%reg57 = add i32 0, %param_raw56
+call void(i32) @printi(i32 %reg57)
+br label %statement_117
+statement_117:
+%reg58 = sub i32  1,  2
+%reg59 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg58, i32* %reg59
+br label %statement_122
+statement_122:
+%param_ptr60 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw61 = load i32, i32* %param_ptr60
+%reg62 = add i32 0, %param_raw61
+call void(i32) @printi(i32 %reg62)
+br label %statement_128
+statement_128:
+%reg63 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32  1, i32* %reg63
+br label %statement_132
+statement_132:
+%param_ptr64 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw65 = load i32, i32* %param_ptr64
+%reg66 = add i32 0, %param_raw65
+%param_ptr67 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw68 = load i32, i32* %param_ptr67
+%reg69 = add i32 0, %param_raw68
+%reg70 = sub i32 %reg66, %reg69
+%reg71 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg70, i32* %reg71
+br label %statement_143
+statement_143:
+%param_ptr72 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw73 = load i32, i32* %param_ptr72
+%reg74 = add i32 0, %param_raw73
+call void(i32) @printi(i32 %reg74)
+br label %statement_149
+statement_149:
+%param_ptr75 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw76 = load i32, i32* %param_ptr75
+%reg77 = add i32 0, %param_raw76
+call void(i32) @printi(i32 %reg77)
+br label %statement_155
+statement_155:
+%str_ptr_reg78 = getelementptr [5 x i8], [5 x i8]* @.string_id3, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg78)
+br label %statement_159
+statement_159:
+%reg79 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32  1, i32* %reg79
+br label %statement_163
+statement_163:
+%param_ptr80 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw81 = load i32, i32* %param_ptr80
+%reg82 = add i32 0, %param_raw81
+%reg83 = mul i32 %reg82,  2
+%reg84 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg83, i32* %reg84
+br label %statement_171
+statement_171:
+%param_ptr85 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw86 = load i32, i32* %param_ptr85
+%reg87 = add i32 0, %param_raw86
+call void(i32) @printi(i32 %reg87)
+br label %statement_177
+statement_177:
+%param_ptr88 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw89 = load i32, i32* %param_ptr88
+%reg90 = add i32 0, %param_raw89
+%reg91 = mul i32  2, %reg90
+%reg92 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg91, i32* %reg92
+br label %statement_185
+statement_185:
+%param_ptr93 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw94 = load i32, i32* %param_ptr93
+%reg95 = add i32 0, %param_raw94
+call void(i32) @printi(i32 %reg95)
+br label %statement_191
+statement_191:
+%reg96 = mul i32  2,  3
+%reg97 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg96, i32* %reg97
+br label %statement_196
+statement_196:
+%param_ptr98 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw99 = load i32, i32* %param_ptr98
+%reg100 = add i32 0, %param_raw99
+call void(i32) @printi(i32 %reg100)
+br label %statement_202
+statement_202:
+%reg101 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+store i32  3, i32* %reg101
+br label %statement_206
+statement_206:
+%param_ptr102 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+%param_raw103 = load i32, i32* %param_ptr102
+%reg104 = add i32 0, %param_raw103
+%param_ptr105 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw106 = load i32, i32* %param_ptr105
+%reg107 = add i32 0, %param_raw106
+%reg108 = mul i32 %reg104, %reg107
+%reg109 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+store i32 %reg108, i32* %reg109
+br label %statement_217
+statement_217:
+%param_ptr110 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+%param_raw111 = load i32, i32* %param_ptr110
+%reg112 = add i32 0, %param_raw111
+call void(i32) @printi(i32 %reg112)
+br label %statement_223
+statement_223:
+%str_ptr_reg113 = getelementptr [4 x i8], [4 x i8]* @.string_id4, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg113)
+br label %statement_227
+statement_227:
+%reg114 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32  10, i32* %reg114
+br label %statement_231
+statement_231:
+%param_ptr115 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw116 = load i32, i32* %param_ptr115
+%reg117 = add i32 0, %param_raw116
+call void(i32) @errorIfZero9001(i32  2)
+%reg118 = sdiv i32 %reg117,  2
+%reg119 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg118, i32* %reg119
+br label %statement_240
+statement_240:
+%param_ptr120 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw121 = load i32, i32* %param_ptr120
+%reg122 = add i32 0, %param_raw121
+call void(i32) @printi(i32 %reg122)
+br label %statement_246
+statement_246:
+%param_ptr123 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw124 = load i32, i32* %param_ptr123
+%reg125 = add i32 0, %param_raw124
+call void(i32) @errorIfZero9001(i32 %reg125)
+%reg126 = sdiv i32  20, %reg125
+%reg127 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg126, i32* %reg127
+br label %statement_255
+statement_255:
+%param_ptr128 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw129 = load i32, i32* %param_ptr128
+%reg130 = add i32 0, %param_raw129
+call void(i32) @printi(i32 %reg130)
+br label %statement_261
+statement_261:
+call void(i32) @errorIfZero9001(i32  5)
+%reg131 = sdiv i32  30,  5
+%reg132 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg131, i32* %reg132
+br label %statement_267
+statement_267:
+%param_ptr133 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw134 = load i32, i32* %param_ptr133
+%reg135 = add i32 0, %param_raw134
+call void(i32) @printi(i32 %reg135)
+br label %statement_273
+statement_273:
+%reg136 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+store i32  3, i32* %reg136
+br label %statement_277
+statement_277:
+%param_ptr137 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw138 = load i32, i32* %param_ptr137
+%reg139 = add i32 0, %param_raw138
+%param_ptr140 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+%param_raw141 = load i32, i32* %param_ptr140
+%reg142 = add i32 0, %param_raw141
+call void(i32) @errorIfZero9001(i32 %reg142)
+%reg143 = sdiv i32 %reg139, %reg142
+%reg144 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+store i32 %reg143, i32* %reg144
+br label %statement_289
+statement_289:
+%param_ptr145 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+%param_raw146 = load i32, i32* %param_ptr145
+%reg147 = add i32 0, %param_raw146
+call void(i32) @printi(i32 %reg147)
+br label %statement_295
+statement_295:
+%str_ptr_reg148 = getelementptr [10 x i8], [10 x i8]* @.string_id5, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg148)
+br label %statement_299
+statement_299:
+%reg149 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+store i32  1, i32* %reg149
+br label %statement_303
+statement_303:
+%reg150 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+store i32  2, i32* %reg150
+br label %statement_307
+statement_307:
+%reg151 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+store i32  3, i32* %reg151
+br label %statement_311
+statement_311:
+%param_ptr152 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw153 = load i32, i32* %param_ptr152
+%reg154 = add i32 0, %param_raw153
+%param_ptr155 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw156 = load i32, i32* %param_ptr155
+%reg157 = add i32 0, %param_raw156
+%reg158 = add i32 %reg154, %reg157
+%param_ptr159 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw160 = load i32, i32* %param_ptr159
+%reg161 = add i32 0, %param_raw160
+%reg162 = sub i32 %reg158, %reg161
+%reg163 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg162, i32* %reg163
+br label %statement_326
+statement_326:
+%param_ptr164 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw165 = load i32, i32* %param_ptr164
+%reg166 = add i32 0, %param_raw165
+call void(i32) @printi(i32 %reg166)
+br label %statement_332
+statement_332:
+%param_ptr167 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw168 = load i32, i32* %param_ptr167
+%reg169 = add i32 0, %param_raw168
+%param_ptr170 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw171 = load i32, i32* %param_ptr170
+%reg172 = add i32 0, %param_raw171
+%reg173 = sub i32 %reg169, %reg172
+%param_ptr174 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw175 = load i32, i32* %param_ptr174
+%reg176 = add i32 0, %param_raw175
+%reg177 = add i32 %reg173, %reg176
+%reg178 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg177, i32* %reg178
+br label %statement_347
+statement_347:
+%param_ptr179 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw180 = load i32, i32* %param_ptr179
+%reg181 = add i32 0, %param_raw180
+call void(i32) @printi(i32 %reg181)
+br label %statement_353
+statement_353:
+%param_ptr182 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw183 = load i32, i32* %param_ptr182
+%reg184 = add i32 0, %param_raw183
+%param_ptr185 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw186 = load i32, i32* %param_ptr185
+%reg187 = add i32 0, %param_raw186
+%reg188 = add i32 %reg184, %reg187
+%param_ptr189 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw190 = load i32, i32* %param_ptr189
+%reg191 = add i32 0, %param_raw190
+%reg192 = add i32 %reg188, %reg191
+%reg193 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg192, i32* %reg193
+br label %statement_368
+statement_368:
+%param_ptr194 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw195 = load i32, i32* %param_ptr194
+%reg196 = add i32 0, %param_raw195
+call void(i32) @printi(i32 %reg196)
+br label %statement_374
+statement_374:
+%param_ptr197 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw198 = load i32, i32* %param_ptr197
+%reg199 = add i32 0, %param_raw198
+%param_ptr200 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw201 = load i32, i32* %param_ptr200
+%reg202 = add i32 0, %param_raw201
+%reg203 = sub i32 %reg199, %reg202
+%param_ptr204 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw205 = load i32, i32* %param_ptr204
+%reg206 = add i32 0, %param_raw205
+%reg207 = sub i32 %reg203, %reg206
+%reg208 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg207, i32* %reg208
+br label %statement_389
+statement_389:
+%param_ptr209 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw210 = load i32, i32* %param_ptr209
+%reg211 = add i32 0, %param_raw210
+call void(i32) @printi(i32 %reg211)
+br label %statement_395
+statement_395:
+%param_ptr212 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw213 = load i32, i32* %param_ptr212
+%reg214 = add i32 0, %param_raw213
+%param_ptr215 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw216 = load i32, i32* %param_ptr215
+%reg217 = add i32 0, %param_raw216
+%param_ptr218 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw219 = load i32, i32* %param_ptr218
+%reg220 = add i32 0, %param_raw219
+%reg221 = mul i32 %reg217, %reg220
+%reg222 = add i32 %reg214, %reg221
+%reg223 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg222, i32* %reg223
+br label %statement_410
+statement_410:
+%param_ptr224 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw225 = load i32, i32* %param_ptr224
+%reg226 = add i32 0, %param_raw225
+call void(i32) @printi(i32 %reg226)
+br label %statement_416
+statement_416:
+%param_ptr227 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw228 = load i32, i32* %param_ptr227
+%reg229 = add i32 0, %param_raw228
+%param_ptr230 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw231 = load i32, i32* %param_ptr230
+%reg232 = add i32 0, %param_raw231
+%reg233 = mul i32 %reg229, %reg232
+%param_ptr234 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw235 = load i32, i32* %param_ptr234
+%reg236 = add i32 0, %param_raw235
+%reg237 = add i32 %reg233, %reg236
+%reg238 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg237, i32* %reg238
+br label %statement_431
+statement_431:
+%param_ptr239 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw240 = load i32, i32* %param_ptr239
+%reg241 = add i32 0, %param_raw240
+call void(i32) @printi(i32 %reg241)
+br label %statement_437
+statement_437:
+%param_ptr242 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw243 = load i32, i32* %param_ptr242
+%reg244 = add i32 0, %param_raw243
+%param_ptr245 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw246 = load i32, i32* %param_ptr245
+%reg247 = add i32 0, %param_raw246
+%reg248 = mul i32 %reg244, %reg247
+%param_ptr249 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw250 = load i32, i32* %param_ptr249
+%reg251 = add i32 0, %param_raw250
+%reg252 = mul i32 %reg248, %reg251
+%reg253 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg252, i32* %reg253
+br label %statement_452
+statement_452:
+%param_ptr254 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw255 = load i32, i32* %param_ptr254
+%reg256 = add i32 0, %param_raw255
+call void(i32) @printi(i32 %reg256)
+br label %statement_458
+statement_458:
+%param_ptr257 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw258 = load i32, i32* %param_ptr257
+%reg259 = add i32 0, %param_raw258
+%param_ptr260 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw261 = load i32, i32* %param_ptr260
+%reg262 = add i32 0, %param_raw261
+%param_ptr263 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw264 = load i32, i32* %param_ptr263
+%reg265 = add i32 0, %param_raw264
+call void(i32) @errorIfZero9001(i32 %reg265)
+%reg266 = sdiv i32 %reg262, %reg265
+%reg267 = add i32 %reg259, %reg266
+%reg268 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg267, i32* %reg268
+br label %statement_474
+statement_474:
+%param_ptr269 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw270 = load i32, i32* %param_ptr269
+%reg271 = add i32 0, %param_raw270
+call void(i32) @printi(i32 %reg271)
+br label %statement_480
+statement_480:
+%param_ptr272 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw273 = load i32, i32* %param_ptr272
+%reg274 = add i32 0, %param_raw273
+%param_ptr275 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw276 = load i32, i32* %param_ptr275
+%reg277 = add i32 0, %param_raw276
+call void(i32) @errorIfZero9001(i32 %reg277)
+%reg278 = sdiv i32 %reg274, %reg277
+%param_ptr279 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw280 = load i32, i32* %param_ptr279
+%reg281 = add i32 0, %param_raw280
+call void(i32) @errorIfZero9001(i32 %reg281)
+%reg282 = sdiv i32 %reg278, %reg281
+%reg283 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg282, i32* %reg283
+br label %statement_497
+statement_497:
+%param_ptr284 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw285 = load i32, i32* %param_ptr284
+%reg286 = add i32 0, %param_raw285
+call void(i32) @printi(i32 %reg286)
+br label %statement_503
+statement_503:
+%param_ptr287 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw288 = load i32, i32* %param_ptr287
+%reg289 = add i32 0, %param_raw288
+%param_ptr290 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw291 = load i32, i32* %param_ptr290
+%reg292 = add i32 0, %param_raw291
+call void(i32) @errorIfZero9001(i32 %reg292)
+%reg293 = sdiv i32 %reg289, %reg292
+%param_ptr294 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw295 = load i32, i32* %param_ptr294
+%reg296 = add i32 0, %param_raw295
+%reg297 = add i32 %reg293, %reg296
+%reg298 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg297, i32* %reg298
+br label %statement_519
+statement_519:
+%param_ptr299 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw300 = load i32, i32* %param_ptr299
+%reg301 = add i32 0, %param_raw300
+call void(i32) @printi(i32 %reg301)
+br label %statement_525
+statement_525:
+%param_ptr302 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw303 = load i32, i32* %param_ptr302
+%reg304 = add i32 0, %param_raw303
+%param_ptr305 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw306 = load i32, i32* %param_ptr305
+%reg307 = add i32 0, %param_raw306
+call void(i32) @errorIfZero9001(i32 %reg307)
+%reg308 = sdiv i32 %reg304, %reg307
+%param_ptr309 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw310 = load i32, i32* %param_ptr309
+%reg311 = add i32 0, %param_raw310
+%reg312 = mul i32 %reg308, %reg311
+%reg313 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg312, i32* %reg313
+br label %statement_541
+statement_541:
+%param_ptr314 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw315 = load i32, i32* %param_ptr314
+%reg316 = add i32 0, %param_raw315
+call void(i32) @printi(i32 %reg316)
+br label %statement_547
+statement_547:
+%param_ptr317 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw318 = load i32, i32* %param_ptr317
+%reg319 = add i32 0, %param_raw318
+%param_ptr320 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw321 = load i32, i32* %param_ptr320
+%reg322 = add i32 0, %param_raw321
+%reg323 = mul i32 %reg319, %reg322
+%param_ptr324 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw325 = load i32, i32* %param_ptr324
+%reg326 = add i32 0, %param_raw325
+call void(i32) @errorIfZero9001(i32 %reg326)
+%reg327 = sdiv i32 %reg323, %reg326
+%reg328 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg327, i32* %reg328
+br label %statement_563
+statement_563:
+%param_ptr329 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw330 = load i32, i32* %param_ptr329
+%reg331 = add i32 0, %param_raw330
+call void(i32) @printi(i32 %reg331)
+br label %statement_569
+statement_569:
+%param_ptr332 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw333 = load i32, i32* %param_ptr332
+%reg334 = add i32 0, %param_raw333
+%reg335 = add i32 %reg334,  50
+%param_ptr336 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw337 = load i32, i32* %param_ptr336
+%reg338 = add i32 0, %param_raw337
+%reg339 = sub i32 %reg335, %reg338
+%reg340 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg339, i32* %reg340
+br label %statement_581
+statement_581:
+%param_ptr341 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw342 = load i32, i32* %param_ptr341
+%reg343 = add i32 0, %param_raw342
+call void(i32) @printi(i32 %reg343)
+br label %statement_587
+statement_587:
+%param_ptr344 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw345 = load i32, i32* %param_ptr344
+%reg346 = add i32 0, %param_raw345
+%reg347 = sub i32  49, %reg346
+%param_ptr348 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw349 = load i32, i32* %param_ptr348
+%reg350 = add i32 0, %param_raw349
+%reg351 = add i32 %reg347, %reg350
+%reg352 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg351, i32* %reg352
+br label %statement_599
+statement_599:
+%param_ptr353 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw354 = load i32, i32* %param_ptr353
+%reg355 = add i32 0, %param_raw354
+call void(i32) @printi(i32 %reg355)
+br label %statement_605
+statement_605:
+%param_ptr356 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw357 = load i32, i32* %param_ptr356
+%reg358 = add i32 0, %param_raw357
+%param_ptr359 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw360 = load i32, i32* %param_ptr359
+%reg361 = add i32 0, %param_raw360
+%reg362 = add i32 %reg358, %reg361
+%reg363 = add i32 %reg362,  11
+%reg364 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg363, i32* %reg364
+br label %statement_617
+statement_617:
+%param_ptr365 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw366 = load i32, i32* %param_ptr365
+%reg367 = add i32 0, %param_raw366
+call void(i32) @printi(i32 %reg367)
+br label %statement_623
+statement_623:
+%param_ptr368 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw369 = load i32, i32* %param_ptr368
+%reg370 = add i32 0, %param_raw369
+%reg371 = sub i32  50, %reg370
+%param_ptr372 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw373 = load i32, i32* %param_ptr372
+%reg374 = add i32 0, %param_raw373
+%reg375 = sub i32 %reg371, %reg374
+%reg376 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg375, i32* %reg376
+br label %statement_635
+statement_635:
+%param_ptr377 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw378 = load i32, i32* %param_ptr377
+%reg379 = add i32 0, %param_raw378
+call void(i32) @printi(i32 %reg379)
+br label %statement_641
+statement_641:
+%param_ptr380 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw381 = load i32, i32* %param_ptr380
+%reg382 = add i32 0, %param_raw381
+%reg383 = mul i32 %reg382,  12
+%reg384 = add i32  14, %reg383
+%reg385 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg384, i32* %reg385
+br label %statement_650
+statement_650:
+%param_ptr386 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw387 = load i32, i32* %param_ptr386
+%reg388 = add i32 0, %param_raw387
+call void(i32) @printi(i32 %reg388)
+br label %statement_656
+statement_656:
+%param_ptr389 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw390 = load i32, i32* %param_ptr389
+%reg391 = add i32 0, %param_raw390
+%reg392 = mul i32 %reg391,  5
+%param_ptr393 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw394 = load i32, i32* %param_ptr393
+%reg395 = add i32 0, %param_raw394
+%reg396 = add i32 %reg392, %reg395
+%reg397 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg396, i32* %reg397
+br label %statement_668
+statement_668:
+%param_ptr398 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw399 = load i32, i32* %param_ptr398
+%reg400 = add i32 0, %param_raw399
+call void(i32) @printi(i32 %reg400)
+br label %statement_674
+statement_674:
+%param_ptr401 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw402 = load i32, i32* %param_ptr401
+%reg403 = add i32 0, %param_raw402
+%reg404 = mul i32 %reg403,  5
+%param_ptr405 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw406 = load i32, i32* %param_ptr405
+%reg407 = add i32 0, %param_raw406
+%reg408 = mul i32 %reg404, %reg407
+%reg409 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg408, i32* %reg409
+br label %statement_686
+statement_686:
+%param_ptr410 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw411 = load i32, i32* %param_ptr410
+%reg412 = add i32 0, %param_raw411
+call void(i32) @printi(i32 %reg412)
+br label %statement_692
+statement_692:
+%param_ptr413 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw414 = load i32, i32* %param_ptr413
+%reg415 = add i32 0, %param_raw414
+%param_ptr416 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw417 = load i32, i32* %param_ptr416
+%reg418 = add i32 0, %param_raw417
+call void(i32) @errorIfZero9001(i32  2)
+%reg419 = sdiv i32 %reg418,  2
+%reg420 = add i32 %reg415, %reg419
+%reg421 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg420, i32* %reg421
+br label %statement_705
+statement_705:
+%param_ptr422 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw423 = load i32, i32* %param_ptr422
+%reg424 = add i32 0, %param_raw423
+call void(i32) @printi(i32 %reg424)
+br label %statement_711
+statement_711:
+call void(i32) @errorIfZero9001(i32  5)
+%reg425 = sdiv i32  20,  5
+call void(i32) @errorIfZero9001(i32  2)
+%reg426 = sdiv i32 %reg425,  2
+%reg427 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg426, i32* %reg427
+br label %statement_719
+statement_719:
+%param_ptr428 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw429 = load i32, i32* %param_ptr428
+%reg430 = add i32 0, %param_raw429
+call void(i32) @printi(i32 %reg430)
+br label %statement_725
+statement_725:
+%param_ptr431 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
+%param_raw432 = load i32, i32* %param_ptr431
+%reg433 = add i32 0, %param_raw432
+call void(i32) @errorIfZero9001(i32 %reg433)
+%reg434 = sdiv i32  20, %reg433
+%reg435 = add i32 %reg434,  1
+%reg436 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg435, i32* %reg436
+br label %statement_735
+statement_735:
+%param_ptr437 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw438 = load i32, i32* %param_ptr437
+%reg439 = add i32 0, %param_raw438
+call void(i32) @printi(i32 %reg439)
+br label %statement_741
+statement_741:
+%param_ptr440 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw441 = load i32, i32* %param_ptr440
+%reg442 = add i32 0, %param_raw441
+call void(i32) @errorIfZero9001(i32  1)
+%reg443 = sdiv i32 %reg442,  1
+%param_ptr444 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw445 = load i32, i32* %param_ptr444
+%reg446 = add i32 0, %param_raw445
+%reg447 = mul i32 %reg443, %reg446
+%reg448 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg447, i32* %reg448
+br label %statement_754
+statement_754:
+%param_ptr449 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw450 = load i32, i32* %param_ptr449
+%reg451 = add i32 0, %param_raw450
+call void(i32) @printi(i32 %reg451)
+br label %statement_760
+statement_760:
+%param_ptr452 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw453 = load i32, i32* %param_ptr452
+%reg454 = add i32 0, %param_raw453
+%reg455 = mul i32 %reg454,  10
+%param_ptr456 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw457 = load i32, i32* %param_ptr456
+%reg458 = add i32 0, %param_raw457
+call void(i32) @errorIfZero9001(i32 %reg458)
+%reg459 = sdiv i32 %reg455, %reg458
+%reg460 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg459, i32* %reg460
+br label %statement_773
+statement_773:
+%param_ptr461 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw462 = load i32, i32* %param_ptr461
+%reg463 = add i32 0, %param_raw462
+call void(i32) @printi(i32 %reg463)
+br label %statement_779
+statement_779:
+%param_ptr464 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw465 = load i32, i32* %param_ptr464
+%reg466 = add i32 0, %param_raw465
+%param_ptr467 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw468 = load i32, i32* %param_ptr467
+%reg469 = add i32 0, %param_raw468
+%reg470 = mul i32  10, %reg469
+%reg471 = add i32 %reg466, %reg470
+%reg472 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg471, i32* %reg472
+br label %statement_791
+statement_791:
+%param_ptr473 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw474 = load i32, i32* %param_ptr473
+%reg475 = add i32 0, %param_raw474
+call void(i32) @printi(i32 %reg475)
+br label %statement_797
+statement_797:
+%param_ptr476 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
+%param_raw477 = load i32, i32* %param_ptr476
+%reg478 = add i32 0, %param_raw477
+%reg479 = add i32 %reg478,  10
+%param_ptr480 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
+%param_raw481 = load i32, i32* %param_ptr480
+%reg482 = add i32 0, %param_raw481
+%reg483 = mul i32 %reg479, %reg482
+%reg484 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+store i32 %reg483, i32* %reg484
+br label %statement_809
+statement_809:
+%param_ptr485 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
+%param_raw486 = load i32, i32* %param_ptr485
+%reg487 = add i32 0, %param_raw486
+call void(i32) @printi(i32 %reg487)
+br label %statement_815
+statement_815:
+ret void
+br label %func_end_818
+func_end_818:
+ret void
+}

@@ -1,0 +1,94 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+@.string_id0 = constant [8 x i8] c"Res is \00"
+define i32@factorial(i32){
+%sp = alloca [50 x i32]
+br label %parse_label_3
+parse_label_3:
+%reg1 = add i32 0, %0
+%reg2 = icmp eq i32 %reg1,  1
+br i1 %reg2, label %statement_7, label %statement_9
+statement_7:
+ret i32 1
+statement_9:
+%reg3 = add i32 0, %0
+%reg4 = add i32 0, %0
+%reg5 = sub i32 %reg4,  1
+%reg6 = call i32(i32) @factorial(i32 %reg5)
+%reg7 = add i32 0, %reg6
+%reg8 = mul i32 %reg3, %reg7
+ret i32%reg8
+br label %func_end_18
+func_end_18:
+ret i32 0
+}
+define i8@bfactorial(i32){
+%sp = alloca [50 x i32]
+br label %parse_label_24
+parse_label_24:
+%truncated_byte9 = trunc i32 %0 to i8
+%reg10 = add i8 0, %truncated_byte9
+%reg11 = icmp eq i8 %reg10,  1
+br i1 %reg11, label %statement_29, label %statement_31
+statement_29:
+ret i8 1
+statement_31:
+%truncated_byte12 = trunc i32 %0 to i8
+%reg13 = add i8 0, %truncated_byte12
+%truncated_byte14 = trunc i32 %0 to i8
+%reg15 = add i8 0, %truncated_byte14
+%reg16 = sub i8 %reg15,  1
+%raw_reg17 = zext i8 %reg16 to i32
+%reg18 = call i8(i32) @bfactorial(i32 %raw_reg17)
+%reg19 = add i8 0, %reg18
+%reg20 = mul i8 %reg13, %reg19
+ret i8%reg20
+br label %func_end_43
+func_end_43:
+ret i8 0
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_49
+statement_49:
+%str_ptr_reg21 = getelementptr [8 x i8], [8 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg21)
+br label %statement_53
+statement_53:
+%reg22 = call i32(i32) @factorial(i32  5)
+%reg23 = add i32 0, %reg22
+%raw_reg24 = zext i8  5 to i32
+%reg25 = call i8(i32) @bfactorial(i32 %raw_reg24)
+%reg26 = add i8 0, %reg25
+%b2int_conv_reg27 = zext i8 %reg26 to i32
+%reg28 = add i32 %reg23, %b2int_conv_reg27
+call void(i32) @printi(i32 %reg28)
+br label %func_end_64
+br label %func_end_64
+func_end_64:
+ret void
+}

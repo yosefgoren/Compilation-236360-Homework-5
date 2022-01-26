@@ -1,0 +1,233 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+@.string_id0 = constant [4 x i8] c"aaa\00"
+@.string_id1 = constant [4 x i8] c"bbb\00"
+@.string_id2 = constant [4 x i8] c"ccc\00"
+@.string_id3 = constant [4 x i8] c"ddd\00"
+@.string_id4 = constant [4 x i8] c"aaa\00"
+@.string_id5 = constant [4 x i8] c"bbb\00"
+@.string_id6 = constant [4 x i8] c"ccc\00"
+@.string_id7 = constant [4 x i8] c"ddd\00"
+@.string_id8 = constant [4 x i8] c"aaa\00"
+@.string_id9 = constant [4 x i8] c"bbb\00"
+@.string_id10 = constant [4 x i8] c"ccc\00"
+@.string_id11 = constant [4 x i8] c"ddd\00"
+@.string_id12 = constant [4 x i8] c"ccc\00"
+@.string_id13 = constant [4 x i8] c"ddd\00"
+@.string_id14 = constant [4 x i8] c"ccc\00"
+@.string_id15 = constant [4 x i8] c"ddd\00"
+@.string_id16 = constant [4 x i8] c"ccc\00"
+@.string_id17 = constant [4 x i8] c"ddd\00"
+@.string_id18 = constant [4 x i8] c"ccc\00"
+@.string_id19 = constant [4 x i8] c"ddd\00"
+define void@main(){
+%sp = alloca [50 x i32]
+br label %parse_label_3
+parse_label_3:
+br label %statement_9
+statement_5:
+%str_ptr_reg1 = getelementptr [4 x i8], [4 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg1)
+br label %parse_label_13
+statement_9:
+%str_ptr_reg2 = getelementptr [4 x i8], [4 x i8]* @.string_id1, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg2)
+br label %parse_label_13
+parse_label_13:
+br label %statement_15
+statement_15:
+%str_ptr_reg3 = getelementptr [4 x i8], [4 x i8]* @.string_id2, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg3)
+br label %parse_label_23
+statement_19:
+%str_ptr_reg4 = getelementptr [4 x i8], [4 x i8]* @.string_id3, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg4)
+br label %parse_label_23
+parse_label_23:
+br label %statement_29
+statement_25:
+%str_ptr_reg5 = getelementptr [4 x i8], [4 x i8]* @.string_id4, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg5)
+br label %parse_label_33
+statement_29:
+%str_ptr_reg6 = getelementptr [4 x i8], [4 x i8]* @.string_id5, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg6)
+br label %parse_label_33
+parse_label_33:
+br label %statement_35
+statement_35:
+%str_ptr_reg7 = getelementptr [4 x i8], [4 x i8]* @.string_id6, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg7)
+br label %parse_label_43
+statement_39:
+%str_ptr_reg8 = getelementptr [4 x i8], [4 x i8]* @.string_id7, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg8)
+br label %parse_label_43
+parse_label_43:
+br label %statement_49
+statement_45:
+%str_ptr_reg9 = getelementptr [4 x i8], [4 x i8]* @.string_id8, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg9)
+br label %parse_label_53
+statement_49:
+%str_ptr_reg10 = getelementptr [4 x i8], [4 x i8]* @.string_id9, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg10)
+br label %parse_label_53
+parse_label_53:
+br label %statement_55
+statement_55:
+%str_ptr_reg11 = getelementptr [4 x i8], [4 x i8]* @.string_id10, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg11)
+br label %statement_63
+statement_59:
+%str_ptr_reg12 = getelementptr [4 x i8], [4 x i8]* @.string_id11, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg12)
+br label %statement_63
+statement_63:
+br label %false_case_67
+true_case_65:
+br label %set_bool_reg_69
+false_case_67:
+br label %set_bool_reg_69
+set_bool_reg_69:
+%reg13 = phi i32 [1, %true_case_65], [0, %false_case_67]
+%reg14 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg13, i32* %reg14
+br label %parse_label_74
+parse_label_74:
+%param_ptr15 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw16 = load i32, i32* %param_ptr15
+%reg17 = trunc i32 %param_raw16 to i1
+br i1 %reg17, label %true_case_79, label %false_case_81
+true_case_79:
+br label %statement_83
+false_case_81:
+br label %statement_87
+statement_83:
+%str_ptr_reg18 = getelementptr [4 x i8], [4 x i8]* @.string_id12, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg18)
+br label %statement_91
+statement_87:
+%str_ptr_reg19 = getelementptr [4 x i8], [4 x i8]* @.string_id13, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg19)
+br label %statement_91
+statement_91:
+br label %true_case_93
+true_case_93:
+br label %set_bool_reg_97
+false_case_95:
+br label %set_bool_reg_97
+set_bool_reg_97:
+%reg20 = phi i32 [1, %true_case_93], [0, %false_case_95]
+%reg21 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg20, i32* %reg21
+br label %parse_label_102
+parse_label_102:
+%param_ptr22 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw23 = load i32, i32* %param_ptr22
+%reg24 = trunc i32 %param_raw23 to i1
+br i1 %reg24, label %true_case_107, label %false_case_109
+true_case_107:
+br label %statement_111
+false_case_109:
+br label %statement_115
+statement_111:
+%str_ptr_reg25 = getelementptr [4 x i8], [4 x i8]* @.string_id14, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg25)
+br label %statement_119
+statement_115:
+%str_ptr_reg26 = getelementptr [4 x i8], [4 x i8]* @.string_id15, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg26)
+br label %statement_119
+statement_119:
+%reg27 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 0, i32* %reg27
+br label %statement_123
+statement_123:
+br label %false_case_127
+true_case_125:
+br label %set_bool_reg_129
+false_case_127:
+br label %set_bool_reg_129
+set_bool_reg_129:
+%reg28 = phi i32 [1, %true_case_125], [0, %false_case_127]
+%reg29 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg28, i32* %reg29
+br label %parse_label_134
+parse_label_134:
+%param_ptr30 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw31 = load i32, i32* %param_ptr30
+%reg32 = trunc i32 %param_raw31 to i1
+br i1 %reg32, label %true_case_139, label %false_case_141
+true_case_139:
+br label %statement_143
+false_case_141:
+br label %statement_147
+statement_143:
+%str_ptr_reg33 = getelementptr [4 x i8], [4 x i8]* @.string_id16, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg33)
+br label %statement_151
+statement_147:
+%str_ptr_reg34 = getelementptr [4 x i8], [4 x i8]* @.string_id17, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg34)
+br label %statement_151
+statement_151:
+%reg35 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+store i32 0, i32* %reg35
+br label %statement_155
+statement_155:
+br label %true_case_157
+true_case_157:
+br label %set_bool_reg_161
+false_case_159:
+br label %set_bool_reg_161
+set_bool_reg_161:
+%reg36 = phi i32 [1, %true_case_157], [0, %false_case_159]
+%reg37 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+store i32 %reg36, i32* %reg37
+br label %parse_label_166
+parse_label_166:
+%param_ptr38 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+%param_raw39 = load i32, i32* %param_ptr38
+%reg40 = trunc i32 %param_raw39 to i1
+br i1 %reg40, label %true_case_171, label %false_case_173
+true_case_171:
+br label %statement_175
+false_case_173:
+br label %statement_179
+statement_175:
+%str_ptr_reg41 = getelementptr [4 x i8], [4 x i8]* @.string_id18, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg41)
+br label %func_end_184
+statement_179:
+%str_ptr_reg42 = getelementptr [4 x i8], [4 x i8]* @.string_id19, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg42)
+br label %func_end_184
+br label %func_end_184
+func_end_184:
+ret void
+}

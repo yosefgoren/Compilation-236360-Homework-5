@@ -1,0 +1,95 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+define void@test(i32){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 , i32* %reg1
+br label %statement_7
+statement_7:
+call void(i32) @printi(i32 )
+br label %statement_10
+statement_10:
+%param_ptr2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw3 = load i32, i32* %param_ptr2
+%reg4 = add i32 0, %param_raw3
+call void(i32) @printi(i32 %reg4)
+br label %func_end_17
+br label %func_end_17
+func_end_17:
+ret void
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_23
+statement_23:
+%reg5 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32  22, i32* %reg5
+br label %statement_27
+statement_27:
+%param_ptr6 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw7 = load i32, i32* %param_ptr6
+%reg8 = add i32 0, %param_raw7
+%reg9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg8, i32* %reg9
+br label %statement_34
+statement_34:
+%param_ptr10 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw11 = load i32, i32* %param_ptr10
+%reg12 = add i32 0, %param_raw11
+%reg13 = add i32 %reg12,  2
+%reg14 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg13, i32* %reg14
+br label %parse_label_42
+parse_label_42:
+%param_ptr15 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw16 = load i32, i32* %param_ptr15
+%reg17 = add i32 0, %param_raw16
+%reg18 = icmp eq i32 %reg17,  33
+br i1 %reg18, label %statement_48, label %statement_54
+statement_48:
+%param_ptr19 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw20 = load i32, i32* %param_ptr19
+%reg21 = add i32 0, %param_raw20
+call void(i32) @printi(i32 %reg21)
+br label %statement_54
+statement_54:
+%reg22 = add i32  22,  1
+%reg23 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+store i32 %reg22, i32* %reg23
+br label %statement_59
+statement_59:
+%param_ptr24 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+%param_raw25 = load i32, i32* %param_ptr24
+%reg26 = add i32 0, %param_raw25
+call void(i32) @printi(i32 %reg26)
+br label %func_end_66
+br label %func_end_66
+func_end_66:
+ret void
+}

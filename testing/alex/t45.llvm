@@ -1,0 +1,114 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+@.string_id0 = constant [2 x i8] c"1\00"
+@.string_id1 = constant [2 x i8] c"2\00"
+@.string_id2 = constant [2 x i8] c"3\00"
+@.string_id3 = constant [8 x i8] c"res is \00"
+define i32@first(){
+%sp = alloca [50 x i32]
+br label %statement_3
+statement_3:
+%str_ptr_reg1 = getelementptr [2 x i8], [2 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg1)
+br label %statement_7
+statement_7:
+ret i32 1
+br label %func_end_10
+func_end_10:
+ret i32 0
+}
+define i32@second(){
+%sp = alloca [50 x i32]
+br label %statement_16
+statement_16:
+%str_ptr_reg2 = getelementptr [2 x i8], [2 x i8]* @.string_id1, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg2)
+br label %statement_20
+statement_20:
+ret i32 2
+br label %func_end_23
+func_end_23:
+ret i32 0
+}
+define i32@third(){
+%sp = alloca [50 x i32]
+br label %statement_29
+statement_29:
+%str_ptr_reg3 = getelementptr [2 x i8], [2 x i8]* @.string_id2, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg3)
+br label %statement_33
+statement_33:
+ret i32 3
+br label %func_end_36
+func_end_36:
+ret i32 0
+}
+define i32@sum(i32, i32, i32){
+%sp = alloca [50 x i32]
+br label %statement_42
+statement_42:
+%reg4 = add i32 0, %0
+%reg5 = add i32 0, %1
+%reg6 = add i32 %reg4, %reg5
+%reg7 = add i32 0, %2
+%reg8 = add i32 %reg6, %reg7
+call void(i32) @errorIfZero9001(i32  3)
+%reg9 = sdiv i32 %reg8,  3
+ret i32%reg9
+br label %func_end_52
+func_end_52:
+ret i32 0
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_58
+statement_58:
+%reg10 = call i32() @first()
+%reg11 = add i32 0, %reg10
+%reg12 = call i32() @second()
+%reg13 = add i32 0, %reg12
+%reg14 = call i32() @third()
+%reg15 = add i32 0, %reg14
+%reg16 = call i32(i32, i32, i32) @sum(i32 %reg11, i32 %reg13, i32 %reg15)
+%reg17 = add i32 0, %reg16
+%reg18 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg17, i32* %reg18
+br label %statement_70
+statement_70:
+%str_ptr_reg19 = getelementptr [8 x i8], [8 x i8]* @.string_id3, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg19)
+br label %statement_74
+statement_74:
+%param_ptr20 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw21 = load i32, i32* %param_ptr20
+%reg22 = add i32 0, %param_raw21
+call void(i32) @printi(i32 %reg22)
+br label %func_end_81
+br label %func_end_81
+func_end_81:
+ret void
+}

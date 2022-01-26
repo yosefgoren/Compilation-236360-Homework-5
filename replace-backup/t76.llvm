@@ -1,0 +1,116 @@
+declare i32 @printf(i8*, ...)
+declare void @exit(i32)
+@.int_specifier = constant [4 x i8] c"%d\0A\00"
+@.str_specifier = constant [4 x i8] c"%s\0A\00"
+define void @printi(i32) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.int_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i32 %0)
+    ret void
+}
+define void @print(i8*) {
+    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0
+    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)
+    ret void
+}
+@.str_div_zero = constant [23 x i8] c"Error division by zero\00"
+define void @errorIfZero9001(i32) {
+	%cond = icmp eq i32 0, %0
+	br i1 %cond, label %exit, label %return
+exit:
+	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0
+	call void(i8*) @print(i8* %err_str_ptr)
+	call void(i32) @exit(i32 1)
+	br label %return
+return:
+	ret void
+}
+@.string_id0 = constant [2 x i8] c" \00"
+define i32@fib(i32){
+%sp = alloca [50 x i32]
+br label %parse_label_3
+parse_label_3:
+%truncated_byte1 = trunc i32 %0 to i8
+%reg2 = add i8 0, %truncated_byte1
+%b2int_conv_reg3 = zext i8 %reg2 to i32
+%reg4 = icmp eq i32 %b2int_conv_reg3,  0
+br i1 %reg4, label %statement_15, label %parse_label_9
+parse_label_9:
+%truncated_byte5 = trunc i32 %0 to i8
+%reg6 = add i8 0, %truncated_byte5
+%b2int_conv_reg7 = zext i8 %reg6 to i32
+%reg8 = icmp eq i32 %b2int_conv_reg7,  1
+br i1 %reg8, label %statement_15, label %statement_17
+statement_15:
+ret i32 1
+statement_17:
+%truncated_byte9 = trunc i32 %0 to i8
+%reg10 = add i8 0, %truncated_byte9
+%reg11 = sub i8 %reg10,  1
+%raw_reg12 = zext i8 %reg11 to i32
+%reg13 = call i32(i32) @fib(i32 %raw_reg12)
+%reg14 = add i32 0, %reg13
+%truncated_byte15 = trunc i32 %0 to i8
+%reg16 = add i8 0, %truncated_byte15
+%reg17 = sub i8 %reg16,  2
+%raw_reg18 = zext i8 %reg17 to i32
+%reg19 = call i32(i32) @fib(i32 %raw_reg18)
+%reg20 = add i32 0, %reg19
+%reg21 = add i32 %reg14, %reg20
+ret i32%reg21
+br label %func_end_33
+func_end_33:
+ret i32 0
+}
+define void@main(){
+%sp = alloca [50 x i32]
+br label %statement_39
+statement_39:
+%raw_reg22 = zext i8  0 to i32
+%reg23 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %raw_reg22, i32* %reg23
+br label %cond_44
+cond_44:
+%param_ptr24 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw25 = load i32, i32* %param_ptr24
+%truncated_byte26 = trunc i32 %param_raw25 to i8
+%reg27 = add i8 0, %truncated_byte26
+%b2int_conv_reg28 = zext i8 %reg27 to i32
+%reg29 = icmp slt i32 %b2int_conv_reg28,  10
+br i1 %reg29, label %statement_52, label %func_end_86
+statement_52:
+%param_ptr30 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw31 = load i32, i32* %param_ptr30
+%truncated_byte32 = trunc i32 %param_raw31 to i8
+%reg33 = add i8 0, %truncated_byte32
+%raw_reg34 = zext i8 %reg33 to i32
+%reg35 = call i32(i32) @fib(i32 %raw_reg34)
+%reg36 = add i32 0, %reg35
+call void(i32) @printi(i32 %reg36)
+br label %parse_label_62
+parse_label_62:
+%param_ptr37 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw38 = load i32, i32* %param_ptr37
+%truncated_byte39 = trunc i32 %param_raw38 to i8
+%reg40 = add i8 0, %truncated_byte39
+%b2int_conv_reg41 = zext i8 %reg40 to i32
+%reg42 = add i32 %b2int_conv_reg41,  1
+%reg43 = icmp slt i32 %reg42,  10
+br i1 %reg43, label %statement_71, label %statement_75
+statement_71:
+%str_ptr_reg44 = getelementptr [2 x i8], [2 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg44)
+br label %statement_75
+statement_75:
+%param_ptr45 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw46 = load i32, i32* %param_ptr45
+%truncated_byte47 = trunc i32 %param_raw46 to i8
+%reg48 = add i8 0, %truncated_byte47
+%reg49 = add i8 %reg48,  1
+%raw_reg50 = zext i8 %reg49 to i32
+%reg51 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %raw_reg50, i32* %reg51
+br label %cond_44
+br label %func_end_86
+func_end_86:
+ret void
+}
