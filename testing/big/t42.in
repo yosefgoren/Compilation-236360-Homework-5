@@ -1,7 +1,0 @@
-void main(){
-while(true){
-	break;
-}
-while(true){ { { break; } } }
-if(true) { while(true) { { continue; } } }
-}

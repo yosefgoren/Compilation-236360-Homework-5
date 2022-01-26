@@ -321,6 +321,12 @@ NumericExp:			Exp BINOP Exp {//TODO: add support for overflow and div by 0 prote
 						NumericExp* numeric_e2 = dynamic_cast<NumericExp*>($3);
 						assert(numeric_e2);
 						
+						if($2 == DIV){
+							vector<Expression*> error_check_params;
+							error_check_params.push_back(numeric_e2);
+							cb.emitFunctionCall("errorIfZero9001", error_check_params);
+						}
+
 						ExpType max_type = maxNumeralType(numeric_e1->type, numeric_e2->type);
 						if(max_type == INT_EXP){
 							numeric_e1->convertToInt();
@@ -571,13 +577,18 @@ void declareLibraryFuncs(){
 	//FunctionType creates a shared pinter for these allocations:
 	std::vector<Parameter>* print_params = new std::vector<Parameter>();
 	std::vector<Parameter>* printi_params = new std::vector<Parameter>();
+	std::vector<Parameter>* div_error_params = new std::vector<Parameter>();
 
 	//in print/i line of origin and is_const parameters are irrelevant, but have to be given some value:
 	print_params->push_back(Parameter("str", STRING_EXP, 0, true));
 	printi_params->push_back(Parameter("i", INT_EXP, 0, true));
+	div_error_params->push_back(Parameter("n", INT_EXP, 0, true));
+	
 	symtab.declareFunc("print", VOID_EXP, print_params);
 	symtab.finishFunc(false);
 	symtab.declareFunc("printi", VOID_EXP, printi_params);
+	symtab.finishFunc(false);
+	symtab.declareFunc("errorIfZero9001", VOID_EXP, div_error_params);
 	symtab.finishFunc(false);
 }
 

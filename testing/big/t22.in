@@ -1,5 +1,0 @@
-void main(){
-bool a = true;
-int d=1;
-bool c = a and d;
-}

@@ -1,5 +1,0 @@
-void main(){
-bool a = true;
-int c = 3;
-if (a==c) printi(7);
-}

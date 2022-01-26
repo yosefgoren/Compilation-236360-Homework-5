@@ -1,7 +1,0 @@
-void foo(){
-while(true) break;
-}
-
-void main(){
-foo();
-}

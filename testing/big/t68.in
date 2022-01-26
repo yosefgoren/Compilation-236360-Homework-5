@@ -1,7 +1,0 @@
-bool a(){
-return true;
-}
-
-void main(){
-int a = 6;
-}

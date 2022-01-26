@@ -1,7 +1,0 @@
-string f() {
-    return "abc";
-}
-
-void main() {
-    return;
-}

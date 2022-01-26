@@ -1,3 +1,0 @@
-void main(){
-if(true == true) printi(3);
-}

@@ -109,7 +109,20 @@ void CodeBuffer::emitLibFuncs(){
 	emitGlobal("    %spec_ptr = getelementptr [4 x i8], [4 x i8]* @.str_specifier, i32 0, i32 0");
 	emitGlobal("    call i32 (i8*, ...) @printf(i8* %spec_ptr, i8* %0)");
 	emitGlobal("    ret void");
-	emitGlobal("}");	
+	emitGlobal("}");
+	emitGlobal("@.str_div_zero = constant [23 x i8] c\"Error division by zero\\00\"");
+	emitGlobal("define void @errorIfZero9001(i32) {");
+	emitGlobal("	%cond = icmp eq i32 0, %0");
+	emitGlobal("	br i1 %cond, label %exit, label %return");
+	emitGlobal("exit:");
+	emitGlobal("	%err_str_ptr = getelementptr [23 x i8], [23 x i8]* @.str_div_zero, i32 0, i32 0");
+	emitGlobal("	call void(i8*) @print(i8* %err_str_ptr)");
+	emitGlobal("	call void(i32) @exit(i32 1)");
+	emitGlobal("	br label %return");
+	emitGlobal("return:");
+	emitGlobal("	ret void");
+	emitGlobal("}");
+	
 }
 
 string CodeBuffer::emitCopyReg(const string& src_reg_or_imm, ExpType src_reg_type, const string& new_reg_prefix){
@@ -240,7 +253,6 @@ Expression* CodeBuffer::createIdentifiableFromReg(const string& reg_name, ExpTyp
 Expression* CodeBuffer::emitFunctionCall(const string& func_id, const vector<Expression*>& param_expressions){
 	assert(symtab.callableValidId(func_id));
 	vector<string> param_raw_value_regs;
-	//TODO: check this impl handles the case were the result is VoidExp!
 
 	//this code will convert each parameter to raw data (i32 with the same value) into some new register: 
 	for(Expression* exp: param_expressions){

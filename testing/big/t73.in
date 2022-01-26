@@ -1,2 +1,0 @@
-int foo() {return 3;}
-bool foo() {return 4;}

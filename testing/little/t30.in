@@ -1,6 +1,0 @@
-//tests TypeRules #13 printi function accepts only byte or int arguments
-
-void main() {
-   byte x;
-   printi(x, 1234567);
-}

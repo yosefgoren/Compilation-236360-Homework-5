@@ -1,8 +1,0 @@
-bool foo(){
-return true;
-}
-void main(){
-
-if(foo()) printi(3);
-while(foo()) print("hi");
-}

@@ -1,8 +1,0 @@
-//SemanticCheck #4, only single main, with no args and return void.
-void main() {
-    return;
-}
-
-void main() {
-    return;
-}

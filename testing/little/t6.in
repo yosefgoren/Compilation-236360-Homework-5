@@ -1,5 +1,0 @@
-//tests TypeRules #1, errors on assignment:
-void main() {
-    int a = 1;
-    bool s = 1;
-}

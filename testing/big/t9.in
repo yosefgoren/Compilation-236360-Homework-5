@@ -1,7 +1,0 @@
-byte a(bool c, bool d){
-return 3b;
-}
-
-void main(){
-bool e = a(true, true);
-}

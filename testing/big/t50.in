@@ -1,7 +1,0 @@
-void foo(byte c){
-return;
-}
-
-void main(){
-foo(256b);
-}

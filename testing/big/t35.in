@@ -1,4 +1,0 @@
-int foo(){
-bool a=true;
-return a;
-}
