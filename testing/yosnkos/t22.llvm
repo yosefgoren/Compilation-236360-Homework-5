@@ -40,7 +40,7 @@ store i32 %reg1, i32* %reg2
 br label %statement_14
 statement_14:
 %reg3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  55, i32* %reg3
+store i32 55, i32* %reg3
 br label %parse_label_18
 parse_label_18:
 %param_ptr4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
@@ -55,7 +55,7 @@ statement_27:
 %param_ptr7 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw8 = load i32, i32* %param_ptr7
 %reg9 = add i32 0, %param_raw8
-%reg10 = mul i32  2, %reg9
+%reg10 = mul i32 2, %reg9
 call void(i32) @printi(i32 %reg10)
 br label %parse_label_34
 parse_label_34:

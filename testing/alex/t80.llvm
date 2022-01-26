@@ -40,7 +40,7 @@ define void@test(i32){
 br label %parse_label_3
 parse_label_3:
 %reg1 = add i32 0, %0
-%reg2 = icmp eq i32 %reg1,  0
+%reg2 = icmp eq i32 %reg1, 0
 br i1 %reg2, label %statement_7, label %func_end_12
 statement_7:
 %str_ptr_reg3 = getelementptr [5 x i8], [5 x i8]* @.string_id0, i32 0, i32 0
@@ -54,27 +54,27 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_18
 statement_18:
-call void(i32) @test(i32  0)
+call void(i32) @test(i32 0)
 br label %parse_label_21
 parse_label_21:
-%reg4 = icmp eq i32  1,  1
+%reg4 = icmp eq i32 1, 1
 br i1 %reg4, label %parse_label_24, label %parse_label_31
 parse_label_24:
-%reg5 = icmp eq i32  1,  1
+%reg5 = icmp eq i32 1, 1
 br i1 %reg5, label %statement_27, label %parse_label_31
 statement_27:
 %str_ptr_reg6 = getelementptr [4 x i8], [4 x i8]* @.string_id1, i32 0, i32 0
 call void(i8*) @print(i8* %str_ptr_reg6)
 br label %parse_label_31
 parse_label_31:
-%reg7 = icmp eq i32  1,  1
+%reg7 = icmp eq i32 1, 1
 br i1 %reg7, label %statement_34, label %statement_49
 statement_34:
 %reg8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  0, i32* %reg8
+store i32 0, i32* %reg8
 br label %parse_label_38
 parse_label_38:
-%reg9 = icmp eq i32  1,  1
+%reg9 = icmp eq i32 1, 1
 br i1 %reg9, label %statement_41, label %statement_45
 statement_41:
 %str_ptr_reg10 = getelementptr [4 x i8], [4 x i8]* @.string_id2, i32 0, i32 0
@@ -82,7 +82,7 @@ call void(i8*) @print(i8* %str_ptr_reg10)
 br label %statement_45
 statement_45:
 %reg11 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  0, i32* %reg11
+store i32 0, i32* %reg11
 br label %statement_49
 statement_49:
 br label %true_case_51

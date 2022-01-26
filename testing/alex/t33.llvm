@@ -444,7 +444,7 @@ statement_95:
 call void(i8*) @print(i8* %str_ptr_reg16)
 br label %parse_label_99
 parse_label_99:
-%reg17 = icmp slt i32  4,  5
+%reg17 = icmp slt i32 4, 5
 br i1 %reg17, label %statement_106, label %statement_102
 statement_102:
 %str_ptr_reg18 = getelementptr [4 x i8], [4 x i8]* @.string_id6, i32 0, i32 0
@@ -455,7 +455,7 @@ statement_106:
 call void(i8*) @print(i8* %str_ptr_reg19)
 br label %parse_label_110
 parse_label_110:
-%reg20 = icmp eq i32  4,  4
+%reg20 = icmp eq i32 4, 4
 br i1 %reg20, label %statement_117, label %statement_113
 statement_113:
 %str_ptr_reg21 = getelementptr [4 x i8], [4 x i8]* @.string_id8, i32 0, i32 0
@@ -508,7 +508,7 @@ statement_159:
 call void(i8*) @print(i8* %str_ptr_reg32)
 br label %parse_label_163
 parse_label_163:
-%reg33 = icmp sgt i32  4,  5
+%reg33 = icmp sgt i32 4, 5
 br i1 %reg33, label %statement_170, label %statement_166
 statement_166:
 %str_ptr_reg34 = getelementptr [4 x i8], [4 x i8]* @.string_id16, i32 0, i32 0
@@ -519,7 +519,7 @@ statement_170:
 call void(i8*) @print(i8* %str_ptr_reg35)
 br label %parse_label_174
 parse_label_174:
-%reg36 = icmp ne i32  4,  4
+%reg36 = icmp ne i32 4, 4
 br i1 %reg36, label %statement_181, label %statement_177
 statement_177:
 %str_ptr_reg37 = getelementptr [4 x i8], [4 x i8]* @.string_id18, i32 0, i32 0
@@ -600,7 +600,7 @@ br label %parse_label_255
 false_case_253:
 br label %statement_258
 parse_label_255:
-%reg53 = icmp sgt i32  4,  5
+%reg53 = icmp sgt i32 4, 5
 br i1 %reg53, label %statement_262, label %statement_258
 statement_258:
 %str_ptr_reg54 = getelementptr [4 x i8], [4 x i8]* @.string_id26, i32 0, i32 0
@@ -618,7 +618,7 @@ br label %parse_label_273
 false_case_271:
 br label %statement_276
 parse_label_273:
-%reg57 = icmp ne i32  4,  4
+%reg57 = icmp ne i32 4, 4
 br i1 %reg57, label %statement_280, label %statement_276
 statement_276:
 %str_ptr_reg58 = getelementptr [4 x i8], [4 x i8]* @.string_id28, i32 0, i32 0
@@ -679,7 +679,7 @@ br label %parse_label_332
 parse_label_332:
 br label %parse_label_334
 parse_label_334:
-%reg70 = icmp sgt i32  4,  5
+%reg70 = icmp sgt i32 4, 5
 br i1 %reg70, label %statement_341, label %statement_337
 statement_337:
 %str_ptr_reg71 = getelementptr [4 x i8], [4 x i8]* @.string_id36, i32 0, i32 0
@@ -692,7 +692,7 @@ br label %parse_label_345
 parse_label_345:
 br label %parse_label_347
 parse_label_347:
-%reg73 = icmp ne i32  4,  4
+%reg73 = icmp ne i32 4, 4
 br i1 %reg73, label %statement_354, label %statement_350
 statement_350:
 %str_ptr_reg74 = getelementptr [4 x i8], [4 x i8]* @.string_id38, i32 0, i32 0
@@ -781,7 +781,7 @@ br label %parse_label_436
 false_case_434:
 br label %statement_439
 parse_label_436:
-%reg98 = icmp sgt i32  4,  5
+%reg98 = icmp sgt i32 4, 5
 br i1 %reg98, label %statement_443, label %statement_439
 statement_439:
 %str_ptr_reg99 = getelementptr [4 x i8], [4 x i8]* @.string_id46, i32 0, i32 0
@@ -801,7 +801,7 @@ br label %parse_label_456
 false_case_454:
 br label %statement_459
 parse_label_456:
-%reg104 = icmp ne i32  4,  4
+%reg104 = icmp ne i32 4, 4
 br i1 %reg104, label %statement_463, label %statement_459
 statement_459:
 %str_ptr_reg105 = getelementptr [4 x i8], [4 x i8]* @.string_id48, i32 0, i32 0
@@ -812,7 +812,7 @@ statement_463:
 call void(i8*) @print(i8* %str_ptr_reg106)
 br label %parse_label_467
 parse_label_467:
-%reg107 = icmp slt i32  4,  5
+%reg107 = icmp slt i32 4, 5
 br i1 %reg107, label %parse_label_470, label %statement_477
 parse_label_470:
 %reg108 = call i1() @False()
@@ -830,7 +830,7 @@ statement_481:
 call void(i8*) @print(i8* %str_ptr_reg110)
 br label %parse_label_485
 parse_label_485:
-%reg111 = icmp slt i32  4,  5
+%reg111 = icmp slt i32 4, 5
 br i1 %reg111, label %parse_label_488, label %statement_490
 parse_label_488:
 br label %statement_490
@@ -843,7 +843,7 @@ statement_494:
 call void(i8*) @print(i8* %str_ptr_reg113)
 br label %parse_label_498
 parse_label_498:
-%reg114 = icmp slt i32  4,  5
+%reg114 = icmp slt i32 4, 5
 br i1 %reg114, label %parse_label_501, label %statement_510
 parse_label_501:
 %param_ptr115 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -863,10 +863,10 @@ statement_514:
 call void(i8*) @print(i8* %str_ptr_reg119)
 br label %parse_label_518
 parse_label_518:
-%reg120 = icmp slt i32  4,  5
+%reg120 = icmp slt i32 4, 5
 br i1 %reg120, label %parse_label_521, label %statement_524
 parse_label_521:
-%reg121 = icmp sgt i32  4,  5
+%reg121 = icmp sgt i32 4, 5
 br i1 %reg121, label %statement_528, label %statement_524
 statement_524:
 %str_ptr_reg122 = getelementptr [4 x i8], [4 x i8]* @.string_id56, i32 0, i32 0
@@ -877,10 +877,10 @@ statement_528:
 call void(i8*) @print(i8* %str_ptr_reg123)
 br label %parse_label_532
 parse_label_532:
-%reg124 = icmp slt i32  4,  5
+%reg124 = icmp slt i32 4, 5
 br i1 %reg124, label %parse_label_535, label %statement_538
 parse_label_535:
-%reg125 = icmp ne i32  4,  4
+%reg125 = icmp ne i32 4, 4
 br i1 %reg125, label %statement_542, label %statement_538
 statement_538:
 %str_ptr_reg126 = getelementptr [4 x i8], [4 x i8]* @.string_id58, i32 0, i32 0
@@ -891,7 +891,7 @@ statement_542:
 call void(i8*) @print(i8* %str_ptr_reg127)
 br label %parse_label_546
 parse_label_546:
-%reg128 = icmp eq i32  4,  4
+%reg128 = icmp eq i32 4, 4
 br i1 %reg128, label %parse_label_549, label %statement_556
 parse_label_549:
 %reg129 = call i1() @False()
@@ -909,7 +909,7 @@ statement_560:
 call void(i8*) @print(i8* %str_ptr_reg131)
 br label %parse_label_564
 parse_label_564:
-%reg132 = icmp eq i32  4,  4
+%reg132 = icmp eq i32 4, 4
 br i1 %reg132, label %parse_label_567, label %statement_569
 parse_label_567:
 br label %statement_569
@@ -922,7 +922,7 @@ statement_573:
 call void(i8*) @print(i8* %str_ptr_reg134)
 br label %parse_label_577
 parse_label_577:
-%reg135 = icmp eq i32  4,  4
+%reg135 = icmp eq i32 4, 4
 br i1 %reg135, label %parse_label_580, label %statement_589
 parse_label_580:
 %param_ptr136 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -942,10 +942,10 @@ statement_593:
 call void(i8*) @print(i8* %str_ptr_reg140)
 br label %parse_label_597
 parse_label_597:
-%reg141 = icmp eq i32  4,  4
+%reg141 = icmp eq i32 4, 4
 br i1 %reg141, label %parse_label_600, label %statement_603
 parse_label_600:
-%reg142 = icmp sgt i32  4,  5
+%reg142 = icmp sgt i32 4, 5
 br i1 %reg142, label %statement_607, label %statement_603
 statement_603:
 %str_ptr_reg143 = getelementptr [4 x i8], [4 x i8]* @.string_id66, i32 0, i32 0
@@ -956,10 +956,10 @@ statement_607:
 call void(i8*) @print(i8* %str_ptr_reg144)
 br label %parse_label_611
 parse_label_611:
-%reg145 = icmp eq i32  4,  4
+%reg145 = icmp eq i32 4, 4
 br i1 %reg145, label %parse_label_614, label %statement_617
 parse_label_614:
-%reg146 = icmp ne i32  4,  4
+%reg146 = icmp ne i32 4, 4
 br i1 %reg146, label %statement_621, label %statement_617
 statement_617:
 %str_ptr_reg147 = getelementptr [4 x i8], [4 x i8]* @.string_id68, i32 0, i32 0
@@ -1040,7 +1040,7 @@ br label %parse_label_695
 false_case_693:
 br label %statement_698
 parse_label_695:
-%reg163 = icmp sgt i32  4,  5
+%reg163 = icmp sgt i32 4, 5
 br i1 %reg163, label %statement_702, label %statement_698
 statement_698:
 %str_ptr_reg164 = getelementptr [4 x i8], [4 x i8]* @.string_id76, i32 0, i32 0
@@ -1058,7 +1058,7 @@ br label %parse_label_713
 false_case_711:
 br label %statement_716
 parse_label_713:
-%reg167 = icmp ne i32  4,  4
+%reg167 = icmp ne i32 4, 4
 br i1 %reg167, label %statement_720, label %statement_716
 statement_716:
 %str_ptr_reg168 = getelementptr [4 x i8], [4 x i8]* @.string_id78, i32 0, i32 0
@@ -1119,7 +1119,7 @@ br label %parse_label_772
 parse_label_772:
 br label %parse_label_774
 parse_label_774:
-%reg180 = icmp sgt i32  4,  5
+%reg180 = icmp sgt i32 4, 5
 br i1 %reg180, label %statement_781, label %statement_777
 statement_777:
 %str_ptr_reg181 = getelementptr [4 x i8], [4 x i8]* @.string_id86, i32 0, i32 0
@@ -1132,7 +1132,7 @@ br label %parse_label_785
 parse_label_785:
 br label %parse_label_787
 parse_label_787:
-%reg183 = icmp ne i32  4,  4
+%reg183 = icmp ne i32 4, 4
 br i1 %reg183, label %statement_794, label %statement_790
 statement_790:
 %str_ptr_reg184 = getelementptr [4 x i8], [4 x i8]* @.string_id88, i32 0, i32 0
@@ -1221,7 +1221,7 @@ br label %parse_label_876
 false_case_874:
 br label %statement_879
 parse_label_876:
-%reg208 = icmp sgt i32  4,  5
+%reg208 = icmp sgt i32 4, 5
 br i1 %reg208, label %statement_883, label %statement_879
 statement_879:
 %str_ptr_reg209 = getelementptr [4 x i8], [4 x i8]* @.string_id96, i32 0, i32 0
@@ -1241,7 +1241,7 @@ br label %parse_label_896
 false_case_894:
 br label %statement_899
 parse_label_896:
-%reg214 = icmp ne i32  4,  4
+%reg214 = icmp ne i32 4, 4
 br i1 %reg214, label %statement_903, label %statement_899
 statement_899:
 %str_ptr_reg215 = getelementptr [4 x i8], [4 x i8]* @.string_id98, i32 0, i32 0
@@ -1252,7 +1252,7 @@ statement_903:
 call void(i8*) @print(i8* %str_ptr_reg216)
 br label %parse_label_907
 parse_label_907:
-%reg217 = icmp slt i32  4,  5
+%reg217 = icmp slt i32 4, 5
 br i1 %reg217, label %parse_label_910, label %statement_917
 parse_label_910:
 %reg218 = call i1() @False()
@@ -1270,7 +1270,7 @@ statement_921:
 call void(i8*) @print(i8* %str_ptr_reg220)
 br label %parse_label_925
 parse_label_925:
-%reg221 = icmp slt i32  4,  5
+%reg221 = icmp slt i32 4, 5
 br i1 %reg221, label %parse_label_928, label %statement_930
 parse_label_928:
 br label %statement_930
@@ -1283,7 +1283,7 @@ statement_934:
 call void(i8*) @print(i8* %str_ptr_reg223)
 br label %parse_label_938
 parse_label_938:
-%reg224 = icmp slt i32  4,  5
+%reg224 = icmp slt i32 4, 5
 br i1 %reg224, label %parse_label_941, label %statement_950
 parse_label_941:
 %param_ptr225 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -1303,10 +1303,10 @@ statement_954:
 call void(i8*) @print(i8* %str_ptr_reg229)
 br label %parse_label_958
 parse_label_958:
-%reg230 = icmp slt i32  4,  5
+%reg230 = icmp slt i32 4, 5
 br i1 %reg230, label %parse_label_961, label %statement_964
 parse_label_961:
-%reg231 = icmp sgt i32  4,  5
+%reg231 = icmp sgt i32 4, 5
 br i1 %reg231, label %statement_968, label %statement_964
 statement_964:
 %str_ptr_reg232 = getelementptr [4 x i8], [4 x i8]* @.string_id106, i32 0, i32 0
@@ -1317,10 +1317,10 @@ statement_968:
 call void(i8*) @print(i8* %str_ptr_reg233)
 br label %parse_label_972
 parse_label_972:
-%reg234 = icmp slt i32  4,  5
+%reg234 = icmp slt i32 4, 5
 br i1 %reg234, label %parse_label_975, label %statement_978
 parse_label_975:
-%reg235 = icmp ne i32  4,  4
+%reg235 = icmp ne i32 4, 4
 br i1 %reg235, label %statement_982, label %statement_978
 statement_978:
 %str_ptr_reg236 = getelementptr [4 x i8], [4 x i8]* @.string_id108, i32 0, i32 0
@@ -1331,7 +1331,7 @@ statement_982:
 call void(i8*) @print(i8* %str_ptr_reg237)
 br label %parse_label_986
 parse_label_986:
-%reg238 = icmp eq i32  4,  4
+%reg238 = icmp eq i32 4, 4
 br i1 %reg238, label %parse_label_989, label %statement_996
 parse_label_989:
 %reg239 = call i1() @False()
@@ -1349,7 +1349,7 @@ statement_1000:
 call void(i8*) @print(i8* %str_ptr_reg241)
 br label %parse_label_1004
 parse_label_1004:
-%reg242 = icmp eq i32  4,  4
+%reg242 = icmp eq i32 4, 4
 br i1 %reg242, label %parse_label_1007, label %statement_1009
 parse_label_1007:
 br label %statement_1009
@@ -1362,7 +1362,7 @@ statement_1013:
 call void(i8*) @print(i8* %str_ptr_reg244)
 br label %parse_label_1017
 parse_label_1017:
-%reg245 = icmp eq i32  4,  4
+%reg245 = icmp eq i32 4, 4
 br i1 %reg245, label %parse_label_1020, label %statement_1029
 parse_label_1020:
 %param_ptr246 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -1382,10 +1382,10 @@ statement_1033:
 call void(i8*) @print(i8* %str_ptr_reg250)
 br label %parse_label_1037
 parse_label_1037:
-%reg251 = icmp eq i32  4,  4
+%reg251 = icmp eq i32 4, 4
 br i1 %reg251, label %parse_label_1040, label %statement_1043
 parse_label_1040:
-%reg252 = icmp sgt i32  4,  5
+%reg252 = icmp sgt i32 4, 5
 br i1 %reg252, label %statement_1047, label %statement_1043
 statement_1043:
 %str_ptr_reg253 = getelementptr [4 x i8], [4 x i8]* @.string_id116, i32 0, i32 0
@@ -1396,10 +1396,10 @@ statement_1047:
 call void(i8*) @print(i8* %str_ptr_reg254)
 br label %parse_label_1051
 parse_label_1051:
-%reg255 = icmp eq i32  4,  4
+%reg255 = icmp eq i32 4, 4
 br i1 %reg255, label %parse_label_1054, label %statement_1057
 parse_label_1054:
-%reg256 = icmp ne i32  4,  4
+%reg256 = icmp ne i32 4, 4
 br i1 %reg256, label %statement_1061, label %statement_1057
 statement_1057:
 %str_ptr_reg257 = getelementptr [4 x i8], [4 x i8]* @.string_id118, i32 0, i32 0
@@ -1480,7 +1480,7 @@ br label %parse_label_1135
 false_case_1133:
 br label %statement_1138
 parse_label_1135:
-%reg273 = icmp sgt i32  4,  5
+%reg273 = icmp sgt i32 4, 5
 br i1 %reg273, label %statement_1142, label %statement_1138
 statement_1138:
 %str_ptr_reg274 = getelementptr [4 x i8], [4 x i8]* @.string_id126, i32 0, i32 0
@@ -1498,7 +1498,7 @@ br label %parse_label_1153
 false_case_1151:
 br label %statement_1156
 parse_label_1153:
-%reg277 = icmp ne i32  4,  4
+%reg277 = icmp ne i32 4, 4
 br i1 %reg277, label %statement_1160, label %statement_1156
 statement_1156:
 %str_ptr_reg278 = getelementptr [4 x i8], [4 x i8]* @.string_id128, i32 0, i32 0
@@ -1559,7 +1559,7 @@ br label %parse_label_1212
 parse_label_1212:
 br label %statement_1217
 parse_label_1214:
-%reg290 = icmp sgt i32  4,  5
+%reg290 = icmp sgt i32 4, 5
 br i1 %reg290, label %statement_1221, label %statement_1217
 statement_1217:
 %str_ptr_reg291 = getelementptr [4 x i8], [4 x i8]* @.string_id136, i32 0, i32 0
@@ -1572,7 +1572,7 @@ br label %parse_label_1225
 parse_label_1225:
 br label %statement_1230
 parse_label_1227:
-%reg293 = icmp ne i32  4,  4
+%reg293 = icmp ne i32 4, 4
 br i1 %reg293, label %statement_1234, label %statement_1230
 statement_1230:
 %str_ptr_reg294 = getelementptr [4 x i8], [4 x i8]* @.string_id138, i32 0, i32 0
@@ -1661,7 +1661,7 @@ br label %parse_label_1316
 false_case_1314:
 br label %statement_1319
 parse_label_1316:
-%reg318 = icmp sgt i32  4,  5
+%reg318 = icmp sgt i32 4, 5
 br i1 %reg318, label %statement_1323, label %statement_1319
 statement_1319:
 %str_ptr_reg319 = getelementptr [4 x i8], [4 x i8]* @.string_id146, i32 0, i32 0
@@ -1681,7 +1681,7 @@ br label %parse_label_1336
 false_case_1334:
 br label %statement_1339
 parse_label_1336:
-%reg324 = icmp ne i32  4,  4
+%reg324 = icmp ne i32 4, 4
 br i1 %reg324, label %statement_1343, label %statement_1339
 statement_1339:
 %str_ptr_reg325 = getelementptr [4 x i8], [4 x i8]* @.string_id148, i32 0, i32 0
@@ -1692,7 +1692,7 @@ statement_1343:
 call void(i8*) @print(i8* %str_ptr_reg326)
 br label %parse_label_1347
 parse_label_1347:
-%reg327 = icmp sgt i32  4,  5
+%reg327 = icmp sgt i32 4, 5
 br i1 %reg327, label %parse_label_1350, label %statement_1357
 parse_label_1350:
 %reg328 = call i1() @False()
@@ -1710,7 +1710,7 @@ statement_1361:
 call void(i8*) @print(i8* %str_ptr_reg330)
 br label %parse_label_1365
 parse_label_1365:
-%reg331 = icmp sgt i32  4,  5
+%reg331 = icmp sgt i32 4, 5
 br i1 %reg331, label %parse_label_1368, label %statement_1370
 parse_label_1368:
 br label %statement_1370
@@ -1723,7 +1723,7 @@ statement_1374:
 call void(i8*) @print(i8* %str_ptr_reg333)
 br label %parse_label_1378
 parse_label_1378:
-%reg334 = icmp sgt i32  4,  5
+%reg334 = icmp sgt i32 4, 5
 br i1 %reg334, label %parse_label_1381, label %statement_1390
 parse_label_1381:
 %param_ptr335 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -1743,10 +1743,10 @@ statement_1394:
 call void(i8*) @print(i8* %str_ptr_reg339)
 br label %parse_label_1398
 parse_label_1398:
-%reg340 = icmp sgt i32  4,  5
+%reg340 = icmp sgt i32 4, 5
 br i1 %reg340, label %parse_label_1401, label %statement_1404
 parse_label_1401:
-%reg341 = icmp sgt i32  4,  5
+%reg341 = icmp sgt i32 4, 5
 br i1 %reg341, label %statement_1408, label %statement_1404
 statement_1404:
 %str_ptr_reg342 = getelementptr [4 x i8], [4 x i8]* @.string_id156, i32 0, i32 0
@@ -1757,10 +1757,10 @@ statement_1408:
 call void(i8*) @print(i8* %str_ptr_reg343)
 br label %parse_label_1412
 parse_label_1412:
-%reg344 = icmp sgt i32  4,  5
+%reg344 = icmp sgt i32 4, 5
 br i1 %reg344, label %parse_label_1415, label %statement_1418
 parse_label_1415:
-%reg345 = icmp ne i32  4,  4
+%reg345 = icmp ne i32 4, 4
 br i1 %reg345, label %statement_1422, label %statement_1418
 statement_1418:
 %str_ptr_reg346 = getelementptr [4 x i8], [4 x i8]* @.string_id158, i32 0, i32 0
@@ -1771,7 +1771,7 @@ statement_1422:
 call void(i8*) @print(i8* %str_ptr_reg347)
 br label %parse_label_1426
 parse_label_1426:
-%reg348 = icmp ne i32  4,  4
+%reg348 = icmp ne i32 4, 4
 br i1 %reg348, label %parse_label_1429, label %statement_1436
 parse_label_1429:
 %reg349 = call i1() @False()
@@ -1789,7 +1789,7 @@ statement_1440:
 call void(i8*) @print(i8* %str_ptr_reg351)
 br label %parse_label_1444
 parse_label_1444:
-%reg352 = icmp ne i32  4,  4
+%reg352 = icmp ne i32 4, 4
 br i1 %reg352, label %parse_label_1447, label %statement_1449
 parse_label_1447:
 br label %statement_1449
@@ -1802,7 +1802,7 @@ statement_1453:
 call void(i8*) @print(i8* %str_ptr_reg354)
 br label %parse_label_1457
 parse_label_1457:
-%reg355 = icmp ne i32  4,  4
+%reg355 = icmp ne i32 4, 4
 br i1 %reg355, label %parse_label_1460, label %statement_1469
 parse_label_1460:
 %param_ptr356 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -1822,10 +1822,10 @@ statement_1473:
 call void(i8*) @print(i8* %str_ptr_reg360)
 br label %parse_label_1477
 parse_label_1477:
-%reg361 = icmp ne i32  4,  4
+%reg361 = icmp ne i32 4, 4
 br i1 %reg361, label %parse_label_1480, label %statement_1483
 parse_label_1480:
-%reg362 = icmp sgt i32  4,  5
+%reg362 = icmp sgt i32 4, 5
 br i1 %reg362, label %statement_1487, label %statement_1483
 statement_1483:
 %str_ptr_reg363 = getelementptr [4 x i8], [4 x i8]* @.string_id166, i32 0, i32 0
@@ -1836,10 +1836,10 @@ statement_1487:
 call void(i8*) @print(i8* %str_ptr_reg364)
 br label %parse_label_1491
 parse_label_1491:
-%reg365 = icmp ne i32  4,  4
+%reg365 = icmp ne i32 4, 4
 br i1 %reg365, label %parse_label_1494, label %statement_1497
 parse_label_1494:
-%reg366 = icmp ne i32  4,  4
+%reg366 = icmp ne i32 4, 4
 br i1 %reg366, label %statement_1501, label %statement_1497
 statement_1497:
 %str_ptr_reg367 = getelementptr [4 x i8], [4 x i8]* @.string_id168, i32 0, i32 0
@@ -1920,7 +1920,7 @@ br label %statement_1582
 false_case_1573:
 br label %parse_label_1575
 parse_label_1575:
-%reg383 = icmp sgt i32  4,  5
+%reg383 = icmp sgt i32 4, 5
 br i1 %reg383, label %statement_1582, label %statement_1578
 statement_1578:
 %str_ptr_reg384 = getelementptr [4 x i8], [4 x i8]* @.string_id176, i32 0, i32 0
@@ -1938,7 +1938,7 @@ br label %statement_1600
 false_case_1591:
 br label %parse_label_1593
 parse_label_1593:
-%reg387 = icmp ne i32  4,  4
+%reg387 = icmp ne i32 4, 4
 br i1 %reg387, label %statement_1600, label %statement_1596
 statement_1596:
 %str_ptr_reg388 = getelementptr [4 x i8], [4 x i8]* @.string_id178, i32 0, i32 0
@@ -1999,7 +1999,7 @@ br label %parse_label_1652
 parse_label_1652:
 br label %statement_1661
 parse_label_1654:
-%reg400 = icmp sgt i32  4,  5
+%reg400 = icmp sgt i32 4, 5
 br i1 %reg400, label %statement_1661, label %statement_1657
 statement_1657:
 %str_ptr_reg401 = getelementptr [4 x i8], [4 x i8]* @.string_id186, i32 0, i32 0
@@ -2012,7 +2012,7 @@ br label %parse_label_1665
 parse_label_1665:
 br label %statement_1674
 parse_label_1667:
-%reg403 = icmp ne i32  4,  4
+%reg403 = icmp ne i32 4, 4
 br i1 %reg403, label %statement_1674, label %statement_1670
 statement_1670:
 %str_ptr_reg404 = getelementptr [4 x i8], [4 x i8]* @.string_id188, i32 0, i32 0
@@ -2101,7 +2101,7 @@ br label %statement_1763
 false_case_1754:
 br label %parse_label_1756
 parse_label_1756:
-%reg428 = icmp sgt i32  4,  5
+%reg428 = icmp sgt i32 4, 5
 br i1 %reg428, label %statement_1763, label %statement_1759
 statement_1759:
 %str_ptr_reg429 = getelementptr [4 x i8], [4 x i8]* @.string_id196, i32 0, i32 0
@@ -2121,7 +2121,7 @@ br label %statement_1783
 false_case_1774:
 br label %parse_label_1776
 parse_label_1776:
-%reg434 = icmp ne i32  4,  4
+%reg434 = icmp ne i32 4, 4
 br i1 %reg434, label %statement_1783, label %statement_1779
 statement_1779:
 %str_ptr_reg435 = getelementptr [4 x i8], [4 x i8]* @.string_id198, i32 0, i32 0
@@ -2132,7 +2132,7 @@ statement_1783:
 call void(i8*) @print(i8* %str_ptr_reg436)
 br label %parse_label_1787
 parse_label_1787:
-%reg437 = icmp slt i32  4,  5
+%reg437 = icmp slt i32 4, 5
 br i1 %reg437, label %statement_1801, label %parse_label_1790
 parse_label_1790:
 %reg438 = call i1() @False()
@@ -2150,7 +2150,7 @@ statement_1801:
 call void(i8*) @print(i8* %str_ptr_reg440)
 br label %parse_label_1805
 parse_label_1805:
-%reg441 = icmp slt i32  4,  5
+%reg441 = icmp slt i32 4, 5
 br i1 %reg441, label %statement_1814, label %parse_label_1808
 parse_label_1808:
 br label %statement_1810
@@ -2163,7 +2163,7 @@ statement_1814:
 call void(i8*) @print(i8* %str_ptr_reg443)
 br label %parse_label_1818
 parse_label_1818:
-%reg444 = icmp slt i32  4,  5
+%reg444 = icmp slt i32 4, 5
 br i1 %reg444, label %statement_1834, label %parse_label_1821
 parse_label_1821:
 %param_ptr445 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -2183,10 +2183,10 @@ statement_1834:
 call void(i8*) @print(i8* %str_ptr_reg449)
 br label %parse_label_1838
 parse_label_1838:
-%reg450 = icmp slt i32  4,  5
+%reg450 = icmp slt i32 4, 5
 br i1 %reg450, label %statement_1848, label %parse_label_1841
 parse_label_1841:
-%reg451 = icmp sgt i32  4,  5
+%reg451 = icmp sgt i32 4, 5
 br i1 %reg451, label %statement_1848, label %statement_1844
 statement_1844:
 %str_ptr_reg452 = getelementptr [4 x i8], [4 x i8]* @.string_id206, i32 0, i32 0
@@ -2197,10 +2197,10 @@ statement_1848:
 call void(i8*) @print(i8* %str_ptr_reg453)
 br label %parse_label_1852
 parse_label_1852:
-%reg454 = icmp slt i32  4,  5
+%reg454 = icmp slt i32 4, 5
 br i1 %reg454, label %statement_1862, label %parse_label_1855
 parse_label_1855:
-%reg455 = icmp ne i32  4,  4
+%reg455 = icmp ne i32 4, 4
 br i1 %reg455, label %statement_1862, label %statement_1858
 statement_1858:
 %str_ptr_reg456 = getelementptr [4 x i8], [4 x i8]* @.string_id208, i32 0, i32 0
@@ -2211,7 +2211,7 @@ statement_1862:
 call void(i8*) @print(i8* %str_ptr_reg457)
 br label %parse_label_1866
 parse_label_1866:
-%reg458 = icmp eq i32  4,  4
+%reg458 = icmp eq i32 4, 4
 br i1 %reg458, label %statement_1880, label %parse_label_1869
 parse_label_1869:
 %reg459 = call i1() @False()
@@ -2229,7 +2229,7 @@ statement_1880:
 call void(i8*) @print(i8* %str_ptr_reg461)
 br label %parse_label_1884
 parse_label_1884:
-%reg462 = icmp eq i32  4,  4
+%reg462 = icmp eq i32 4, 4
 br i1 %reg462, label %statement_1893, label %parse_label_1887
 parse_label_1887:
 br label %statement_1889
@@ -2242,7 +2242,7 @@ statement_1893:
 call void(i8*) @print(i8* %str_ptr_reg464)
 br label %parse_label_1897
 parse_label_1897:
-%reg465 = icmp eq i32  4,  4
+%reg465 = icmp eq i32 4, 4
 br i1 %reg465, label %statement_1913, label %parse_label_1900
 parse_label_1900:
 %param_ptr466 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -2262,10 +2262,10 @@ statement_1913:
 call void(i8*) @print(i8* %str_ptr_reg470)
 br label %parse_label_1917
 parse_label_1917:
-%reg471 = icmp eq i32  4,  4
+%reg471 = icmp eq i32 4, 4
 br i1 %reg471, label %statement_1927, label %parse_label_1920
 parse_label_1920:
-%reg472 = icmp sgt i32  4,  5
+%reg472 = icmp sgt i32 4, 5
 br i1 %reg472, label %statement_1927, label %statement_1923
 statement_1923:
 %str_ptr_reg473 = getelementptr [4 x i8], [4 x i8]* @.string_id216, i32 0, i32 0
@@ -2276,10 +2276,10 @@ statement_1927:
 call void(i8*) @print(i8* %str_ptr_reg474)
 br label %parse_label_1931
 parse_label_1931:
-%reg475 = icmp eq i32  4,  4
+%reg475 = icmp eq i32 4, 4
 br i1 %reg475, label %statement_1941, label %parse_label_1934
 parse_label_1934:
-%reg476 = icmp ne i32  4,  4
+%reg476 = icmp ne i32 4, 4
 br i1 %reg476, label %statement_1941, label %statement_1937
 statement_1937:
 %str_ptr_reg477 = getelementptr [4 x i8], [4 x i8]* @.string_id218, i32 0, i32 0
@@ -2360,7 +2360,7 @@ br label %statement_2022
 false_case_2013:
 br label %parse_label_2015
 parse_label_2015:
-%reg493 = icmp sgt i32  4,  5
+%reg493 = icmp sgt i32 4, 5
 br i1 %reg493, label %statement_2022, label %statement_2018
 statement_2018:
 %str_ptr_reg494 = getelementptr [4 x i8], [4 x i8]* @.string_id226, i32 0, i32 0
@@ -2378,7 +2378,7 @@ br label %statement_2040
 false_case_2031:
 br label %parse_label_2033
 parse_label_2033:
-%reg497 = icmp ne i32  4,  4
+%reg497 = icmp ne i32 4, 4
 br i1 %reg497, label %statement_2040, label %statement_2036
 statement_2036:
 %str_ptr_reg498 = getelementptr [4 x i8], [4 x i8]* @.string_id228, i32 0, i32 0
@@ -2439,7 +2439,7 @@ br label %parse_label_2092
 parse_label_2092:
 br label %parse_label_2094
 parse_label_2094:
-%reg510 = icmp sgt i32  4,  5
+%reg510 = icmp sgt i32 4, 5
 br i1 %reg510, label %statement_2101, label %statement_2097
 statement_2097:
 %str_ptr_reg511 = getelementptr [4 x i8], [4 x i8]* @.string_id236, i32 0, i32 0
@@ -2452,7 +2452,7 @@ br label %parse_label_2105
 parse_label_2105:
 br label %parse_label_2107
 parse_label_2107:
-%reg513 = icmp ne i32  4,  4
+%reg513 = icmp ne i32 4, 4
 br i1 %reg513, label %statement_2114, label %statement_2110
 statement_2110:
 %str_ptr_reg514 = getelementptr [4 x i8], [4 x i8]* @.string_id238, i32 0, i32 0
@@ -2541,7 +2541,7 @@ br label %statement_2203
 false_case_2194:
 br label %parse_label_2196
 parse_label_2196:
-%reg538 = icmp sgt i32  4,  5
+%reg538 = icmp sgt i32 4, 5
 br i1 %reg538, label %statement_2203, label %statement_2199
 statement_2199:
 %str_ptr_reg539 = getelementptr [4 x i8], [4 x i8]* @.string_id246, i32 0, i32 0
@@ -2561,7 +2561,7 @@ br label %statement_2223
 false_case_2214:
 br label %parse_label_2216
 parse_label_2216:
-%reg544 = icmp ne i32  4,  4
+%reg544 = icmp ne i32 4, 4
 br i1 %reg544, label %statement_2223, label %statement_2219
 statement_2219:
 %str_ptr_reg545 = getelementptr [4 x i8], [4 x i8]* @.string_id248, i32 0, i32 0
@@ -2572,7 +2572,7 @@ statement_2223:
 call void(i8*) @print(i8* %str_ptr_reg546)
 br label %parse_label_2227
 parse_label_2227:
-%reg547 = icmp sgt i32  4,  5
+%reg547 = icmp sgt i32 4, 5
 br i1 %reg547, label %statement_2241, label %parse_label_2230
 parse_label_2230:
 %reg548 = call i1() @False()
@@ -2590,7 +2590,7 @@ statement_2241:
 call void(i8*) @print(i8* %str_ptr_reg550)
 br label %parse_label_2245
 parse_label_2245:
-%reg551 = icmp sgt i32  4,  5
+%reg551 = icmp sgt i32 4, 5
 br i1 %reg551, label %statement_2254, label %parse_label_2248
 parse_label_2248:
 br label %statement_2250
@@ -2603,7 +2603,7 @@ statement_2254:
 call void(i8*) @print(i8* %str_ptr_reg553)
 br label %parse_label_2258
 parse_label_2258:
-%reg554 = icmp sgt i32  4,  5
+%reg554 = icmp sgt i32 4, 5
 br i1 %reg554, label %statement_2274, label %parse_label_2261
 parse_label_2261:
 %param_ptr555 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -2623,10 +2623,10 @@ statement_2274:
 call void(i8*) @print(i8* %str_ptr_reg559)
 br label %parse_label_2278
 parse_label_2278:
-%reg560 = icmp sgt i32  4,  5
+%reg560 = icmp sgt i32 4, 5
 br i1 %reg560, label %statement_2288, label %parse_label_2281
 parse_label_2281:
-%reg561 = icmp sgt i32  4,  5
+%reg561 = icmp sgt i32 4, 5
 br i1 %reg561, label %statement_2288, label %statement_2284
 statement_2284:
 %str_ptr_reg562 = getelementptr [4 x i8], [4 x i8]* @.string_id256, i32 0, i32 0
@@ -2637,10 +2637,10 @@ statement_2288:
 call void(i8*) @print(i8* %str_ptr_reg563)
 br label %parse_label_2292
 parse_label_2292:
-%reg564 = icmp sgt i32  4,  5
+%reg564 = icmp sgt i32 4, 5
 br i1 %reg564, label %statement_2302, label %parse_label_2295
 parse_label_2295:
-%reg565 = icmp ne i32  4,  4
+%reg565 = icmp ne i32 4, 4
 br i1 %reg565, label %statement_2302, label %statement_2298
 statement_2298:
 %str_ptr_reg566 = getelementptr [4 x i8], [4 x i8]* @.string_id258, i32 0, i32 0
@@ -2651,7 +2651,7 @@ statement_2302:
 call void(i8*) @print(i8* %str_ptr_reg567)
 br label %parse_label_2306
 parse_label_2306:
-%reg568 = icmp ne i32  4,  4
+%reg568 = icmp ne i32 4, 4
 br i1 %reg568, label %statement_2320, label %parse_label_2309
 parse_label_2309:
 %reg569 = call i1() @False()
@@ -2669,7 +2669,7 @@ statement_2320:
 call void(i8*) @print(i8* %str_ptr_reg571)
 br label %parse_label_2324
 parse_label_2324:
-%reg572 = icmp ne i32  4,  4
+%reg572 = icmp ne i32 4, 4
 br i1 %reg572, label %statement_2333, label %parse_label_2327
 parse_label_2327:
 br label %statement_2329
@@ -2682,7 +2682,7 @@ statement_2333:
 call void(i8*) @print(i8* %str_ptr_reg574)
 br label %parse_label_2337
 parse_label_2337:
-%reg575 = icmp ne i32  4,  4
+%reg575 = icmp ne i32 4, 4
 br i1 %reg575, label %statement_2353, label %parse_label_2340
 parse_label_2340:
 %param_ptr576 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -2702,10 +2702,10 @@ statement_2353:
 call void(i8*) @print(i8* %str_ptr_reg580)
 br label %parse_label_2357
 parse_label_2357:
-%reg581 = icmp ne i32  4,  4
+%reg581 = icmp ne i32 4, 4
 br i1 %reg581, label %statement_2367, label %parse_label_2360
 parse_label_2360:
-%reg582 = icmp sgt i32  4,  5
+%reg582 = icmp sgt i32 4, 5
 br i1 %reg582, label %statement_2367, label %statement_2363
 statement_2363:
 %str_ptr_reg583 = getelementptr [4 x i8], [4 x i8]* @.string_id266, i32 0, i32 0
@@ -2716,10 +2716,10 @@ statement_2367:
 call void(i8*) @print(i8* %str_ptr_reg584)
 br label %parse_label_2371
 parse_label_2371:
-%reg585 = icmp ne i32  4,  4
+%reg585 = icmp ne i32 4, 4
 br i1 %reg585, label %statement_2381, label %parse_label_2374
 parse_label_2374:
-%reg586 = icmp ne i32  4,  4
+%reg586 = icmp ne i32 4, 4
 br i1 %reg586, label %statement_2381, label %statement_2377
 statement_2377:
 %str_ptr_reg587 = getelementptr [4 x i8], [4 x i8]* @.string_id268, i32 0, i32 0
@@ -2800,7 +2800,7 @@ br label %statement_2462
 false_case_2453:
 br label %parse_label_2455
 parse_label_2455:
-%reg603 = icmp sgt i32  4,  5
+%reg603 = icmp sgt i32 4, 5
 br i1 %reg603, label %statement_2462, label %statement_2458
 statement_2458:
 %str_ptr_reg604 = getelementptr [4 x i8], [4 x i8]* @.string_id276, i32 0, i32 0
@@ -2818,7 +2818,7 @@ br label %statement_2480
 false_case_2471:
 br label %parse_label_2473
 parse_label_2473:
-%reg607 = icmp ne i32  4,  4
+%reg607 = icmp ne i32 4, 4
 br i1 %reg607, label %statement_2480, label %statement_2476
 statement_2476:
 %str_ptr_reg608 = getelementptr [4 x i8], [4 x i8]* @.string_id278, i32 0, i32 0
@@ -2879,7 +2879,7 @@ br label %parse_label_2532
 parse_label_2532:
 br label %parse_label_2534
 parse_label_2534:
-%reg620 = icmp sgt i32  4,  5
+%reg620 = icmp sgt i32 4, 5
 br i1 %reg620, label %statement_2541, label %statement_2537
 statement_2537:
 %str_ptr_reg621 = getelementptr [4 x i8], [4 x i8]* @.string_id286, i32 0, i32 0
@@ -2892,7 +2892,7 @@ br label %parse_label_2545
 parse_label_2545:
 br label %parse_label_2547
 parse_label_2547:
-%reg623 = icmp ne i32  4,  4
+%reg623 = icmp ne i32 4, 4
 br i1 %reg623, label %statement_2554, label %statement_2550
 statement_2550:
 %str_ptr_reg624 = getelementptr [4 x i8], [4 x i8]* @.string_id288, i32 0, i32 0
@@ -2981,7 +2981,7 @@ br label %statement_2643
 false_case_2634:
 br label %parse_label_2636
 parse_label_2636:
-%reg648 = icmp sgt i32  4,  5
+%reg648 = icmp sgt i32 4, 5
 br i1 %reg648, label %statement_2643, label %statement_2639
 statement_2639:
 %str_ptr_reg649 = getelementptr [4 x i8], [4 x i8]* @.string_id296, i32 0, i32 0
@@ -3001,7 +3001,7 @@ br label %statement_2663
 false_case_2654:
 br label %parse_label_2656
 parse_label_2656:
-%reg654 = icmp ne i32  4,  4
+%reg654 = icmp ne i32 4, 4
 br i1 %reg654, label %statement_2663, label %statement_2659
 statement_2659:
 %str_ptr_reg655 = getelementptr [4 x i8], [4 x i8]* @.string_id298, i32 0, i32 0
@@ -3012,7 +3012,7 @@ statement_2663:
 call void(i8*) @print(i8* %str_ptr_reg656)
 br label %parse_label_2667
 parse_label_2667:
-%reg657 = icmp sgt i32  4,  5
+%reg657 = icmp sgt i32 4, 5
 br i1 %reg657, label %statement_2681, label %parse_label_2670
 parse_label_2670:
 %reg658 = call i1() @False()
@@ -3030,7 +3030,7 @@ statement_2681:
 call void(i8*) @print(i8* %str_ptr_reg660)
 br label %parse_label_2685
 parse_label_2685:
-%reg661 = icmp sgt i32  4,  5
+%reg661 = icmp sgt i32 4, 5
 br i1 %reg661, label %statement_2694, label %parse_label_2688
 parse_label_2688:
 br label %statement_2690
@@ -3043,7 +3043,7 @@ statement_2694:
 call void(i8*) @print(i8* %str_ptr_reg663)
 br label %parse_label_2698
 parse_label_2698:
-%reg664 = icmp sgt i32  4,  5
+%reg664 = icmp sgt i32 4, 5
 br i1 %reg664, label %statement_2714, label %parse_label_2701
 parse_label_2701:
 %param_ptr665 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -3063,10 +3063,10 @@ statement_2714:
 call void(i8*) @print(i8* %str_ptr_reg669)
 br label %parse_label_2718
 parse_label_2718:
-%reg670 = icmp sgt i32  4,  5
+%reg670 = icmp sgt i32 4, 5
 br i1 %reg670, label %statement_2728, label %parse_label_2721
 parse_label_2721:
-%reg671 = icmp sgt i32  4,  5
+%reg671 = icmp sgt i32 4, 5
 br i1 %reg671, label %statement_2728, label %statement_2724
 statement_2724:
 %str_ptr_reg672 = getelementptr [4 x i8], [4 x i8]* @.string_id306, i32 0, i32 0
@@ -3077,10 +3077,10 @@ statement_2728:
 call void(i8*) @print(i8* %str_ptr_reg673)
 br label %parse_label_2732
 parse_label_2732:
-%reg674 = icmp sgt i32  4,  5
+%reg674 = icmp sgt i32 4, 5
 br i1 %reg674, label %statement_2742, label %parse_label_2735
 parse_label_2735:
-%reg675 = icmp ne i32  4,  4
+%reg675 = icmp ne i32 4, 4
 br i1 %reg675, label %statement_2742, label %statement_2738
 statement_2738:
 %str_ptr_reg676 = getelementptr [4 x i8], [4 x i8]* @.string_id308, i32 0, i32 0
@@ -3091,7 +3091,7 @@ statement_2742:
 call void(i8*) @print(i8* %str_ptr_reg677)
 br label %parse_label_2746
 parse_label_2746:
-%reg678 = icmp ne i32  4,  4
+%reg678 = icmp ne i32 4, 4
 br i1 %reg678, label %statement_2760, label %parse_label_2749
 parse_label_2749:
 %reg679 = call i1() @False()
@@ -3109,7 +3109,7 @@ statement_2760:
 call void(i8*) @print(i8* %str_ptr_reg681)
 br label %parse_label_2764
 parse_label_2764:
-%reg682 = icmp ne i32  4,  4
+%reg682 = icmp ne i32 4, 4
 br i1 %reg682, label %statement_2773, label %parse_label_2767
 parse_label_2767:
 br label %statement_2769
@@ -3122,7 +3122,7 @@ statement_2773:
 call void(i8*) @print(i8* %str_ptr_reg684)
 br label %parse_label_2777
 parse_label_2777:
-%reg685 = icmp ne i32  4,  4
+%reg685 = icmp ne i32 4, 4
 br i1 %reg685, label %statement_2793, label %parse_label_2780
 parse_label_2780:
 %param_ptr686 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -3142,10 +3142,10 @@ statement_2793:
 call void(i8*) @print(i8* %str_ptr_reg690)
 br label %parse_label_2797
 parse_label_2797:
-%reg691 = icmp ne i32  4,  4
+%reg691 = icmp ne i32 4, 4
 br i1 %reg691, label %statement_2807, label %parse_label_2800
 parse_label_2800:
-%reg692 = icmp sgt i32  4,  5
+%reg692 = icmp sgt i32 4, 5
 br i1 %reg692, label %statement_2807, label %statement_2803
 statement_2803:
 %str_ptr_reg693 = getelementptr [4 x i8], [4 x i8]* @.string_id316, i32 0, i32 0
@@ -3156,10 +3156,10 @@ statement_2807:
 call void(i8*) @print(i8* %str_ptr_reg694)
 br label %parse_label_2811
 parse_label_2811:
-%reg695 = icmp ne i32  4,  4
+%reg695 = icmp ne i32 4, 4
 br i1 %reg695, label %statement_2821, label %parse_label_2814
 parse_label_2814:
-%reg696 = icmp ne i32  4,  4
+%reg696 = icmp ne i32 4, 4
 br i1 %reg696, label %statement_2821, label %statement_2817
 statement_2817:
 %str_ptr_reg697 = getelementptr [4 x i8], [4 x i8]* @.string_id318, i32 0, i32 0

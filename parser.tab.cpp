@@ -1672,7 +1672,7 @@ yyreduce:
 
   case 41: /* NumericExp: NUM  */
 #line 362 "parser.ypp"
-                                              {(yyval.expression) = new NumericExp(INT_EXP, " "+std::to_string((yyvsp[0].number_literal)), false);}
+                                              {(yyval.expression) = new NumericExp(INT_EXP, std::to_string((yyvsp[0].number_literal)), false);}
 #line 1677 "parser.tab.cpp"
     break;
 
@@ -1680,7 +1680,7 @@ yyreduce:
 #line 363 "parser.ypp"
                                                 {
 						checkByteTooLarge((yyvsp[-1].number_literal));
-						(yyval.expression) = new NumericExp(BYTE_EXP, " "+std::to_string((yyvsp[-1].number_literal)), false);
+						(yyval.expression) = new NumericExp(BYTE_EXP, std::to_string((yyvsp[-1].number_literal)), false);
 					}
 #line 1686 "parser.tab.cpp"
     break;
@@ -2026,7 +2026,7 @@ yyreduce:
 						case BYTE_EXP:{
 							NumericExp* numeric_exp = dynamic_cast<NumericExp*>((yyvsp[-2].expression));
 							assert(numeric_exp);
-							cb.emit("ret "+cb.IrType(numeric_exp->type)+numeric_exp->reg);}
+							cb.emit("ret "+cb.IrType(numeric_exp->type)+" "+numeric_exp->reg);}
 							break;
 						case BOOL_EXP:{
 							BoolExp* bool_exp = dynamic_cast<BoolExp*>((yyvsp[-2].expression));

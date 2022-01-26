@@ -29,30 +29,29 @@ define void@main(){
 br label %statement_3
 statement_3:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  2147483647, i32* %reg1
+store i32 2147483647, i32* %reg1
 br label %statement_7
 statement_7:
 %param_ptr2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw3 = load i32, i32* %param_ptr2
 %reg4 = add i32 0, %param_raw3
-%reg5 = add i32 %reg4,  2
+%reg5 = add i32 %reg4, 2
 call void(i32) @printi(i32 %reg5)
 br label %statement_14
 statement_14:
-%raw_reg6 = zext i8  255 to i32
-%reg7 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32 %raw_reg6, i32* %reg7
-br label %statement_19
-statement_19:
-%param_ptr8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-%param_raw9 = load i32, i32* %param_ptr8
-%truncated_byte10 = trunc i32 %param_raw9 to i8
-%reg11 = add i8 0, %truncated_byte10
-%b2int_conv_reg12 = zext i8 %reg11 to i32
-%reg13 = add i32 %b2int_conv_reg12,  2
-call void(i32) @printi(i32 %reg13)
-br label %func_end_29
-br label %func_end_29
-func_end_29:
+%reg6 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 255, i32* %reg6
+br label %statement_18
+statement_18:
+%param_ptr7 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+%param_raw8 = load i32, i32* %param_ptr7
+%truncated_byte9 = trunc i32 %param_raw8 to i8
+%reg10 = add i8 0, %truncated_byte9
+%b2int_conv_reg11 = zext i8 %reg10 to i32
+%reg12 = add i32 %b2int_conv_reg11, 2
+call void(i32) @printi(i32 %reg12)
+br label %func_end_28
+br label %func_end_28
+func_end_28:
 ret void
 }

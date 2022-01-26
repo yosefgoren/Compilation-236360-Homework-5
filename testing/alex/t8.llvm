@@ -96,13 +96,13 @@ call void(i8*) @print(i8* %str_ptr_reg7)
 br label %statement_61
 statement_61:
 %reg8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  2, i32* %reg8
+store i32 2, i32* %reg8
 br label %parse_label_65
 parse_label_65:
 %param_ptr9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw10 = load i32, i32* %param_ptr9
 %reg11 = add i32 0, %param_raw10
-%reg12 = icmp eq i32 %reg11,  2
+%reg12 = icmp eq i32 %reg11, 2
 br i1 %reg12, label %statement_71, label %statement_74
 statement_71:
 call void() @funcVoid()
@@ -115,7 +115,7 @@ parse_label_78:
 %param_ptr14 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw15 = load i32, i32* %param_ptr14
 %reg16 = add i32 0, %param_raw15
-%reg17 = icmp eq i32 %reg16,  2
+%reg17 = icmp eq i32 %reg16, 2
 br i1 %reg17, label %statement_84, label %statement_87
 statement_84:
 call void() @funcVoid()
@@ -125,35 +125,34 @@ statement_87:
 call void(i8*) @print(i8* %str_ptr_reg18)
 br label %statement_91
 statement_91:
-%raw_reg19 = zext i8  2 to i32
-%reg20 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
-store i32 %raw_reg19, i32* %reg20
-br label %parse_label_96
-parse_label_96:
-%param_ptr21 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
-%param_raw22 = load i32, i32* %param_ptr21
-%truncated_byte23 = trunc i32 %param_raw22 to i8
-%reg24 = add i8 0, %truncated_byte23
-%reg25 = icmp eq i8 %reg24,  2
-br i1 %reg25, label %statement_103, label %statement_106
-statement_103:
+%reg19 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 2, i32* %reg19
+br label %parse_label_95
+parse_label_95:
+%param_ptr20 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw21 = load i32, i32* %param_ptr20
+%truncated_byte22 = trunc i32 %param_raw21 to i8
+%reg23 = add i8 0, %truncated_byte22
+%reg24 = icmp eq i8 %reg23, 2
+br i1 %reg24, label %statement_102, label %statement_105
+statement_102:
 call void() @funcVoid()
-br label %statement_106
-statement_106:
-%str_ptr_reg26 = getelementptr [11 x i8], [11 x i8]* @.string_id8, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg26)
-br label %parse_label_110
-parse_label_110:
-%param_ptr27 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
-%param_raw28 = load i32, i32* %param_ptr27
-%truncated_byte29 = trunc i32 %param_raw28 to i8
-%reg30 = add i8 0, %truncated_byte29
-%reg31 = icmp eq i8 %reg30,  2
-br i1 %reg31, label %statement_117, label %func_end_121
-statement_117:
+br label %statement_105
+statement_105:
+%str_ptr_reg25 = getelementptr [11 x i8], [11 x i8]* @.string_id8, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg25)
+br label %parse_label_109
+parse_label_109:
+%param_ptr26 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+%param_raw27 = load i32, i32* %param_ptr26
+%truncated_byte28 = trunc i32 %param_raw27 to i8
+%reg29 = add i8 0, %truncated_byte28
+%reg30 = icmp eq i8 %reg29, 2
+br i1 %reg30, label %statement_116, label %func_end_120
+statement_116:
 call void() @funcVoid()
-br label %func_end_121
-br label %func_end_121
-func_end_121:
+br label %func_end_120
+br label %func_end_120
+func_end_120:
 ret void
 }

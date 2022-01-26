@@ -36,7 +36,7 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-%reg1 = icmp eq i32  3,  1
+%reg1 = icmp eq i32 3, 1
 br i1 %reg1, label %true_case_6, label %false_case_8
 true_case_6:
 br label %set_bool_reg_10
@@ -65,7 +65,7 @@ statement_28:
 call void(i8*) @print(i8* %str_ptr_reg8)
 br label %statement_32
 statement_32:
-%reg9 = icmp eq i32  1,  1
+%reg9 = icmp eq i32 1, 1
 br i1 %reg9, label %true_case_35, label %false_case_37
 true_case_35:
 br label %set_bool_reg_39
@@ -98,7 +98,7 @@ statement_61:
 store i32 0, i32* %reg17
 br label %statement_65
 statement_65:
-%reg18 = icmp eq i32  3,  1
+%reg18 = icmp eq i32 3, 1
 br i1 %reg18, label %true_case_68, label %false_case_70
 true_case_68:
 br label %set_bool_reg_72
@@ -131,7 +131,7 @@ statement_94:
 store i32 0, i32* %reg26
 br label %statement_98
 statement_98:
-%reg27 = icmp eq i32  1,  1
+%reg27 = icmp eq i32 1, 1
 br i1 %reg27, label %true_case_101, label %false_case_103
 true_case_101:
 br label %set_bool_reg_105

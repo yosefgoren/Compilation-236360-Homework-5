@@ -28,7 +28,7 @@ define i1@trutru(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-call void(i32) @printi(i32  9001)
+call void(i32) @printi(i32 9001)
 br label %statement_6
 statement_6:
 br label %true_case_8
@@ -56,7 +56,7 @@ br label %statement_31
 false_case_29:
 br label %func_end_35
 statement_31:
-call void(i32) @printi(i32  9002)
+call void(i32) @printi(i32 9002)
 br label %func_end_35
 br label %func_end_35
 func_end_35:

@@ -28,37 +28,21 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-%raw_reg1 = zext i8  3 to i32
-%reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32 %raw_reg1, i32* %reg2
-br label %statement_8
-statement_8:
-%param_ptr3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw4 = load i32, i32* %param_ptr3
-%truncated_byte5 = trunc i32 %param_raw4 to i8
-%reg6 = add i8 0, %truncated_byte5
-%reg7 = add i8 %reg6,  5
-%raw_reg8 = zext i8 %reg7 to i32
-call void(i32) @printi(i32 %raw_reg8)
-br label %statement_17
-statement_17:
-%reg9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  2, i32* %reg9
-br label %statement_21
-statement_21:
-%param_ptr10 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-%param_raw11 = load i32, i32* %param_ptr10
-%reg12 = add i32 0, %param_raw11
-%int2byte_conv_reg13 = trunc i32 %reg12 to i8
-%param_ptr14 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw15 = load i32, i32* %param_ptr14
-%truncated_byte16 = trunc i32 %param_raw15 to i8
-%reg17 = add i8 0, %truncated_byte16
-%reg18 = add i8 %int2byte_conv_reg13, %reg17
-%raw_reg19 = zext i8 %reg18 to i32
-call void(i32) @printi(i32 %raw_reg19)
-br label %func_end_35
-br label %func_end_35
-func_end_35:
+br label %statement_5
+statement_5:
+%reg1 = add i8 3, 5
+%raw_reg2 = zext i8 %reg1 to i32
+call void(i32) @printi(i32 %raw_reg2)
+br label %statement_10
+statement_10:
+br label %statement_12
+statement_12:
+%int2byte_conv_reg3 = trunc i32 2 to i8
+%reg4 = add i8 %int2byte_conv_reg3, 3
+%raw_reg5 = zext i8 %reg4 to i32
+call void(i32) @printi(i32 %raw_reg5)
+br label %func_end_19
+br label %func_end_19
+func_end_19:
 ret void
 }

@@ -29,12 +29,12 @@ define void@main(){
 br label %statement_3
 statement_3:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  1, i32* %reg1
+store i32 1, i32* %reg1
 br label %statement_7
 statement_7:
-call void(i32) @errorIfZero9001(i32  100)
-%reg2 = sdiv i32  900,  100
-%reg3 = add i32 %reg2,  990
+call void(i32) @errorIfZero9001(i32 100)
+%reg2 = sdiv i32 900, 100
+%reg3 = add i32 %reg2, 990
 %param_ptr4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw5 = load i32, i32* %param_ptr4
 %reg6 = add i32 0, %param_raw5
@@ -69,7 +69,7 @@ statement_38:
 call void(i32) @printi(i32 %reg11)
 br label %statement_47
 statement_44:
-call void(i32) @printi(i32  8888)
+call void(i32) @printi(i32 8888)
 br label %statement_47
 statement_47:
 ret void

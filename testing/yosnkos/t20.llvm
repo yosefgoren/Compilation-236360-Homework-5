@@ -100,7 +100,7 @@ define i1@bar(){
 %sp = alloca [50 x i32]
 br label %statement_75
 statement_75:
-call void(i32) @printi(i32  777)
+call void(i32) @printi(i32 777)
 br label %func_end_79
 br label %func_end_79
 func_end_79:
@@ -135,7 +135,7 @@ br label %statement_108
 statement_108:
 %reg20 = call i32() @foo()
 %reg21 = add i32 0, %reg20
-%reg22 = add i32 %reg21,  2
+%reg22 = add i32 %reg21, 2
 call void(i32) @printi(i32 %reg22)
 br label %func_end_115
 br label %func_end_115

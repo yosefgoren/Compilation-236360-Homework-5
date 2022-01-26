@@ -41,19 +41,19 @@ define void@main(){
 br label %statement_3
 statement_3:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  0, i32* %reg1
+store i32 0, i32* %reg1
 br label %cond_7
 cond_7:
 %param_ptr2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw3 = load i32, i32* %param_ptr2
 %reg4 = add i32 0, %param_raw3
-%reg5 = icmp slt i32 %reg4,  10
+%reg5 = icmp slt i32 %reg4, 10
 br i1 %reg5, label %statement_13, label %statement_45
 statement_13:
 %param_ptr6 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw7 = load i32, i32* %param_ptr6
 %reg8 = add i32 0, %param_raw7
-%reg9 = add i32 %reg8,  1
+%reg9 = add i32 %reg8, 1
 %reg10 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg9, i32* %reg10
 br label %parse_label_21
@@ -61,9 +61,9 @@ parse_label_21:
 %param_ptr11 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw12 = load i32, i32* %param_ptr11
 %reg13 = add i32 0, %param_raw12
-call void(i32) @errorIfZero9001(i32  2)
-%reg14 = sdiv i32 %reg13,  2
-%reg15 = icmp eq i32 %reg14,  2
+call void(i32) @errorIfZero9001(i32 2)
+%reg14 = sdiv i32 %reg13, 2
+%reg15 = icmp eq i32 %reg14, 2
 br i1 %reg15, label %statement_29, label %statement_31
 statement_29:
 br label %cond_7
@@ -77,7 +77,7 @@ parse_label_37:
 %param_ptr19 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw20 = load i32, i32* %param_ptr19
 %reg21 = add i32 0, %param_raw20
-%reg22 = icmp eq i32 %reg21,  8
+%reg22 = icmp eq i32 %reg21, 8
 br i1 %reg22, label %statement_43, label %cond_7
 statement_43:
 br label %statement_45
@@ -87,7 +87,7 @@ call void(i8*) @print(i8* %str_ptr_reg23)
 br label %statement_49
 statement_49:
 %reg24 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  2, i32* %reg24
+store i32 2, i32* %reg24
 br label %cond_53
 cond_53:
 br label %parse_label_55
@@ -95,7 +95,7 @@ parse_label_55:
 %param_ptr25 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw26 = load i32, i32* %param_ptr25
 %reg27 = add i32 0, %param_raw26
-%reg28 = icmp eq i32 %reg27,  1
+%reg28 = icmp eq i32 %reg27, 1
 br i1 %reg28, label %statement_61, label %statement_67
 statement_61:
 %str_ptr_reg29 = getelementptr [12 x i8], [12 x i8]* @.string_id1, i32 0, i32 0
@@ -111,7 +111,7 @@ parse_label_71:
 %param_ptr31 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw32 = load i32, i32* %param_ptr31
 %reg33 = add i32 0, %param_raw32
-%reg34 = icmp eq i32 %reg33,  2
+%reg34 = icmp eq i32 %reg33, 2
 br i1 %reg34, label %statement_77, label %statement_83
 statement_77:
 %str_ptr_reg35 = getelementptr [13 x i8], [13 x i8]* @.string_id3, i32 0, i32 0
@@ -127,7 +127,7 @@ parse_label_87:
 %param_ptr37 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw38 = load i32, i32* %param_ptr37
 %reg39 = add i32 0, %param_raw38
-%reg40 = icmp eq i32 %reg39,  3
+%reg40 = icmp eq i32 %reg39, 3
 br i1 %reg40, label %statement_93, label %statement_99
 statement_93:
 %str_ptr_reg41 = getelementptr [12 x i8], [12 x i8]* @.string_id5, i32 0, i32 0
@@ -145,13 +145,13 @@ call void(i8*) @print(i8* %str_ptr_reg43)
 br label %statement_107
 statement_107:
 %reg44 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  0, i32* %reg44
+store i32 0, i32* %reg44
 br label %cond_111
 cond_111:
 %param_ptr45 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw46 = load i32, i32* %param_ptr45
 %reg47 = add i32 0, %param_raw46
-%reg48 = icmp slt i32 %reg47,  3
+%reg48 = icmp slt i32 %reg47, 3
 br i1 %reg48, label %statement_117, label %statement_267
 statement_117:
 %str_ptr_reg49 = getelementptr [19 x i8], [19 x i8]* @.string_id8, i32 0, i32 0
@@ -168,13 +168,13 @@ cond_128:
 %param_ptr54 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw55 = load i32, i32* %param_ptr54
 %reg56 = add i32 0, %param_raw55
-%reg57 = icmp slt i32 %reg56,  11
+%reg57 = icmp slt i32 %reg56, 11
 br i1 %reg57, label %statement_134, label %parse_label_182
 statement_134:
 %param_ptr58 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw59 = load i32, i32* %param_ptr58
 %reg60 = add i32 0, %param_raw59
-%reg61 = add i32 %reg60,  1
+%reg61 = add i32 %reg60, 1
 %reg62 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 store i32 %reg61, i32* %reg62
 br label %parse_label_142
@@ -182,25 +182,25 @@ parse_label_142:
 %param_ptr63 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw64 = load i32, i32* %param_ptr63
 %reg65 = add i32 0, %param_raw64
-%reg66 = icmp eq i32 %reg65,  2
+%reg66 = icmp eq i32 %reg65, 2
 br i1 %reg66, label %statement_166, label %parse_label_148
 parse_label_148:
 %param_ptr67 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw68 = load i32, i32* %param_ptr67
 %reg69 = add i32 0, %param_raw68
-%reg70 = icmp eq i32 %reg69,  4
+%reg70 = icmp eq i32 %reg69, 4
 br i1 %reg70, label %statement_166, label %parse_label_154
 parse_label_154:
 %param_ptr71 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw72 = load i32, i32* %param_ptr71
 %reg73 = add i32 0, %param_raw72
-%reg74 = icmp eq i32 %reg73,  6
+%reg74 = icmp eq i32 %reg73, 6
 br i1 %reg74, label %statement_166, label %parse_label_160
 parse_label_160:
 %param_ptr75 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw76 = load i32, i32* %param_ptr75
 %reg77 = add i32 0, %param_raw76
-%reg78 = icmp eq i32 %reg77,  8
+%reg78 = icmp eq i32 %reg77, 8
 br i1 %reg78, label %statement_166, label %statement_168
 statement_166:
 br label %cond_128
@@ -214,7 +214,7 @@ parse_label_174:
 %param_ptr82 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw83 = load i32, i32* %param_ptr82
 %reg84 = add i32 0, %param_raw83
-%reg85 = icmp eq i32 %reg84,  9
+%reg85 = icmp eq i32 %reg84, 9
 br i1 %reg85, label %statement_180, label %cond_128
 statement_180:
 br label %parse_label_182
@@ -222,7 +222,7 @@ parse_label_182:
 %param_ptr86 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw87 = load i32, i32* %param_ptr86
 %reg88 = add i32 0, %param_raw87
-%reg89 = icmp eq i32 %reg88,  2
+%reg89 = icmp eq i32 %reg88, 2
 br i1 %reg89, label %statement_188, label %statement_194
 statement_188:
 %str_ptr_reg90 = getelementptr [19 x i8], [19 x i8]* @.string_id9, i32 0, i32 0
@@ -245,13 +245,13 @@ cond_205:
 %param_ptr96 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw97 = load i32, i32* %param_ptr96
 %reg98 = add i32 0, %param_raw97
-%reg99 = icmp slt i32 %reg98,  11
+%reg99 = icmp slt i32 %reg98, 11
 br i1 %reg99, label %statement_211, label %statement_259
 statement_211:
 %param_ptr100 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw101 = load i32, i32* %param_ptr100
 %reg102 = add i32 0, %param_raw101
-%reg103 = add i32 %reg102,  1
+%reg103 = add i32 %reg102, 1
 %reg104 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 store i32 %reg103, i32* %reg104
 br label %parse_label_219
@@ -259,25 +259,25 @@ parse_label_219:
 %param_ptr105 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw106 = load i32, i32* %param_ptr105
 %reg107 = add i32 0, %param_raw106
-%reg108 = icmp eq i32 %reg107,  1
+%reg108 = icmp eq i32 %reg107, 1
 br i1 %reg108, label %statement_243, label %parse_label_225
 parse_label_225:
 %param_ptr109 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw110 = load i32, i32* %param_ptr109
 %reg111 = add i32 0, %param_raw110
-%reg112 = icmp eq i32 %reg111,  3
+%reg112 = icmp eq i32 %reg111, 3
 br i1 %reg112, label %statement_243, label %parse_label_231
 parse_label_231:
 %param_ptr113 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw114 = load i32, i32* %param_ptr113
 %reg115 = add i32 0, %param_raw114
-%reg116 = icmp eq i32 %reg115,  5
+%reg116 = icmp eq i32 %reg115, 5
 br i1 %reg116, label %statement_243, label %parse_label_237
 parse_label_237:
 %param_ptr117 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw118 = load i32, i32* %param_ptr117
 %reg119 = add i32 0, %param_raw118
-%reg120 = icmp eq i32 %reg119,  7
+%reg120 = icmp eq i32 %reg119, 7
 br i1 %reg120, label %statement_243, label %statement_245
 statement_243:
 br label %cond_205
@@ -291,7 +291,7 @@ parse_label_251:
 %param_ptr124 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw125 = load i32, i32* %param_ptr124
 %reg126 = add i32 0, %param_raw125
-%reg127 = icmp eq i32 %reg126,  8
+%reg127 = icmp eq i32 %reg126, 8
 br i1 %reg127, label %statement_257, label %cond_205
 statement_257:
 br label %statement_259
@@ -299,7 +299,7 @@ statement_259:
 %param_ptr128 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw129 = load i32, i32* %param_ptr128
 %reg130 = add i32 0, %param_raw129
-%reg131 = add i32 %reg130,  1
+%reg131 = add i32 %reg130, 1
 %reg132 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg131, i32* %reg132
 br label %cond_111

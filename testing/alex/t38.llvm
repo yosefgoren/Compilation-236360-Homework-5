@@ -198,7 +198,7 @@ br label %false_case_176
 false_case_169:
 br label %parse_label_171
 parse_label_171:
-%reg36 = icmp sgt i32  4,  5
+%reg36 = icmp sgt i32 4, 5
 br i1 %reg36, label %false_case_176, label %true_case_174
 true_case_174:
 br label %set_bool_reg_178
@@ -237,7 +237,7 @@ br label %false_case_215
 false_case_208:
 br label %parse_label_210
 parse_label_210:
-%reg47 = icmp ne i32  4,  4
+%reg47 = icmp ne i32 4, 4
 br i1 %reg47, label %false_case_215, label %true_case_213
 true_case_213:
 br label %set_bool_reg_217
@@ -267,7 +267,7 @@ set_bool_reg_235:
 call void(i32) @printBool(i32 %reg54)
 br label %statement_240
 statement_240:
-%reg55 = icmp slt i32  4,  5
+%reg55 = icmp slt i32 4, 5
 br i1 %reg55, label %false_case_252, label %parse_label_243
 parse_label_243:
 %reg56 = call i1() @False()
@@ -304,7 +304,7 @@ set_bool_reg_272:
 call void(i32) @printBool(i32 %reg63)
 br label %statement_277
 statement_277:
-%reg64 = icmp slt i32  4,  5
+%reg64 = icmp slt i32 4, 5
 br i1 %reg64, label %false_case_284, label %parse_label_280
 parse_label_280:
 br label %true_case_282
@@ -336,7 +336,7 @@ set_bool_reg_304:
 call void(i32) @printBool(i32 %reg71)
 br label %statement_309
 statement_309:
-%reg72 = icmp slt i32  4,  5
+%reg72 = icmp slt i32 4, 5
 br i1 %reg72, label %false_case_323, label %parse_label_312
 parse_label_312:
 %param_ptr73 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -375,10 +375,10 @@ set_bool_reg_343:
 call void(i32) @printBool(i32 %reg82)
 br label %statement_348
 statement_348:
-%reg83 = icmp slt i32  4,  5
+%reg83 = icmp slt i32 4, 5
 br i1 %reg83, label %false_case_356, label %parse_label_351
 parse_label_351:
-%reg84 = icmp sgt i32  4,  5
+%reg84 = icmp sgt i32 4, 5
 br i1 %reg84, label %false_case_356, label %true_case_354
 true_case_354:
 br label %set_bool_reg_358
@@ -408,10 +408,10 @@ set_bool_reg_376:
 call void(i32) @printBool(i32 %reg91)
 br label %statement_381
 statement_381:
-%reg92 = icmp slt i32  4,  5
+%reg92 = icmp slt i32 4, 5
 br i1 %reg92, label %false_case_389, label %parse_label_384
 parse_label_384:
-%reg93 = icmp ne i32  4,  4
+%reg93 = icmp ne i32 4, 4
 br i1 %reg93, label %false_case_389, label %true_case_387
 true_case_387:
 br label %set_bool_reg_391
@@ -441,7 +441,7 @@ set_bool_reg_409:
 call void(i32) @printBool(i32 %reg100)
 br label %statement_414
 statement_414:
-%reg101 = icmp eq i32  4,  4
+%reg101 = icmp eq i32 4, 4
 br i1 %reg101, label %false_case_426, label %parse_label_417
 parse_label_417:
 %reg102 = call i1() @False()
@@ -478,7 +478,7 @@ set_bool_reg_446:
 call void(i32) @printBool(i32 %reg109)
 br label %statement_451
 statement_451:
-%reg110 = icmp eq i32  4,  4
+%reg110 = icmp eq i32 4, 4
 br i1 %reg110, label %false_case_458, label %parse_label_454
 parse_label_454:
 br label %true_case_456
@@ -510,7 +510,7 @@ set_bool_reg_478:
 call void(i32) @printBool(i32 %reg117)
 br label %statement_483
 statement_483:
-%reg118 = icmp eq i32  4,  4
+%reg118 = icmp eq i32 4, 4
 br i1 %reg118, label %false_case_497, label %parse_label_486
 parse_label_486:
 %param_ptr119 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -549,10 +549,10 @@ set_bool_reg_517:
 call void(i32) @printBool(i32 %reg128)
 br label %statement_522
 statement_522:
-%reg129 = icmp eq i32  4,  4
+%reg129 = icmp eq i32 4, 4
 br i1 %reg129, label %false_case_530, label %parse_label_525
 parse_label_525:
-%reg130 = icmp sgt i32  4,  5
+%reg130 = icmp sgt i32 4, 5
 br i1 %reg130, label %false_case_530, label %true_case_528
 true_case_528:
 br label %set_bool_reg_532
@@ -582,10 +582,10 @@ set_bool_reg_550:
 call void(i32) @printBool(i32 %reg137)
 br label %statement_555
 statement_555:
-%reg138 = icmp eq i32  4,  4
+%reg138 = icmp eq i32 4, 4
 br i1 %reg138, label %false_case_563, label %parse_label_558
 parse_label_558:
-%reg139 = icmp ne i32  4,  4
+%reg139 = icmp ne i32 4, 4
 br i1 %reg139, label %false_case_563, label %true_case_561
 true_case_561:
 br label %set_bool_reg_565
@@ -742,7 +742,7 @@ br label %false_case_720
 false_case_713:
 br label %parse_label_715
 parse_label_715:
-%reg176 = icmp sgt i32  4,  5
+%reg176 = icmp sgt i32 4, 5
 br i1 %reg176, label %false_case_720, label %true_case_718
 true_case_718:
 br label %set_bool_reg_722
@@ -779,7 +779,7 @@ br label %false_case_757
 false_case_750:
 br label %parse_label_752
 parse_label_752:
-%reg185 = icmp ne i32  4,  4
+%reg185 = icmp ne i32 4, 4
 br i1 %reg185, label %false_case_757, label %true_case_755
 true_case_755:
 br label %set_bool_reg_759
@@ -916,7 +916,7 @@ br label %statement_887
 statement_887:
 br label %parse_label_889
 parse_label_889:
-%reg218 = icmp sgt i32  4,  5
+%reg218 = icmp sgt i32 4, 5
 br i1 %reg218, label %false_case_894, label %true_case_892
 true_case_892:
 br label %set_bool_reg_896
@@ -948,7 +948,7 @@ br label %statement_919
 statement_919:
 br label %parse_label_921
 parse_label_921:
-%reg226 = icmp ne i32  4,  4
+%reg226 = icmp ne i32 4, 4
 br i1 %reg226, label %false_case_926, label %true_case_924
 true_case_924:
 br label %set_bool_reg_928
@@ -1113,7 +1113,7 @@ br label %false_case_1091
 false_case_1084:
 br label %parse_label_1086
 parse_label_1086:
-%reg271 = icmp sgt i32  4,  5
+%reg271 = icmp sgt i32 4, 5
 br i1 %reg271, label %false_case_1091, label %true_case_1089
 true_case_1089:
 br label %set_bool_reg_1093
@@ -1152,7 +1152,7 @@ br label %false_case_1130
 false_case_1123:
 br label %parse_label_1125
 parse_label_1125:
-%reg282 = icmp ne i32  4,  4
+%reg282 = icmp ne i32 4, 4
 br i1 %reg282, label %false_case_1130, label %true_case_1128
 true_case_1128:
 br label %set_bool_reg_1132
@@ -1182,7 +1182,7 @@ set_bool_reg_1150:
 call void(i32) @printBool(i32 %reg289)
 br label %statement_1155
 statement_1155:
-%reg290 = icmp sgt i32  4,  5
+%reg290 = icmp sgt i32 4, 5
 br i1 %reg290, label %false_case_1167, label %parse_label_1158
 parse_label_1158:
 %reg291 = call i1() @False()
@@ -1219,7 +1219,7 @@ set_bool_reg_1187:
 call void(i32) @printBool(i32 %reg298)
 br label %statement_1192
 statement_1192:
-%reg299 = icmp sgt i32  4,  5
+%reg299 = icmp sgt i32 4, 5
 br i1 %reg299, label %false_case_1199, label %parse_label_1195
 parse_label_1195:
 br label %true_case_1197
@@ -1251,7 +1251,7 @@ set_bool_reg_1219:
 call void(i32) @printBool(i32 %reg306)
 br label %statement_1224
 statement_1224:
-%reg307 = icmp sgt i32  4,  5
+%reg307 = icmp sgt i32 4, 5
 br i1 %reg307, label %false_case_1238, label %parse_label_1227
 parse_label_1227:
 %param_ptr308 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -1290,10 +1290,10 @@ set_bool_reg_1258:
 call void(i32) @printBool(i32 %reg317)
 br label %statement_1263
 statement_1263:
-%reg318 = icmp sgt i32  4,  5
+%reg318 = icmp sgt i32 4, 5
 br i1 %reg318, label %false_case_1271, label %parse_label_1266
 parse_label_1266:
-%reg319 = icmp sgt i32  4,  5
+%reg319 = icmp sgt i32 4, 5
 br i1 %reg319, label %false_case_1271, label %true_case_1269
 true_case_1269:
 br label %set_bool_reg_1273
@@ -1323,10 +1323,10 @@ set_bool_reg_1291:
 call void(i32) @printBool(i32 %reg326)
 br label %statement_1296
 statement_1296:
-%reg327 = icmp sgt i32  4,  5
+%reg327 = icmp sgt i32 4, 5
 br i1 %reg327, label %false_case_1304, label %parse_label_1299
 parse_label_1299:
-%reg328 = icmp ne i32  4,  4
+%reg328 = icmp ne i32 4, 4
 br i1 %reg328, label %false_case_1304, label %true_case_1302
 true_case_1302:
 br label %set_bool_reg_1306
@@ -1356,7 +1356,7 @@ set_bool_reg_1324:
 call void(i32) @printBool(i32 %reg335)
 br label %statement_1329
 statement_1329:
-%reg336 = icmp ne i32  4,  4
+%reg336 = icmp ne i32 4, 4
 br i1 %reg336, label %false_case_1341, label %parse_label_1332
 parse_label_1332:
 %reg337 = call i1() @False()
@@ -1393,7 +1393,7 @@ set_bool_reg_1361:
 call void(i32) @printBool(i32 %reg344)
 br label %statement_1366
 statement_1366:
-%reg345 = icmp ne i32  4,  4
+%reg345 = icmp ne i32 4, 4
 br i1 %reg345, label %false_case_1373, label %parse_label_1369
 parse_label_1369:
 br label %true_case_1371
@@ -1425,7 +1425,7 @@ set_bool_reg_1393:
 call void(i32) @printBool(i32 %reg352)
 br label %statement_1398
 statement_1398:
-%reg353 = icmp ne i32  4,  4
+%reg353 = icmp ne i32 4, 4
 br i1 %reg353, label %false_case_1412, label %parse_label_1401
 parse_label_1401:
 %param_ptr354 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -1464,10 +1464,10 @@ set_bool_reg_1432:
 call void(i32) @printBool(i32 %reg363)
 br label %statement_1437
 statement_1437:
-%reg364 = icmp ne i32  4,  4
+%reg364 = icmp ne i32 4, 4
 br i1 %reg364, label %false_case_1445, label %parse_label_1440
 parse_label_1440:
-%reg365 = icmp sgt i32  4,  5
+%reg365 = icmp sgt i32 4, 5
 br i1 %reg365, label %false_case_1445, label %true_case_1443
 true_case_1443:
 br label %set_bool_reg_1447
@@ -1497,10 +1497,10 @@ set_bool_reg_1465:
 call void(i32) @printBool(i32 %reg372)
 br label %statement_1470
 statement_1470:
-%reg373 = icmp ne i32  4,  4
+%reg373 = icmp ne i32 4, 4
 br i1 %reg373, label %false_case_1478, label %parse_label_1473
 parse_label_1473:
-%reg374 = icmp ne i32  4,  4
+%reg374 = icmp ne i32 4, 4
 br i1 %reg374, label %false_case_1478, label %true_case_1476
 true_case_1476:
 br label %set_bool_reg_1480
@@ -1657,7 +1657,7 @@ br label %false_case_1635
 false_case_1628:
 br label %parse_label_1630
 parse_label_1630:
-%reg411 = icmp sgt i32  4,  5
+%reg411 = icmp sgt i32 4, 5
 br i1 %reg411, label %false_case_1635, label %true_case_1633
 true_case_1633:
 br label %set_bool_reg_1637
@@ -1694,7 +1694,7 @@ br label %false_case_1672
 false_case_1665:
 br label %parse_label_1667
 parse_label_1667:
-%reg420 = icmp ne i32  4,  4
+%reg420 = icmp ne i32 4, 4
 br i1 %reg420, label %false_case_1672, label %true_case_1670
 true_case_1670:
 br label %set_bool_reg_1674
@@ -1831,7 +1831,7 @@ br label %statement_1802
 statement_1802:
 br label %parse_label_1804
 parse_label_1804:
-%reg453 = icmp sgt i32  4,  5
+%reg453 = icmp sgt i32 4, 5
 br i1 %reg453, label %false_case_1809, label %true_case_1807
 true_case_1807:
 br label %set_bool_reg_1811

@@ -48,7 +48,7 @@ define i1@test2(){
 %sp = alloca [50 x i32]
 br label %statement_19
 statement_19:
-%reg2 = icmp sgt i32  1,  0
+%reg2 = icmp sgt i32 1, 0
 br i1 %reg2, label %true_case_22, label %false_case_24
 true_case_22:
 br label %set_bool_reg_26

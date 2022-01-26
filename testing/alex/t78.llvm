@@ -44,8 +44,8 @@ define i32@test2(i32){
 br label %statement_12
 statement_12:
 %reg1 = add i32 0, %0
-%reg2 = add i32  22, %reg1
-ret i32%reg2
+%reg2 = add i32 22, %reg1
+ret i32 %reg2
 br label %func_end_17
 func_end_17:
 ret i32 0
@@ -109,7 +109,7 @@ statement_74:
 call void(i8*) @print(i8* %str_ptr_reg15)
 br label %statement_78
 statement_78:
-%reg16 = call i32(i32) @test2(i32  1)
+%reg16 = call i32(i32) @test2(i32 1)
 %reg17 = add i32 0, %reg16
 %reg18 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg17, i32* %reg18
@@ -126,7 +126,7 @@ call void(i8*) @print(i8* %str_ptr_reg22)
 br label %statement_94
 statement_94:
 %reg23 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  2, i32* %reg23
+store i32 2, i32* %reg23
 br label %statement_98
 statement_98:
 %param_ptr24 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1

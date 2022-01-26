@@ -42,7 +42,7 @@ define void@main(){
 br label %statement_16
 statement_16:
 %reg4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  9, i32* %reg4
+store i32 9, i32* %reg4
 br label %statement_20
 statement_20:
 %param_ptr5 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0

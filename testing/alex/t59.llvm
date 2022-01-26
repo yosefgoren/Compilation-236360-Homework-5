@@ -40,7 +40,7 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-%reg1 = icmp slt i32  3,  1
+%reg1 = icmp slt i32 3, 1
 br i1 %reg1, label %true_case_6, label %false_case_8
 true_case_6:
 br label %set_bool_reg_10
@@ -69,7 +69,7 @@ statement_28:
 call void(i8*) @print(i8* %str_ptr_reg8)
 br label %statement_32
 statement_32:
-%reg9 = icmp slt i32  1,  1
+%reg9 = icmp slt i32 1, 1
 br i1 %reg9, label %true_case_35, label %false_case_37
 true_case_35:
 br label %set_bool_reg_39
@@ -98,7 +98,7 @@ statement_57:
 call void(i8*) @print(i8* %str_ptr_reg16)
 br label %statement_61
 statement_61:
-%reg17 = icmp slt i32  1,  3
+%reg17 = icmp slt i32 1, 3
 br i1 %reg17, label %true_case_64, label %false_case_66
 true_case_64:
 br label %set_bool_reg_68
@@ -131,7 +131,7 @@ statement_90:
 store i32 0, i32* %reg25
 br label %statement_94
 statement_94:
-%reg26 = icmp slt i32  3,  1
+%reg26 = icmp slt i32 3, 1
 br i1 %reg26, label %true_case_97, label %false_case_99
 true_case_97:
 br label %set_bool_reg_101
@@ -164,7 +164,7 @@ statement_123:
 store i32 0, i32* %reg34
 br label %statement_127
 statement_127:
-%reg35 = icmp slt i32  1,  1
+%reg35 = icmp slt i32 1, 1
 br i1 %reg35, label %true_case_130, label %false_case_132
 true_case_130:
 br label %set_bool_reg_134
@@ -197,7 +197,7 @@ statement_156:
 store i32 0, i32* %reg43
 br label %statement_160
 statement_160:
-%reg44 = icmp slt i32  1,  3
+%reg44 = icmp slt i32 1, 3
 br i1 %reg44, label %true_case_163, label %false_case_165
 true_case_163:
 br label %set_bool_reg_167

@@ -31,14 +31,14 @@ define void@main(){
 br label %statement_3
 statement_3:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  2, i32* %reg1
+store i32 2, i32* %reg1
 br label %statement_7
 statement_7:
 %param_ptr2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw3 = load i32, i32* %param_ptr2
 %reg4 = add i32 0, %param_raw3
 call void(i32) @errorIfZero9001(i32 %reg4)
-%reg5 = sdiv i32  5, %reg4
+%reg5 = sdiv i32 5, %reg4
 %reg6 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 store i32 %reg5, i32* %reg6
 br label %parse_label_16
@@ -46,7 +46,7 @@ parse_label_16:
 %param_ptr7 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw8 = load i32, i32* %param_ptr7
 %reg9 = add i32 0, %param_raw8
-%reg10 = icmp eq i32 %reg9,  2
+%reg10 = icmp eq i32 %reg9, 2
 br i1 %reg10, label %statement_22, label %statement_32
 statement_22:
 %str_ptr_reg11 = getelementptr [17 x i8], [17 x i8]* @.string_id0, i32 0, i32 0

@@ -50,48 +50,34 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_25
 statement_25:
-%reg7 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  22, i32* %reg7
-br label %statement_29
-statement_29:
-%param_ptr8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw9 = load i32, i32* %param_ptr8
-%reg10 = add i32 0, %param_raw9
-%reg11 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32 %reg10, i32* %reg11
-br label %statement_36
-statement_36:
-%param_ptr12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw13 = load i32, i32* %param_ptr12
-%reg14 = add i32 0, %param_raw13
-%reg15 = add i32 %reg14,  2
-%reg16 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
-store i32 %reg15, i32* %reg16
-br label %parse_label_44
-parse_label_44:
-%param_ptr17 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw18 = load i32, i32* %param_ptr17
-%reg19 = add i32 0, %param_raw18
-%reg20 = icmp eq i32 %reg19,  33
-br i1 %reg20, label %statement_50, label %statement_56
-statement_50:
-%param_ptr21 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw22 = load i32, i32* %param_ptr21
-%reg23 = add i32 0, %param_raw22
-call void(i32) @printi(i32 %reg23)
-br label %statement_56
-statement_56:
-%reg24 = add i32  22,  1
-%reg25 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
-store i32 %reg24, i32* %reg25
-br label %statement_61
-statement_61:
-%param_ptr26 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
-%param_raw27 = load i32, i32* %param_ptr26
-%reg28 = add i32 0, %param_raw27
-call void(i32) @printi(i32 %reg28)
-br label %func_end_68
-br label %func_end_68
-func_end_68:
+br label %statement_27
+statement_27:
+%reg7 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 22, i32* %reg7
+br label %statement_31
+statement_31:
+%reg8 = add i32 22, 2
+%reg9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
+store i32 %reg8, i32* %reg9
+br label %parse_label_36
+parse_label_36:
+%reg10 = icmp eq i32 22, 33
+br i1 %reg10, label %statement_39, label %statement_42
+statement_39:
+call void(i32) @printi(i32 22)
+br label %statement_42
+statement_42:
+%reg11 = add i32 22, 1
+%reg12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+store i32 %reg11, i32* %reg12
+br label %statement_47
+statement_47:
+%param_ptr13 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
+%param_raw14 = load i32, i32* %param_ptr13
+%reg15 = add i32 0, %param_raw14
+call void(i32) @printi(i32 %reg15)
+br label %func_end_54
+br label %func_end_54
+func_end_54:
 ret void
 }

@@ -71,7 +71,7 @@ false_case_42:
 br label %func_end_53
 statement_44:
 %reg8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  5, i32* %reg8
+store i32 5, i32* %reg8
 br label %statement_48
 statement_48:
 %str_ptr_reg9 = getelementptr [3 x i8], [3 x i8]* @.string_id0, i32 0, i32 0

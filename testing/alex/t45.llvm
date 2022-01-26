@@ -76,9 +76,9 @@ statement_42:
 %reg6 = add i32 %reg4, %reg5
 %reg7 = add i32 0, %2
 %reg8 = add i32 %reg6, %reg7
-call void(i32) @errorIfZero9001(i32  3)
-%reg9 = sdiv i32 %reg8,  3
-ret i32%reg9
+call void(i32) @errorIfZero9001(i32 3)
+%reg9 = sdiv i32 %reg8, 3
+ret i32 %reg9
 br label %func_end_52
 func_end_52:
 ret i32 0

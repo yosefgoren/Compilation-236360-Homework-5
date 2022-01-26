@@ -31,15 +31,15 @@ define void@foo(i32, i32, i32){
 br label %parse_label_3
 parse_label_3:
 %reg1 = add i32 0, %0
-%reg2 = icmp eq i32 %reg1,  3
+%reg2 = icmp eq i32 %reg1, 3
 br i1 %reg2, label %parse_label_7, label %statement_19
 parse_label_7:
 %reg3 = add i32 0, %1
-%reg4 = icmp eq i32 %reg3,  2
+%reg4 = icmp eq i32 %reg3, 2
 br i1 %reg4, label %parse_label_11, label %statement_19
 parse_label_11:
 %reg5 = add i32 0, %2
-%reg6 = icmp eq i32 %reg5,  1
+%reg6 = icmp eq i32 %reg5, 1
 br i1 %reg6, label %statement_15, label %statement_19
 statement_15:
 %str_ptr_reg7 = getelementptr [15 x i8], [15 x i8]* @.string_id0, i32 0, i32 0
@@ -57,7 +57,7 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_30
 statement_30:
-call void(i32, i32, i32) @foo(i32  3, i32  2, i32  1)
+call void(i32, i32, i32) @foo(i32 3, i32 2, i32 1)
 br label %func_end_34
 br label %func_end_34
 func_end_34:

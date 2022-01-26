@@ -69,7 +69,7 @@ statement_3:
 call void(i8*) @print(i8* %str_ptr_reg1)
 br label %statement_7
 statement_7:
-%reg2 = add i32  2,  3
+%reg2 = add i32 2, 3
 call void(i32) @printi(i32 %reg2)
 br label %statement_11
 statement_11:
@@ -77,7 +77,7 @@ statement_11:
 call void(i8*) @print(i8* %str_ptr_reg3)
 br label %statement_15
 statement_15:
-%reg4 = sub i32  10,  8
+%reg4 = sub i32 10, 8
 call void(i32) @printi(i32 %reg4)
 br label %statement_19
 statement_19:
@@ -85,7 +85,7 @@ statement_19:
 call void(i8*) @print(i8* %str_ptr_reg5)
 br label %statement_23
 statement_23:
-%reg6 = mul i32  2,  3
+%reg6 = mul i32 2, 3
 call void(i32) @printi(i32 %reg6)
 br label %statement_27
 statement_27:
@@ -93,8 +93,8 @@ statement_27:
 call void(i8*) @print(i8* %str_ptr_reg7)
 br label %statement_31
 statement_31:
-call void(i32) @errorIfZero9001(i32  2)
-%reg8 = sdiv i32  4,  2
+call void(i32) @errorIfZero9001(i32 2)
+%reg8 = sdiv i32 4, 2
 call void(i32) @printi(i32 %reg8)
 br label %statement_36
 statement_36:
@@ -102,10 +102,10 @@ statement_36:
 call void(i8*) @print(i8* %str_ptr_reg9)
 br label %statement_40
 statement_40:
-%reg10 = mul i32  3,  5
-call void(i32) @errorIfZero9001(i32  5)
-%reg11 = sdiv i32 %reg10,  5
-%reg12 = add i32  2, %reg11
+%reg10 = mul i32 3, 5
+call void(i32) @errorIfZero9001(i32 5)
+%reg11 = sdiv i32 %reg10, 5
+%reg12 = add i32 2, %reg11
 call void(i32) @printi(i32 %reg12)
 br label %statement_47
 statement_47:
@@ -113,8 +113,8 @@ statement_47:
 call void(i8*) @print(i8* %str_ptr_reg13)
 br label %statement_51
 statement_51:
-%reg14 = mul i32  2,  3
-%reg15 = mul i32  5,  5
+%reg14 = mul i32 2, 3
+%reg15 = mul i32 5, 5
 %reg16 = add i32 %reg14, %reg15
 call void(i32) @printi(i32 %reg16)
 br label %statement_57
@@ -123,10 +123,10 @@ statement_57:
 call void(i8*) @print(i8* %str_ptr_reg17)
 br label %statement_61
 statement_61:
-call void(i32) @errorIfZero9001(i32  3)
-%reg18 = sdiv i32  6,  3
-call void(i32) @errorIfZero9001(i32  5)
-%reg19 = sdiv i32  200,  5
+call void(i32) @errorIfZero9001(i32 3)
+%reg18 = sdiv i32 6, 3
+call void(i32) @errorIfZero9001(i32 5)
+%reg19 = sdiv i32 200, 5
 %reg20 = add i32 %reg18, %reg19
 call void(i32) @printi(i32 %reg20)
 br label %statement_69
@@ -135,8 +135,8 @@ statement_69:
 call void(i8*) @print(i8* %str_ptr_reg21)
 br label %statement_73
 statement_73:
-%reg22 = mul i32  5,  5
-%reg23 = mul i32  2,  3
+%reg22 = mul i32 5, 5
+%reg23 = mul i32 2, 3
 %reg24 = sub i32 %reg22, %reg23
 call void(i32) @printi(i32 %reg24)
 br label %statement_79
@@ -145,10 +145,10 @@ statement_79:
 call void(i8*) @print(i8* %str_ptr_reg25)
 br label %statement_83
 statement_83:
-call void(i32) @errorIfZero9001(i32  3)
-%reg26 = sdiv i32  300,  3
-call void(i32) @errorIfZero9001(i32  5)
-%reg27 = sdiv i32  200,  5
+call void(i32) @errorIfZero9001(i32 3)
+%reg26 = sdiv i32 300, 3
+call void(i32) @errorIfZero9001(i32 5)
+%reg27 = sdiv i32 200, 5
 %reg28 = sub i32 %reg26, %reg27
 call void(i32) @printi(i32 %reg28)
 br label %statement_91
@@ -157,8 +157,8 @@ statement_91:
 call void(i8*) @print(i8* %str_ptr_reg29)
 br label %statement_95
 statement_95:
-%reg30 = mul i32  5,  5
-%reg31 = mul i32  2,  3
+%reg30 = mul i32 5, 5
+%reg31 = mul i32 2, 3
 %reg32 = sub i32 %reg30, %reg31
 call void(i32) @printi(i32 %reg32)
 br label %statement_101
@@ -167,10 +167,10 @@ statement_101:
 call void(i8*) @print(i8* %str_ptr_reg33)
 br label %statement_105
 statement_105:
-call void(i32) @errorIfZero9001(i32  3)
-%reg34 = sdiv i32  300,  3
-call void(i32) @errorIfZero9001(i32  5)
-%reg35 = sdiv i32  200,  5
+call void(i32) @errorIfZero9001(i32 3)
+%reg34 = sdiv i32 300, 3
+call void(i32) @errorIfZero9001(i32 5)
+%reg35 = sdiv i32 200, 5
 %reg36 = sub i32 %reg34, %reg35
 call void(i32) @printi(i32 %reg36)
 br label %statement_113
@@ -179,7 +179,7 @@ statement_113:
 call void(i8*) @print(i8* %str_ptr_reg37)
 br label %statement_117
 statement_117:
-%reg38 = add i8  2,  3
+%reg38 = add i8 2, 3
 %raw_reg39 = zext i8 %reg38 to i32
 call void(i32) @printi(i32 %raw_reg39)
 br label %statement_122
@@ -188,7 +188,7 @@ statement_122:
 call void(i8*) @print(i8* %str_ptr_reg40)
 br label %statement_126
 statement_126:
-%reg41 = sub i8  10,  8
+%reg41 = sub i8 10, 8
 %raw_reg42 = zext i8 %reg41 to i32
 call void(i32) @printi(i32 %raw_reg42)
 br label %statement_131
@@ -197,7 +197,7 @@ statement_131:
 call void(i8*) @print(i8* %str_ptr_reg43)
 br label %statement_135
 statement_135:
-%reg44 = mul i8  2,  3
+%reg44 = mul i8 2, 3
 %raw_reg45 = zext i8 %reg44 to i32
 call void(i32) @printi(i32 %raw_reg45)
 br label %statement_140
@@ -206,270 +206,239 @@ statement_140:
 call void(i8*) @print(i8* %str_ptr_reg46)
 br label %statement_144
 statement_144:
-%raw_reg47 = zext i8  2 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg47)
-%reg48 = udiv i8  4,  2
-%raw_reg49 = zext i8 %reg48 to i32
-call void(i32) @printi(i32 %raw_reg49)
-br label %statement_151
-statement_151:
-%str_ptr_reg50 = getelementptr [15 x i8], [15 x i8]* @.string_id15, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg50)
-br label %statement_155
-statement_155:
-%reg51 = mul i8  3,  5
-%raw_reg52 = zext i8  5 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg52)
-%reg53 = udiv i8 %reg51,  5
-%reg54 = add i8  2, %reg53
-%raw_reg55 = zext i8 %reg54 to i32
-call void(i32) @printi(i32 %raw_reg55)
-br label %statement_164
-statement_164:
-%str_ptr_reg56 = getelementptr [15 x i8], [15 x i8]* @.string_id16, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg56)
-br label %statement_168
-statement_168:
-%reg57 = mul i8  2,  3
-%reg58 = mul i8  5,  5
-%reg59 = add i8 %reg57, %reg58
-%raw_reg60 = zext i8 %reg59 to i32
-call void(i32) @printi(i32 %raw_reg60)
-br label %statement_175
-statement_175:
-%str_ptr_reg61 = getelementptr [15 x i8], [15 x i8]* @.string_id17, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg61)
-br label %statement_179
-statement_179:
-%raw_reg62 = zext i8  3 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg62)
-%reg63 = udiv i8  6,  3
-%raw_reg64 = zext i8  5 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg64)
-%reg65 = udiv i8  200,  5
-%reg66 = add i8 %reg63, %reg65
-%raw_reg67 = zext i8 %reg66 to i32
-call void(i32) @printi(i32 %raw_reg67)
+call void(i32) @errorIfZero9001(i32 2)
+%reg47 = udiv i8 4, 2
+%raw_reg48 = zext i8 %reg47 to i32
+call void(i32) @printi(i32 %raw_reg48)
+br label %statement_150
+statement_150:
+%str_ptr_reg49 = getelementptr [15 x i8], [15 x i8]* @.string_id15, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg49)
+br label %statement_154
+statement_154:
+%reg50 = mul i8 3, 5
+call void(i32) @errorIfZero9001(i32 5)
+%reg51 = udiv i8 %reg50, 5
+%reg52 = add i8 2, %reg51
+%raw_reg53 = zext i8 %reg52 to i32
+call void(i32) @printi(i32 %raw_reg53)
+br label %statement_162
+statement_162:
+%str_ptr_reg54 = getelementptr [15 x i8], [15 x i8]* @.string_id16, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg54)
+br label %statement_166
+statement_166:
+%reg55 = mul i8 2, 3
+%reg56 = mul i8 5, 5
+%reg57 = add i8 %reg55, %reg56
+%raw_reg58 = zext i8 %reg57 to i32
+call void(i32) @printi(i32 %raw_reg58)
+br label %statement_173
+statement_173:
+%str_ptr_reg59 = getelementptr [15 x i8], [15 x i8]* @.string_id17, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg59)
+br label %statement_177
+statement_177:
+call void(i32) @errorIfZero9001(i32 3)
+%reg60 = udiv i8 6, 3
+call void(i32) @errorIfZero9001(i32 5)
+%reg61 = udiv i8 200, 5
+%reg62 = add i8 %reg60, %reg61
+%raw_reg63 = zext i8 %reg62 to i32
+call void(i32) @printi(i32 %raw_reg63)
+br label %statement_186
+statement_186:
+%str_ptr_reg64 = getelementptr [15 x i8], [15 x i8]* @.string_id18, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg64)
 br label %statement_190
 statement_190:
-%str_ptr_reg68 = getelementptr [15 x i8], [15 x i8]* @.string_id18, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg68)
-br label %statement_194
-statement_194:
-%reg69 = mul i8  5,  5
-%reg70 = mul i8  2,  3
-%reg71 = sub i8 %reg69, %reg70
-%raw_reg72 = zext i8 %reg71 to i32
-call void(i32) @printi(i32 %raw_reg72)
+%reg65 = mul i8 5, 5
+%reg66 = mul i8 2, 3
+%reg67 = sub i8 %reg65, %reg66
+%raw_reg68 = zext i8 %reg67 to i32
+call void(i32) @printi(i32 %raw_reg68)
+br label %statement_197
+statement_197:
+%str_ptr_reg69 = getelementptr [15 x i8], [15 x i8]* @.string_id19, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg69)
 br label %statement_201
 statement_201:
-%str_ptr_reg73 = getelementptr [15 x i8], [15 x i8]* @.string_id19, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg73)
-br label %statement_205
-statement_205:
-%raw_reg74 = zext i8  2 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg74)
-%reg75 = udiv i8  100,  2
-%raw_reg76 = zext i8  10 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg76)
-%reg77 = udiv i8  200,  10
-%reg78 = sub i8 %reg75, %reg77
-%raw_reg79 = zext i8 %reg78 to i32
-call void(i32) @printi(i32 %raw_reg79)
-br label %statement_216
-statement_216:
-%str_ptr_reg80 = getelementptr [15 x i8], [15 x i8]* @.string_id20, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg80)
-br label %statement_220
-statement_220:
-%reg81 = mul i8  5,  5
-%reg82 = mul i8  2,  3
-%reg83 = sub i8 %reg81, %reg82
-%raw_reg84 = zext i8 %reg83 to i32
-call void(i32) @printi(i32 %raw_reg84)
-br label %statement_227
-statement_227:
-%str_ptr_reg85 = getelementptr [15 x i8], [15 x i8]* @.string_id21, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg85)
-br label %statement_231
-statement_231:
-%raw_reg86 = zext i8  2 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg86)
-%reg87 = udiv i8  100,  2
-%raw_reg88 = zext i8  20 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg88)
-%reg89 = udiv i8  200,  20
-%reg90 = sub i8 %reg87, %reg89
-%raw_reg91 = zext i8 %reg90 to i32
-call void(i32) @printi(i32 %raw_reg91)
+call void(i32) @errorIfZero9001(i32 2)
+%reg70 = udiv i8 100, 2
+call void(i32) @errorIfZero9001(i32 10)
+%reg71 = udiv i8 200, 10
+%reg72 = sub i8 %reg70, %reg71
+%raw_reg73 = zext i8 %reg72 to i32
+call void(i32) @printi(i32 %raw_reg73)
+br label %statement_210
+statement_210:
+%str_ptr_reg74 = getelementptr [15 x i8], [15 x i8]* @.string_id20, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg74)
+br label %statement_214
+statement_214:
+%reg75 = mul i8 5, 5
+%reg76 = mul i8 2, 3
+%reg77 = sub i8 %reg75, %reg76
+%raw_reg78 = zext i8 %reg77 to i32
+call void(i32) @printi(i32 %raw_reg78)
+br label %statement_221
+statement_221:
+%str_ptr_reg79 = getelementptr [15 x i8], [15 x i8]* @.string_id21, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg79)
+br label %statement_225
+statement_225:
+call void(i32) @errorIfZero9001(i32 2)
+%reg80 = udiv i8 100, 2
+call void(i32) @errorIfZero9001(i32 20)
+%reg81 = udiv i8 200, 20
+%reg82 = sub i8 %reg80, %reg81
+%raw_reg83 = zext i8 %reg82 to i32
+call void(i32) @printi(i32 %raw_reg83)
+br label %statement_234
+statement_234:
+%str_ptr_reg84 = getelementptr [15 x i8], [15 x i8]* @.string_id22, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg84)
+br label %statement_238
+statement_238:
+%reg85 = add i32 2, 3
+call void(i32) @printi(i32 %reg85)
 br label %statement_242
 statement_242:
-%str_ptr_reg92 = getelementptr [15 x i8], [15 x i8]* @.string_id22, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg92)
+%str_ptr_reg86 = getelementptr [15 x i8], [15 x i8]* @.string_id23, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg86)
 br label %statement_246
 statement_246:
-%b2int_conv_reg93 = zext i8  2 to i32
-%reg94 = add i32 %b2int_conv_reg93,  3
-call void(i32) @printi(i32 %reg94)
-br label %statement_251
-statement_251:
-%str_ptr_reg95 = getelementptr [15 x i8], [15 x i8]* @.string_id23, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg95)
-br label %statement_255
-statement_255:
-%b2int_conv_reg96 = zext i8  10 to i32
-%reg97 = sub i32 %b2int_conv_reg96,  8
-call void(i32) @printi(i32 %reg97)
-br label %statement_260
-statement_260:
-%str_ptr_reg98 = getelementptr [15 x i8], [15 x i8]* @.string_id24, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg98)
-br label %statement_264
-statement_264:
-%b2int_conv_reg99 = zext i8  2 to i32
-%reg100 = mul i32 %b2int_conv_reg99,  3
-call void(i32) @printi(i32 %reg100)
-br label %statement_269
-statement_269:
-%str_ptr_reg101 = getelementptr [15 x i8], [15 x i8]* @.string_id25, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg101)
-br label %statement_273
-statement_273:
-call void(i32) @errorIfZero9001(i32  2)
-%b2int_conv_reg102 = zext i8  4 to i32
-%reg103 = sdiv i32 %b2int_conv_reg102,  2
-call void(i32) @printi(i32 %reg103)
+%reg87 = sub i32 10, 8
+call void(i32) @printi(i32 %reg87)
+br label %statement_250
+statement_250:
+%str_ptr_reg88 = getelementptr [15 x i8], [15 x i8]* @.string_id24, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg88)
+br label %statement_254
+statement_254:
+%reg89 = mul i32 2, 3
+call void(i32) @printi(i32 %reg89)
+br label %statement_258
+statement_258:
+%str_ptr_reg90 = getelementptr [15 x i8], [15 x i8]* @.string_id25, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg90)
+br label %statement_262
+statement_262:
+call void(i32) @errorIfZero9001(i32 2)
+%reg91 = sdiv i32 4, 2
+call void(i32) @printi(i32 %reg91)
+br label %statement_267
+statement_267:
+%str_ptr_reg92 = getelementptr [15 x i8], [15 x i8]* @.string_id26, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg92)
+br label %statement_271
+statement_271:
+%reg93 = add i32 2, 3
+call void(i32) @printi(i32 %reg93)
+br label %statement_275
+statement_275:
+%str_ptr_reg94 = getelementptr [15 x i8], [15 x i8]* @.string_id27, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg94)
 br label %statement_279
 statement_279:
-%str_ptr_reg104 = getelementptr [15 x i8], [15 x i8]* @.string_id26, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg104)
+%reg95 = sub i32 10, 8
+call void(i32) @printi(i32 %reg95)
 br label %statement_283
 statement_283:
-%b2int_conv_reg105 = zext i8  3 to i32
-%reg106 = add i32  2, %b2int_conv_reg105
-call void(i32) @printi(i32 %reg106)
-br label %statement_288
-statement_288:
-%str_ptr_reg107 = getelementptr [15 x i8], [15 x i8]* @.string_id27, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg107)
-br label %statement_292
-statement_292:
-%b2int_conv_reg108 = zext i8  8 to i32
-%reg109 = sub i32  10, %b2int_conv_reg108
-call void(i32) @printi(i32 %reg109)
-br label %statement_297
-statement_297:
-%str_ptr_reg110 = getelementptr [15 x i8], [15 x i8]* @.string_id28, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg110)
-br label %statement_301
-statement_301:
-%b2int_conv_reg111 = zext i8  3 to i32
-%reg112 = mul i32  2, %b2int_conv_reg111
-call void(i32) @printi(i32 %reg112)
-br label %statement_306
-statement_306:
-%str_ptr_reg113 = getelementptr [15 x i8], [15 x i8]* @.string_id29, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg113)
-br label %statement_310
-statement_310:
-%raw_reg114 = zext i8  2 to i32
-call void(i32) @errorIfZero9001(i32 %raw_reg114)
-%b2int_conv_reg115 = zext i8  2 to i32
-%reg116 = sdiv i32  4, %b2int_conv_reg115
-call void(i32) @printi(i32 %reg116)
-br label %statement_317
-statement_317:
-%str_ptr_reg117 = getelementptr [15 x i8], [15 x i8]* @.string_id30, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg117)
+%str_ptr_reg96 = getelementptr [15 x i8], [15 x i8]* @.string_id28, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg96)
+br label %statement_287
+statement_287:
+%reg97 = mul i32 2, 3
+call void(i32) @printi(i32 %reg97)
+br label %statement_291
+statement_291:
+%str_ptr_reg98 = getelementptr [15 x i8], [15 x i8]* @.string_id29, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg98)
+br label %statement_295
+statement_295:
+call void(i32) @errorIfZero9001(i32 2)
+%reg99 = sdiv i32 4, 2
+call void(i32) @printi(i32 %reg99)
+br label %statement_300
+statement_300:
+%str_ptr_reg100 = getelementptr [15 x i8], [15 x i8]* @.string_id30, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg100)
+br label %statement_304
+statement_304:
+%reg101 = mul i32 3, 5
+call void(i32) @errorIfZero9001(i32 5)
+%reg102 = sdiv i32 %reg101, 5
+%reg103 = add i32 2, %reg102
+call void(i32) @printi(i32 %reg103)
+br label %statement_311
+statement_311:
+%str_ptr_reg104 = getelementptr [15 x i8], [15 x i8]* @.string_id31, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg104)
+br label %statement_315
+statement_315:
+%reg105 = mul i32 2, 3
+%reg106 = mul i32 5, 5
+%reg107 = add i32 %reg105, %reg106
+call void(i32) @printi(i32 %reg107)
 br label %statement_321
 statement_321:
-%b2int_conv_reg118 = zext i8  5 to i32
-%reg119 = mul i32  3, %b2int_conv_reg118
-call void(i32) @errorIfZero9001(i32  5)
-%reg120 = sdiv i32 %reg119,  5
-%b2int_conv_reg121 = zext i8  2 to i32
-%reg122 = add i32 %b2int_conv_reg121, %reg120
-call void(i32) @printi(i32 %reg122)
-br label %statement_330
-statement_330:
-%str_ptr_reg123 = getelementptr [15 x i8], [15 x i8]* @.string_id31, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg123)
-br label %statement_334
-statement_334:
-%b2int_conv_reg124 = zext i8  2 to i32
-%reg125 = mul i32 %b2int_conv_reg124,  3
-%b2int_conv_reg126 = zext i8  5 to i32
-%reg127 = mul i32 %b2int_conv_reg126,  5
-%reg128 = add i32 %reg125, %reg127
-call void(i32) @printi(i32 %reg128)
-br label %statement_342
-statement_342:
-%str_ptr_reg129 = getelementptr [15 x i8], [15 x i8]* @.string_id32, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg129)
-br label %statement_346
-statement_346:
-call void(i32) @errorIfZero9001(i32  3)
-%b2int_conv_reg130 = zext i8  6 to i32
-%reg131 = sdiv i32 %b2int_conv_reg130,  3
-call void(i32) @errorIfZero9001(i32  5)
-%b2int_conv_reg132 = zext i8  200 to i32
-%reg133 = sdiv i32 %b2int_conv_reg132,  5
-%reg134 = add i32 %reg131, %reg133
-call void(i32) @printi(i32 %reg134)
-br label %statement_356
-statement_356:
-%str_ptr_reg135 = getelementptr [15 x i8], [15 x i8]* @.string_id33, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg135)
-br label %statement_360
-statement_360:
-%b2int_conv_reg136 = zext i8  5 to i32
-%reg137 = mul i32 %b2int_conv_reg136,  5
-%b2int_conv_reg138 = zext i8  2 to i32
-%reg139 = mul i32 %b2int_conv_reg138,  3
-%reg140 = sub i32 %reg137, %reg139
-call void(i32) @printi(i32 %reg140)
-br label %statement_368
-statement_368:
-%str_ptr_reg141 = getelementptr [15 x i8], [15 x i8]* @.string_id34, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg141)
-br label %statement_372
-statement_372:
-call void(i32) @errorIfZero9001(i32  2)
-%b2int_conv_reg142 = zext i8  100 to i32
-%reg143 = sdiv i32 %b2int_conv_reg142,  2
-call void(i32) @errorIfZero9001(i32  10)
-%b2int_conv_reg144 = zext i8  200 to i32
-%reg145 = sdiv i32 %b2int_conv_reg144,  10
-%reg146 = sub i32 %reg143, %reg145
-call void(i32) @printi(i32 %reg146)
-br label %statement_382
-statement_382:
-%str_ptr_reg147 = getelementptr [15 x i8], [15 x i8]* @.string_id35, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg147)
-br label %statement_386
-statement_386:
-%b2int_conv_reg148 = zext i8  5 to i32
-%reg149 = mul i32 %b2int_conv_reg148,  5
-%b2int_conv_reg150 = zext i8  2 to i32
-%reg151 = mul i32 %b2int_conv_reg150,  3
-%reg152 = sub i32 %reg149, %reg151
-call void(i32) @printi(i32 %reg152)
-br label %statement_394
-statement_394:
-%str_ptr_reg153 = getelementptr [15 x i8], [15 x i8]* @.string_id36, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg153)
-br label %statement_398
-statement_398:
-call void(i32) @errorIfZero9001(i32  2)
-%b2int_conv_reg154 = zext i8  100 to i32
-%reg155 = sdiv i32 %b2int_conv_reg154,  2
-call void(i32) @errorIfZero9001(i32  20)
-%b2int_conv_reg156 = zext i8  200 to i32
-%reg157 = sdiv i32 %b2int_conv_reg156,  20
-%reg158 = sub i32 %reg155, %reg157
-call void(i32) @printi(i32 %reg158)
-br label %func_end_409
-br label %func_end_409
-func_end_409:
+%str_ptr_reg108 = getelementptr [15 x i8], [15 x i8]* @.string_id32, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg108)
+br label %statement_325
+statement_325:
+call void(i32) @errorIfZero9001(i32 3)
+%reg109 = sdiv i32 6, 3
+call void(i32) @errorIfZero9001(i32 5)
+%reg110 = sdiv i32 200, 5
+%reg111 = add i32 %reg109, %reg110
+call void(i32) @printi(i32 %reg111)
+br label %statement_333
+statement_333:
+%str_ptr_reg112 = getelementptr [15 x i8], [15 x i8]* @.string_id33, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg112)
+br label %statement_337
+statement_337:
+%reg113 = mul i32 5, 5
+%reg114 = mul i32 2, 3
+%reg115 = sub i32 %reg113, %reg114
+call void(i32) @printi(i32 %reg115)
+br label %statement_343
+statement_343:
+%str_ptr_reg116 = getelementptr [15 x i8], [15 x i8]* @.string_id34, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg116)
+br label %statement_347
+statement_347:
+call void(i32) @errorIfZero9001(i32 2)
+%reg117 = sdiv i32 100, 2
+call void(i32) @errorIfZero9001(i32 10)
+%reg118 = sdiv i32 200, 10
+%reg119 = sub i32 %reg117, %reg118
+call void(i32) @printi(i32 %reg119)
+br label %statement_355
+statement_355:
+%str_ptr_reg120 = getelementptr [15 x i8], [15 x i8]* @.string_id35, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg120)
+br label %statement_359
+statement_359:
+%reg121 = mul i32 5, 5
+%reg122 = mul i32 2, 3
+%reg123 = sub i32 %reg121, %reg122
+call void(i32) @printi(i32 %reg123)
+br label %statement_365
+statement_365:
+%str_ptr_reg124 = getelementptr [15 x i8], [15 x i8]* @.string_id36, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg124)
+br label %statement_369
+statement_369:
+call void(i32) @errorIfZero9001(i32 2)
+%reg125 = sdiv i32 100, 2
+call void(i32) @errorIfZero9001(i32 20)
+%reg126 = sdiv i32 200, 20
+%reg127 = sub i32 %reg125, %reg126
+call void(i32) @printi(i32 %reg127)
+br label %func_end_378
+br label %func_end_378
+func_end_378:
 ret void
 }

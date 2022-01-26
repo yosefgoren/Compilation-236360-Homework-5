@@ -28,7 +28,7 @@ define i32@foo(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-call void(i32) @printi(i32  3)
+call void(i32) @printi(i32 3)
 br label %statement_6
 statement_6:
 ret i32 1
@@ -44,7 +44,7 @@ statement_15:
 %reg2 = add i32 0, %reg1
 br label %statement_19
 statement_19:
-call void(i32) @printi(i32  99)
+call void(i32) @printi(i32 99)
 br label %statement_22
 statement_22:
 ret void

@@ -74,7 +74,7 @@ br label %statement_49
 false_case_47:
 br label %cond_64
 statement_49:
-call void(i32) @printi(i32  8080)
+call void(i32) @printi(i32 8080)
 br label %parse_label_52
 parse_label_52:
 %param_ptr11 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
@@ -86,7 +86,7 @@ br label %statement_61
 false_case_59:
 br label %statement_94
 statement_61:
-call void(i32) @printi(i32  999)
+call void(i32) @printi(i32 999)
 br label %statement_94
 cond_64:
 %param_ptr14 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -109,13 +109,13 @@ set_bool_reg_79:
 store i32 %reg17, i32* %reg18
 br label %statement_84
 statement_84:
-call void(i32) @printi(i32  11111)
+call void(i32) @printi(i32 11111)
 br label %cond_64
 statement_87:
-%reg19 = mul i32  0,  0
-call void(i32) @errorIfZero9001(i32  1)
-%reg20 = sdiv i32 %reg19,  1
-%reg21 = add i32  0, %reg20
+%reg19 = mul i32 0, 0
+call void(i32) @errorIfZero9001(i32 1)
+%reg20 = sdiv i32 %reg19, 1
+%reg21 = add i32 0, %reg20
 call void(i32) @printi(i32 %reg21)
 br label %statement_94
 statement_94:

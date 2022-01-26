@@ -28,7 +28,7 @@ define i1@foo(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-call void(i32) @printi(i32  100)
+call void(i32) @printi(i32 100)
 br label %statement_6
 statement_6:
 br label %true_case_8
@@ -47,11 +47,11 @@ define i1@other(i32){
 %sp = alloca [50 x i32]
 br label %statement_22
 statement_22:
-call void(i32) @printi(i32  0)
+call void(i32) @printi(i32 0)
 br label %statement_25
 statement_25:
 %reg2 = add i32 0, %0
-%reg3 = icmp eq i32 %reg2,  5
+%reg3 = icmp eq i32 %reg2, 5
 br i1 %reg3, label %true_case_29, label %false_case_31
 true_case_29:
 br label %set_bool_reg_33
@@ -95,7 +95,7 @@ br label %true_case_77
 false_case_68:
 br label %parse_label_70
 parse_label_70:
-%reg11 = call i1(i32) @other(i32  3)
+%reg11 = call i1(i32) @other(i32 3)
 br i1 %reg11, label %true_case_73, label %false_case_75
 true_case_73:
 br label %true_case_77
@@ -120,7 +120,7 @@ br label %statement_95
 false_case_93:
 br label %statement_121
 statement_95:
-call void(i32) @printi(i32  5)
+call void(i32) @printi(i32 5)
 br label %statement_98
 statement_98:
 br label %false_case_102
@@ -143,10 +143,10 @@ br label %func_end_125
 false_case_116:
 br label %statement_118
 statement_118:
-call void(i32) @printi(i32  7)
+call void(i32) @printi(i32 7)
 br label %func_end_125
 statement_121:
-call void(i32) @printi(i32  6)
+call void(i32) @printi(i32 6)
 br label %func_end_125
 br label %func_end_125
 func_end_125:

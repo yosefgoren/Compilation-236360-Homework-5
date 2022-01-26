@@ -31,22 +31,22 @@ define i32@factorial(i32){
 br label %parse_label_3
 parse_label_3:
 %reg1 = add i32 0, %0
-%reg2 = icmp eq i32 %reg1,  1
+%reg2 = icmp eq i32 %reg1, 1
 br i1 %reg2, label %statement_11, label %parse_label_7
 parse_label_7:
 %reg3 = add i32 0, %0
-%reg4 = icmp eq i32 %reg3,  0
+%reg4 = icmp eq i32 %reg3, 0
 br i1 %reg4, label %statement_11, label %statement_13
 statement_11:
 ret i32 1
 statement_13:
 %reg5 = add i32 0, %0
-%reg6 = sub i32 %reg5,  1
+%reg6 = sub i32 %reg5, 1
 %reg7 = call i32(i32) @factorial(i32 %reg6)
 %reg8 = add i32 0, %reg7
 %reg9 = add i32 0, %0
 %reg10 = mul i32 %reg8, %reg9
-ret i32%reg10
+ret i32 %reg10
 br label %func_end_22
 func_end_22:
 ret i32 0
@@ -56,25 +56,25 @@ define i32@fibo(i32){
 br label %parse_label_28
 parse_label_28:
 %reg11 = add i32 0, %0
-%reg12 = icmp eq i32 %reg11,  1
+%reg12 = icmp eq i32 %reg11, 1
 br i1 %reg12, label %statement_36, label %parse_label_32
 parse_label_32:
 %reg13 = add i32 0, %0
-%reg14 = icmp eq i32 %reg13,  0
+%reg14 = icmp eq i32 %reg13, 0
 br i1 %reg14, label %statement_36, label %statement_38
 statement_36:
 ret i32 1
 statement_38:
 %reg15 = add i32 0, %0
-%reg16 = sub i32 %reg15,  1
+%reg16 = sub i32 %reg15, 1
 %reg17 = call i32(i32) @fibo(i32 %reg16)
 %reg18 = add i32 0, %reg17
 %reg19 = add i32 0, %0
-%reg20 = sub i32 %reg19,  2
+%reg20 = sub i32 %reg19, 2
 %reg21 = call i32(i32) @fibo(i32 %reg20)
 %reg22 = add i32 0, %reg21
 %reg23 = add i32 %reg18, %reg22
-ret i32%reg23
+ret i32 %reg23
 br label %func_end_50
 func_end_50:
 ret i32 0
@@ -87,17 +87,17 @@ statement_56:
 call void(i8*) @print(i8* %str_ptr_reg24)
 br label %statement_60
 statement_60:
-%reg25 = call i32(i32) @factorial(i32  5)
+%reg25 = call i32(i32) @factorial(i32 5)
 %reg26 = add i32 0, %reg25
 call void(i32) @printi(i32 %reg26)
 br label %statement_65
 statement_65:
-%reg27 = call i32(i32) @factorial(i32  7)
+%reg27 = call i32(i32) @factorial(i32 7)
 %reg28 = add i32 0, %reg27
 call void(i32) @printi(i32 %reg28)
 br label %statement_70
 statement_70:
-%reg29 = call i32(i32) @factorial(i32  9)
+%reg29 = call i32(i32) @factorial(i32 9)
 %reg30 = add i32 0, %reg29
 call void(i32) @printi(i32 %reg30)
 br label %statement_75
@@ -106,20 +106,20 @@ statement_75:
 call void(i8*) @print(i8* %str_ptr_reg31)
 br label %statement_79
 statement_79:
-%reg32 = add i32  4,  1
+%reg32 = add i32 4, 1
 %reg33 = call i32(i32) @fibo(i32 %reg32)
 %reg34 = add i32 0, %reg33
 call void(i32) @printi(i32 %reg34)
 br label %statement_85
 statement_85:
-%reg35 = mul i32  2,  4
-%reg36 = sub i32 %reg35,  2
+%reg35 = mul i32 2, 4
+%reg36 = sub i32 %reg35, 2
 %reg37 = call i32(i32) @fibo(i32 %reg36)
 %reg38 = add i32 0, %reg37
 call void(i32) @printi(i32 %reg38)
 br label %statement_92
 statement_92:
-%reg39 = call i32(i32) @fibo(i32  9)
+%reg39 = call i32(i32) @fibo(i32 9)
 %reg40 = add i32 0, %reg39
 call void(i32) @printi(i32 %reg40)
 br label %func_end_98

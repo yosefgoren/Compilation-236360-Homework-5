@@ -28,20 +28,19 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-%b2int_conv_reg1 = zext i8  0 to i32
-%reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32 %b2int_conv_reg1, i32* %reg2
-br label %statement_8
-statement_8:
-%param_ptr3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw4 = load i32, i32* %param_ptr3
-%reg5 = add i32 0, %param_raw4
-call void(i32) @errorIfZero9001(i32 %reg5)
-%reg6 = sdiv i32  5, %reg5
-%reg7 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32 %reg6, i32* %reg7
-br label %func_end_18
-br label %func_end_18
-func_end_18:
+%reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 0, i32* %reg1
+br label %statement_7
+statement_7:
+%param_ptr2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw3 = load i32, i32* %param_ptr2
+%reg4 = add i32 0, %param_raw3
+call void(i32) @errorIfZero9001(i32 %reg4)
+%reg5 = sdiv i32 5, %reg4
+%reg6 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 %reg5, i32* %reg6
+br label %func_end_17
+br label %func_end_17
+func_end_17:
 ret void
 }

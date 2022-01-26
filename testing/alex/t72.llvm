@@ -30,11 +30,11 @@ define void@main(){
 br label %statement_3
 statement_3:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  0, i32* %reg1
+store i32 0, i32* %reg1
 br label %statement_7
 statement_7:
 %reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  1, i32* %reg2
+store i32 1, i32* %reg2
 br label %statement_11
 statement_11:
 %param_ptr3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0

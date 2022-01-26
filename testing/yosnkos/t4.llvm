@@ -28,7 +28,7 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_3
 statement_3:
-%reg1 = mul i32  99,  10
+%reg1 = mul i32 99, 10
 %reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg1, i32* %reg2
 br label %statement_8
@@ -36,8 +36,8 @@ statement_8:
 %param_ptr3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw4 = load i32, i32* %param_ptr3
 %reg5 = add i32 0, %param_raw4
-%reg6 = add i32 %reg5,  1
-%reg7 = mul i32 %reg6,  2
+%reg6 = add i32 %reg5, 1
+%reg7 = mul i32 %reg6, 2
 %reg8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 store i32 %reg7, i32* %reg8
 br label %statement_17

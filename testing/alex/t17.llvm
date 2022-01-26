@@ -35,19 +35,19 @@ store i32 %reg1, i32* %reg2
 br label %statement_8
 statement_8:
 %reg3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  5, i32* %reg3
+store i32 5, i32* %reg3
 br label %cond_12
 cond_12:
 %param_ptr4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw5 = load i32, i32* %param_ptr4
 %reg6 = add i32 0, %param_raw5
-%reg7 = icmp ne i32 %reg6,  0
+%reg7 = icmp ne i32 %reg6, 0
 br i1 %reg7, label %statement_18, label %statement_50
 statement_18:
 %param_ptr8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw9 = load i32, i32* %param_ptr8
 %reg10 = add i32 0, %param_raw9
-%reg11 = add i32 %reg10,  2
+%reg11 = add i32 %reg10, 2
 %reg12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg11, i32* %reg12
 br label %parse_label_26
@@ -55,13 +55,13 @@ parse_label_26:
 %param_ptr13 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw14 = load i32, i32* %param_ptr13
 %reg15 = add i32 0, %param_raw14
-%reg16 = icmp sgt i32 %reg15,  12
+%reg16 = icmp sgt i32 %reg15, 12
 br i1 %reg16, label %statement_32, label %statement_42
 statement_32:
 %param_ptr17 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw18 = load i32, i32* %param_ptr17
 %reg19 = add i32 0, %param_raw18
-%reg20 = add i32 %reg19,  5
+%reg20 = add i32 %reg19, 5
 %reg21 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg20, i32* %reg21
 br label %statement_40
@@ -71,7 +71,7 @@ statement_42:
 %param_ptr22 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw23 = load i32, i32* %param_ptr22
 %reg24 = add i32 0, %param_raw23
-%reg25 = sub i32 %reg24,  1
+%reg25 = sub i32 %reg24, 1
 %reg26 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 store i32 %reg25, i32* %reg26
 br label %cond_12
@@ -93,10 +93,10 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_67
 statement_67:
-call void(i32) @f(i32  0)
+call void(i32) @f(i32 0)
 br label %statement_70
 statement_70:
-call void(i32) @f(i32  6)
+call void(i32) @f(i32 6)
 br label %func_end_74
 br label %func_end_74
 func_end_74:

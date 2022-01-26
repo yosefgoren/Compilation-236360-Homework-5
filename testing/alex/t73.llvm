@@ -43,13 +43,13 @@ call void(i8*) @print(i8* %str_ptr_reg2)
 br label %statement_11
 statement_11:
 %reg3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  0, i32* %reg3
+store i32 0, i32* %reg3
 br label %statement_15
 statement_15:
 %param_ptr4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw5 = load i32, i32* %param_ptr4
 %reg6 = add i32 0, %param_raw5
-%reg7 = add i32 %reg6,  1
+%reg7 = add i32 %reg6, 1
 %reg8 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg7, i32* %reg8
 br label %statement_23
@@ -63,7 +63,7 @@ statement_29:
 %param_ptr12 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw13 = load i32, i32* %param_ptr12
 %reg14 = add i32 0, %param_raw13
-%reg15 = add i32  1, %reg14
+%reg15 = add i32 1, %reg14
 %reg16 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg15, i32* %reg16
 br label %statement_37
@@ -74,7 +74,7 @@ statement_37:
 call void(i32) @printi(i32 %reg19)
 br label %statement_43
 statement_43:
-%reg20 = add i32  1,  2
+%reg20 = add i32 1, 2
 %reg21 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg20, i32* %reg21
 br label %statement_48
@@ -86,7 +86,7 @@ call void(i32) @printi(i32 %reg24)
 br label %statement_54
 statement_54:
 %reg25 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  1, i32* %reg25
+store i32 1, i32* %reg25
 br label %statement_58
 statement_58:
 %param_ptr26 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
@@ -117,13 +117,13 @@ call void(i8*) @print(i8* %str_ptr_reg40)
 br label %statement_85
 statement_85:
 %reg41 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  10, i32* %reg41
+store i32 10, i32* %reg41
 br label %statement_89
 statement_89:
 %param_ptr42 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw43 = load i32, i32* %param_ptr42
 %reg44 = add i32 0, %param_raw43
-%reg45 = sub i32 %reg44,  1
+%reg45 = sub i32 %reg44, 1
 %reg46 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg45, i32* %reg46
 br label %statement_97
@@ -137,7 +137,7 @@ statement_103:
 %param_ptr50 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw51 = load i32, i32* %param_ptr50
 %reg52 = add i32 0, %param_raw51
-%reg53 = sub i32  1, %reg52
+%reg53 = sub i32 1, %reg52
 %reg54 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg53, i32* %reg54
 br label %statement_111
@@ -148,7 +148,7 @@ statement_111:
 call void(i32) @printi(i32 %reg57)
 br label %statement_117
 statement_117:
-%reg58 = sub i32  1,  2
+%reg58 = sub i32 1, 2
 %reg59 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg58, i32* %reg59
 br label %statement_122
@@ -160,7 +160,7 @@ call void(i32) @printi(i32 %reg62)
 br label %statement_128
 statement_128:
 %reg63 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  1, i32* %reg63
+store i32 1, i32* %reg63
 br label %statement_132
 statement_132:
 %param_ptr64 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
@@ -191,13 +191,13 @@ call void(i8*) @print(i8* %str_ptr_reg78)
 br label %statement_159
 statement_159:
 %reg79 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
-store i32  1, i32* %reg79
+store i32 1, i32* %reg79
 br label %statement_163
 statement_163:
 %param_ptr80 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 %param_raw81 = load i32, i32* %param_ptr80
 %reg82 = add i32 0, %param_raw81
-%reg83 = mul i32 %reg82,  2
+%reg83 = mul i32 %reg82, 2
 %reg84 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 store i32 %reg83, i32* %reg84
 br label %statement_171
@@ -211,7 +211,7 @@ statement_177:
 %param_ptr88 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 %param_raw89 = load i32, i32* %param_ptr88
 %reg90 = add i32 0, %param_raw89
-%reg91 = mul i32  2, %reg90
+%reg91 = mul i32 2, %reg90
 %reg92 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 store i32 %reg91, i32* %reg92
 br label %statement_185
@@ -222,7 +222,7 @@ statement_185:
 call void(i32) @printi(i32 %reg95)
 br label %statement_191
 statement_191:
-%reg96 = mul i32  2,  3
+%reg96 = mul i32 2, 3
 %reg97 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 store i32 %reg96, i32* %reg97
 br label %statement_196
@@ -234,7 +234,7 @@ call void(i32) @printi(i32 %reg100)
 br label %statement_202
 statement_202:
 %reg101 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
-store i32  3, i32* %reg101
+store i32 3, i32* %reg101
 br label %statement_206
 statement_206:
 %param_ptr102 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
@@ -259,14 +259,14 @@ call void(i8*) @print(i8* %str_ptr_reg113)
 br label %statement_227
 statement_227:
 %reg114 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
-store i32  10, i32* %reg114
+store i32 10, i32* %reg114
 br label %statement_231
 statement_231:
 %param_ptr115 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 %param_raw116 = load i32, i32* %param_ptr115
 %reg117 = add i32 0, %param_raw116
-call void(i32) @errorIfZero9001(i32  2)
-%reg118 = sdiv i32 %reg117,  2
+call void(i32) @errorIfZero9001(i32 2)
+%reg118 = sdiv i32 %reg117, 2
 %reg119 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 store i32 %reg118, i32* %reg119
 br label %statement_240
@@ -281,7 +281,7 @@ statement_246:
 %param_raw124 = load i32, i32* %param_ptr123
 %reg125 = add i32 0, %param_raw124
 call void(i32) @errorIfZero9001(i32 %reg125)
-%reg126 = sdiv i32  20, %reg125
+%reg126 = sdiv i32 20, %reg125
 %reg127 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 store i32 %reg126, i32* %reg127
 br label %statement_255
@@ -292,8 +292,8 @@ statement_255:
 call void(i32) @printi(i32 %reg130)
 br label %statement_261
 statement_261:
-call void(i32) @errorIfZero9001(i32  5)
-%reg131 = sdiv i32  30,  5
+call void(i32) @errorIfZero9001(i32 5)
+%reg131 = sdiv i32 30, 5
 %reg132 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
 store i32 %reg131, i32* %reg132
 br label %statement_267
@@ -305,7 +305,7 @@ call void(i32) @printi(i32 %reg135)
 br label %statement_273
 statement_273:
 %reg136 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 3
-store i32  3, i32* %reg136
+store i32 3, i32* %reg136
 br label %statement_277
 statement_277:
 %param_ptr137 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 2
@@ -331,15 +331,15 @@ call void(i8*) @print(i8* %str_ptr_reg148)
 br label %statement_299
 statement_299:
 %reg149 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
-store i32  1, i32* %reg149
+store i32 1, i32* %reg149
 br label %statement_303
 statement_303:
 %reg150 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
-store i32  2, i32* %reg150
+store i32 2, i32* %reg150
 br label %statement_307
 statement_307:
 %reg151 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
-store i32  3, i32* %reg151
+store i32 3, i32* %reg151
 br label %statement_311
 statement_311:
 %param_ptr152 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
@@ -603,7 +603,7 @@ statement_569:
 %param_ptr332 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
 %param_raw333 = load i32, i32* %param_ptr332
 %reg334 = add i32 0, %param_raw333
-%reg335 = add i32 %reg334,  50
+%reg335 = add i32 %reg334, 50
 %param_ptr336 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw337 = load i32, i32* %param_ptr336
 %reg338 = add i32 0, %param_raw337
@@ -621,7 +621,7 @@ statement_587:
 %param_ptr344 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
 %param_raw345 = load i32, i32* %param_ptr344
 %reg346 = add i32 0, %param_raw345
-%reg347 = sub i32  49, %reg346
+%reg347 = sub i32 49, %reg346
 %param_ptr348 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw349 = load i32, i32* %param_ptr348
 %reg350 = add i32 0, %param_raw349
@@ -643,7 +643,7 @@ statement_605:
 %param_raw360 = load i32, i32* %param_ptr359
 %reg361 = add i32 0, %param_raw360
 %reg362 = add i32 %reg358, %reg361
-%reg363 = add i32 %reg362,  11
+%reg363 = add i32 %reg362, 11
 %reg364 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
 store i32 %reg363, i32* %reg364
 br label %statement_617
@@ -657,7 +657,7 @@ statement_623:
 %param_ptr368 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
 %param_raw369 = load i32, i32* %param_ptr368
 %reg370 = add i32 0, %param_raw369
-%reg371 = sub i32  50, %reg370
+%reg371 = sub i32 50, %reg370
 %param_ptr372 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw373 = load i32, i32* %param_ptr372
 %reg374 = add i32 0, %param_raw373
@@ -675,8 +675,8 @@ statement_641:
 %param_ptr380 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
 %param_raw381 = load i32, i32* %param_ptr380
 %reg382 = add i32 0, %param_raw381
-%reg383 = mul i32 %reg382,  12
-%reg384 = add i32  14, %reg383
+%reg383 = mul i32 %reg382, 12
+%reg384 = add i32 14, %reg383
 %reg385 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
 store i32 %reg384, i32* %reg385
 br label %statement_650
@@ -690,7 +690,7 @@ statement_656:
 %param_ptr389 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
 %param_raw390 = load i32, i32* %param_ptr389
 %reg391 = add i32 0, %param_raw390
-%reg392 = mul i32 %reg391,  5
+%reg392 = mul i32 %reg391, 5
 %param_ptr393 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw394 = load i32, i32* %param_ptr393
 %reg395 = add i32 0, %param_raw394
@@ -708,7 +708,7 @@ statement_674:
 %param_ptr401 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
 %param_raw402 = load i32, i32* %param_ptr401
 %reg403 = add i32 0, %param_raw402
-%reg404 = mul i32 %reg403,  5
+%reg404 = mul i32 %reg403, 5
 %param_ptr405 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw406 = load i32, i32* %param_ptr405
 %reg407 = add i32 0, %param_raw406
@@ -729,8 +729,8 @@ statement_692:
 %param_ptr416 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 5
 %param_raw417 = load i32, i32* %param_ptr416
 %reg418 = add i32 0, %param_raw417
-call void(i32) @errorIfZero9001(i32  2)
-%reg419 = sdiv i32 %reg418,  2
+call void(i32) @errorIfZero9001(i32 2)
+%reg419 = sdiv i32 %reg418, 2
 %reg420 = add i32 %reg415, %reg419
 %reg421 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
 store i32 %reg420, i32* %reg421
@@ -742,10 +742,10 @@ statement_705:
 call void(i32) @printi(i32 %reg424)
 br label %statement_711
 statement_711:
-call void(i32) @errorIfZero9001(i32  5)
-%reg425 = sdiv i32  20,  5
-call void(i32) @errorIfZero9001(i32  2)
-%reg426 = sdiv i32 %reg425,  2
+call void(i32) @errorIfZero9001(i32 5)
+%reg425 = sdiv i32 20, 5
+call void(i32) @errorIfZero9001(i32 2)
+%reg426 = sdiv i32 %reg425, 2
 %reg427 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
 store i32 %reg426, i32* %reg427
 br label %statement_719
@@ -760,8 +760,8 @@ statement_725:
 %param_raw432 = load i32, i32* %param_ptr431
 %reg433 = add i32 0, %param_raw432
 call void(i32) @errorIfZero9001(i32 %reg433)
-%reg434 = sdiv i32  20, %reg433
-%reg435 = add i32 %reg434,  1
+%reg434 = sdiv i32 20, %reg433
+%reg435 = add i32 %reg434, 1
 %reg436 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
 store i32 %reg435, i32* %reg436
 br label %statement_735
@@ -775,8 +775,8 @@ statement_741:
 %param_ptr440 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
 %param_raw441 = load i32, i32* %param_ptr440
 %reg442 = add i32 0, %param_raw441
-call void(i32) @errorIfZero9001(i32  1)
-%reg443 = sdiv i32 %reg442,  1
+call void(i32) @errorIfZero9001(i32 1)
+%reg443 = sdiv i32 %reg442, 1
 %param_ptr444 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw445 = load i32, i32* %param_ptr444
 %reg446 = add i32 0, %param_raw445
@@ -794,7 +794,7 @@ statement_760:
 %param_ptr452 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
 %param_raw453 = load i32, i32* %param_ptr452
 %reg454 = add i32 0, %param_raw453
-%reg455 = mul i32 %reg454,  10
+%reg455 = mul i32 %reg454, 10
 %param_ptr456 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw457 = load i32, i32* %param_ptr456
 %reg458 = add i32 0, %param_raw457
@@ -816,7 +816,7 @@ statement_779:
 %param_ptr467 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw468 = load i32, i32* %param_ptr467
 %reg469 = add i32 0, %param_raw468
-%reg470 = mul i32  10, %reg469
+%reg470 = mul i32 10, %reg469
 %reg471 = add i32 %reg466, %reg470
 %reg472 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 7
 store i32 %reg471, i32* %reg472
@@ -831,7 +831,7 @@ statement_797:
 %param_ptr476 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 4
 %param_raw477 = load i32, i32* %param_ptr476
 %reg478 = add i32 0, %param_raw477
-%reg479 = add i32 %reg478,  10
+%reg479 = add i32 %reg478, 10
 %param_ptr480 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 6
 %param_raw481 = load i32, i32* %param_ptr480
 %reg482 = add i32 0, %param_raw481

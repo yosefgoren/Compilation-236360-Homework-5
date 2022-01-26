@@ -29,13 +29,13 @@ define void@main(){
 br label %statement_3
 statement_3:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  3, i32* %reg1
+store i32 3, i32* %reg1
 br label %cond_7
 cond_7:
 %param_ptr2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw3 = load i32, i32* %param_ptr2
 %reg4 = add i32 0, %param_raw3
-%reg5 = icmp sge i32 %reg4,  0
+%reg5 = icmp sge i32 %reg4, 0
 br i1 %reg5, label %statement_13, label %statement_27
 statement_13:
 %param_ptr6 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
@@ -47,12 +47,12 @@ statement_19:
 %param_ptr9 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw10 = load i32, i32* %param_ptr9
 %reg11 = add i32 0, %param_raw10
-%reg12 = sub i32 %reg11,  1
+%reg12 = sub i32 %reg11, 1
 %reg13 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 store i32 %reg12, i32* %reg13
 br label %cond_7
 statement_27:
-call void(i32) @printi(i32  9002)
+call void(i32) @printi(i32 9002)
 br label %statement_30
 statement_30:
 ret void

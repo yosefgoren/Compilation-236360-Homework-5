@@ -32,7 +32,7 @@ br label %statement_5
 statement_5:
 br label %statement_7
 statement_7:
-call void(i32) @printi(i32  9001)
+call void(i32) @printi(i32 9001)
 br label %func_end_11
 br label %func_end_11
 func_end_11:

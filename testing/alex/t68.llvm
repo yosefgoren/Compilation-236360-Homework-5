@@ -96,8 +96,8 @@ define i32@inc(i32){
 br label %statement_67
 statement_67:
 %reg11 = add i32 0, %0
-%reg12 = add i32 %reg11,  1
-ret i32%reg12
+%reg12 = add i32 %reg11, 1
+ret i32 %reg12
 br label %func_end_72
 func_end_72:
 ret i32 0
@@ -106,7 +106,7 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_78
 statement_78:
-%reg13 = icmp slt i32  5,  6
+%reg13 = icmp slt i32 5, 6
 br i1 %reg13, label %true_case_81, label %false_case_83
 true_case_81:
 br label %set_bool_reg_85
@@ -115,7 +115,7 @@ br label %set_bool_reg_85
 set_bool_reg_85:
 %reg14 = phi i32 [1, %true_case_81], [0, %false_case_83]
 %reg15 = add i32 0, %reg14
-%reg16 = add i32  2,  4
+%reg16 = add i32 2, 4
 br label %true_case_90
 true_case_90:
 br label %set_bool_reg_94
@@ -124,7 +124,7 @@ br label %set_bool_reg_94
 set_bool_reg_94:
 %reg17 = phi i32 [1, %true_case_90], [0, %false_case_92]
 %reg18 = add i32 0, %reg17
-%reg19 = call i32(i32) @inc(i32  2)
+%reg19 = call i32(i32) @inc(i32 2)
 %reg20 = add i32 0, %reg19
 call void(i32, i32, i32, i32) @printFoo(i32 %reg15, i32 %reg16, i32 %reg18, i32 %reg20)
 br label %func_end_102

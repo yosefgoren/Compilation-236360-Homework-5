@@ -35,7 +35,7 @@ define i32@func3(i32){
 br label %parse_label_3
 parse_label_3:
 %reg1 = add i32 0, %0
-%reg2 = icmp sgt i32 %reg1,  3
+%reg2 = icmp sgt i32 %reg1, 3
 br i1 %reg2, label %statement_7, label %statement_13
 statement_7:
 %str_ptr_reg3 = getelementptr [4 x i8], [4 x i8]* @.string_id0, i32 0, i32 0
@@ -58,7 +58,7 @@ define i32@func2(i32){
 br label %parse_label_26
 parse_label_26:
 %reg5 = add i32 0, %0
-%reg6 = icmp sgt i32 %reg5,  4
+%reg6 = icmp sgt i32 %reg5, 4
 br i1 %reg6, label %statement_30, label %statement_36
 statement_30:
 %str_ptr_reg7 = getelementptr [4 x i8], [4 x i8]* @.string_id2, i32 0, i32 0
@@ -81,7 +81,7 @@ define i32@func1(i32){
 br label %parse_label_49
 parse_label_49:
 %reg9 = add i32 0, %0
-%reg10 = icmp sgt i32 %reg9,  15
+%reg10 = icmp sgt i32 %reg9, 15
 br i1 %reg10, label %statement_53, label %statement_59
 statement_53:
 %str_ptr_reg11 = getelementptr [4 x i8], [4 x i8]* @.string_id4, i32 0, i32 0
@@ -95,8 +95,8 @@ call void(i8*) @print(i8* %str_ptr_reg12)
 br label %statement_63
 statement_63:
 %reg13 = add i32 0, %0
-%reg14 = mul i32  2, %reg13
-ret i32%reg14
+%reg14 = mul i32 2, %reg13
+ret i32 %reg14
 br label %func_end_68
 func_end_68:
 ret i32 0
@@ -105,7 +105,7 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_74
 statement_74:
-%reg15 = call i32(i32) @func3(i32  4)
+%reg15 = call i32(i32) @func3(i32 4)
 %reg16 = add i32 0, %reg15
 %reg17 = call i32(i32) @func2(i32 %reg16)
 %reg18 = add i32 0, %reg17

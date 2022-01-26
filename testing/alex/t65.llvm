@@ -30,24 +30,23 @@ define void@main(){
 br label %statement_3
 statement_3:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  1, i32* %reg1
+store i32 1, i32* %reg1
 br label %statement_7
 statement_7:
 %param_ptr2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw3 = load i32, i32* %param_ptr2
 %reg4 = add i32 0, %param_raw3
-%reg5 = sub i32 %reg4,  3
+%reg5 = sub i32 %reg4, 3
 call void(i32) @printi(i32 %reg5)
 br label %parse_label_14
 parse_label_14:
-%b2int_conv_reg6 = zext i8  8 to i32
-%reg7 = icmp eq i32 %b2int_conv_reg6,  8
-br i1 %reg7, label %statement_18, label %func_end_23
-statement_18:
-%str_ptr_reg8 = getelementptr [3 x i8], [3 x i8]* @.string_id0, i32 0, i32 0
-call void(i8*) @print(i8* %str_ptr_reg8)
-br label %func_end_23
-br label %func_end_23
-func_end_23:
+%reg6 = icmp eq i32 8, 8
+br i1 %reg6, label %statement_17, label %func_end_22
+statement_17:
+%str_ptr_reg7 = getelementptr [3 x i8], [3 x i8]* @.string_id0, i32 0, i32 0
+call void(i8*) @print(i8* %str_ptr_reg7)
+br label %func_end_22
+br label %func_end_22
+func_end_22:
 ret void
 }

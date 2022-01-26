@@ -73,10 +73,10 @@ define void@main(){
 %sp = alloca [50 x i32]
 br label %statement_43
 statement_43:
-%reg5 = icmp sgt i32  5,  4
+%reg5 = icmp sgt i32 5, 4
 br i1 %reg5, label %parse_label_46, label %false_case_51
 parse_label_46:
-%reg6 = icmp sgt i32  3,  2
+%reg6 = icmp sgt i32 3, 2
 br i1 %reg6, label %true_case_49, label %false_case_51
 true_case_49:
 br label %set_bool_reg_53

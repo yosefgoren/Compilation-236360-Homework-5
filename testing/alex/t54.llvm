@@ -55,13 +55,13 @@ define void@main(){
 br label %statement_27
 statement_27:
 %reg3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  0, i32* %reg3
+store i32 0, i32* %reg3
 br label %cond_31
 cond_31:
 %param_ptr4 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw5 = load i32, i32* %param_ptr4
 %reg6 = add i32 0, %param_raw5
-%reg7 = icmp eq i32 %reg6,  0
+%reg7 = icmp eq i32 %reg6, 0
 br i1 %reg7, label %statement_37, label %statement_43
 statement_37:
 %reg8 = call i32() @Int()
@@ -77,7 +77,7 @@ call void(i32) @printi(i32 %reg13)
 br label %statement_49
 statement_49:
 %reg14 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  0, i32* %reg14
+store i32 0, i32* %reg14
 br label %cond_53
 cond_53:
 br label %statement_55
@@ -119,7 +119,7 @@ cond_89:
 %param_ptr28 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw29 = load i32, i32* %param_ptr28
 %reg30 = add i32 0, %param_raw29
-%reg31 = icmp eq i32 %reg30,  0
+%reg31 = icmp eq i32 %reg30, 0
 br i1 %reg31, label %statement_95, label %statement_101
 statement_95:
 %reg32 = call i32() @Int()
@@ -135,7 +135,7 @@ call void(i32) @printi(i32 %reg37)
 br label %statement_107
 statement_107:
 %reg38 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  0, i32* %reg38
+store i32 0, i32* %reg38
 br label %cond_111
 cond_111:
 br label %statement_113
@@ -196,43 +196,42 @@ parse_label_166:
 %param_ptr41 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw42 = load i32, i32* %param_ptr41
 %reg43 = add i32 0, %param_raw42
-%reg44 = icmp eq i32 %reg43,  0
+%reg44 = icmp eq i32 %reg43, 0
 br i1 %reg44, label %statement_172, label %parse_label_175
 statement_172:
 call void() @WasHere()
-br label %statement_186
+br label %statement_185
 parse_label_175:
 %param_ptr45 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw46 = load i32, i32* %param_ptr45
 %reg47 = add i32 0, %param_raw46
-%b2int_conv_reg48 = zext i8  1 to i32
-%reg49 = icmp eq i32 %reg47, %b2int_conv_reg48
-br i1 %reg49, label %statement_182, label %statement_186
-statement_182:
-%reg50 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32 0, i32* %reg50
-br label %statement_186
-statement_186:
-br label %cond_188
-cond_188:
-%param_ptr51 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw52 = load i32, i32* %param_ptr51
-%reg53 = add i32 0, %param_raw52
-%reg54 = icmp eq i32 %reg53,  0
-br i1 %reg54, label %cond_194, label %func_end_207
-cond_194:
-%param_ptr55 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-%param_raw56 = load i32, i32* %param_ptr55
-%reg57 = add i32 0, %param_raw56
-%reg58 = icmp eq i32 %reg57,  0
-br i1 %reg58, label %statement_200, label %cond_188
-statement_200:
-%reg59 = call i32() @Int()
-%reg60 = add i32 0, %reg59
-%reg61 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32 %reg60, i32* %reg61
-br label %cond_194
-br label %func_end_207
-func_end_207:
+%reg48 = icmp eq i32 %reg47, 1
+br i1 %reg48, label %statement_181, label %statement_185
+statement_181:
+%reg49 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
+store i32 0, i32* %reg49
+br label %statement_185
+statement_185:
+br label %cond_187
+cond_187:
+%param_ptr50 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw51 = load i32, i32* %param_ptr50
+%reg52 = add i32 0, %param_raw51
+%reg53 = icmp eq i32 %reg52, 0
+br i1 %reg53, label %cond_193, label %func_end_206
+cond_193:
+%param_ptr54 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+%param_raw55 = load i32, i32* %param_ptr54
+%reg56 = add i32 0, %param_raw55
+%reg57 = icmp eq i32 %reg56, 0
+br i1 %reg57, label %statement_199, label %cond_187
+statement_199:
+%reg58 = call i32() @Int()
+%reg59 = add i32 0, %reg58
+%reg60 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
+store i32 %reg59, i32* %reg60
+br label %cond_193
+br label %func_end_206
+func_end_206:
 ret void
 }

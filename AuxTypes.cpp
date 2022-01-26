@@ -44,8 +44,19 @@ RegStoredExp::RegStoredExp(ExpType type, const string& rvalue_exp, bool store_to
 NumericExp::NumericExp(ExpType type, const string& rvalue_exp, bool store_to_new_reg)
 	:RegStoredExp(type, rvalue_exp, store_to_new_reg){}
 
+bool isDigit9001(char c){
+	return '0' <= c && c <= '9';
+}
+bool constValueIsNumLiteral9001(const string& literal){
+	for(char c: literal){
+		if(!isDigit9001(c))
+			return false;
+	}
+	return literal != "";
+}
+
 void NumericExp::convertToInt(){
-	if(type == BYTE_EXP){
+	if(type == BYTE_EXP && !constValueIsNumLiteral9001(reg)){
 		string new_reg = cb.getFreshReg("b2int_conv_reg");
 		cb.emit(new_reg+" = zext i8 "+reg+" to i32");
 		reg = new_reg;
@@ -61,10 +72,9 @@ void NumericExp::convertToByte(){
 	}
 	type = BYTE_EXP;
 }
-
 string NumericExp::storeAsRawReg(){
 	string res;
-	if(type == INT_EXP){
+	if(type == INT_EXP || constValueIsNumLiteral9001(reg)){
 		res = reg;
 	} else {
 		res = cb.getFreshReg("raw_reg");

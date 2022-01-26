@@ -31,11 +31,11 @@ define void@main(){
 br label %statement_3
 statement_3:
 %reg1 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
-store i32  50, i32* %reg1
+store i32 50, i32* %reg1
 br label %statement_7
 statement_7:
 %reg2 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
-store i32  17, i32* %reg2
+store i32 17, i32* %reg2
 br label %parse_label_11
 parse_label_11:
 %param_ptr3 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
@@ -50,7 +50,7 @@ parse_label_20:
 %param_ptr10 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 1
 %param_raw11 = load i32, i32* %param_ptr10
 %reg12 = add i32 0, %param_raw11
-%reg13 = icmp sgt i32 %reg12,  10
+%reg13 = icmp sgt i32 %reg12, 10
 br i1 %reg13, label %statement_26, label %statement_36
 statement_26:
 %str_ptr_reg14 = getelementptr [4 x i8], [4 x i8]* @.string_id0, i32 0, i32 0
@@ -70,7 +70,7 @@ statement_40:
 %param_ptr19 = getelementptr [50 x i32], [50 x i32]* %sp, i32 0, i32 0
 %param_raw20 = load i32, i32* %param_ptr19
 %reg21 = add i32 0, %param_raw20
-%reg22 = mul i32  2, %reg21
+%reg22 = mul i32 2, %reg21
 call void(i32) @printi(i32 %reg22)
 br label %func_end_48
 br label %func_end_48
